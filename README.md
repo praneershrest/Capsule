@@ -1,6 +1,6 @@
-### Capsule
+# Capsule
 
-# Members:
+### Members:
 - Praneer Shrestha
 - Grace Luo
 - Joshua Peng
