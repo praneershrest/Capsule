@@ -22,4 +22,10 @@
         android:name="com.example.capsule.ui.notifications.NotificationsFragment"
         android:label="@string/title_stats"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@id/navigation_tips"
+        android:name="com.example.capsule.ui.tips.TipsFragment"
+        android:label="@string/title_tips"
+        tools:layout="@layout/fragment_tips"/>
 </navigation>
