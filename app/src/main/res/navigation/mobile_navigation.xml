@@ -7,21 +7,21 @@
 
     <fragment
         android:id="@+id/navigation_outfits"
-        android:name="com.example.capsule.ui.home.HomeFragment"
+        android:name="com.example.capsule.ui.outfits.OutfitsFragment"
         android:label="@string/title_outfits"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_outfits" />
 
     <fragment
         android:id="@+id/navigation_closet"
-        android:name="com.example.capsule.ui.dashboard.DashboardFragment"
+        android:name="com.example.capsule.ui.closet.ClosetFragment"
         android:label="@string/title_closet"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_closet" />
 
     <fragment
         android:id="@+id/navigation_stats"
-        android:name="com.example.capsule.ui.notifications.NotificationsFragment"
+        android:name="com.example.capsule.ui.stats.StatsFragment"
         android:label="@string/title_stats"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_stats" />
 
     <fragment
         android:id="@id/navigation_tips"
