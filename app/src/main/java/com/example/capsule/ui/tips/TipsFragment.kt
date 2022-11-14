@@ -15,8 +15,17 @@ class TipsFragment : Fragment() {
 
     companion object {
         // convert this into a string array in xml file later
-        private val GROUP_LIST : List<String> = listOf("How to be more clothes conscious?", "How to be more clothes conscious?")
-        private val CHILD_LIST: List<String> = listOf("Never gonna give you up, never gonna let you down", "Never gonna run around and hurt you")
+        private val GROUP_LIST : List<String> = listOf("How to be more clothes conscious?"
+            , "How to be more clothes conscious?"
+            , "How to be more clothes conscious?"
+            , "How to be more clothes conscious?"
+            , "How to be more clothes conscious?"
+            , "How to be more clothes conscious?")
+        private val CHILD_LIST: List<String> = listOf("Never gonna give you up", "Never gonna let you down",
+            "Never gonna run around and desert you",
+            "Never gonna make you cry",
+            "Never gonna say goodbye",
+            "Never gonna tell a lie and hurt you",)
     }
 
     override fun onCreateView(
