@@ -24,7 +24,7 @@ class OutfitsFragment : Fragment() {
         val v = inflater.inflate(R.layout.fragment_outfits, null)
 
         listView = v.findViewById(R.id.outfitListView)
-        listView.adapter = OutfitListViewAdapter(requireActivity(), TITLES)
+        listView.adapter = OutfitViewAdapter(requireActivity(), TITLES)
 
         return v
     }

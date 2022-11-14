@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capsule.R
 
-class OutfitListViewAdapter(private val context : Context, private val titles : List<String>) : BaseAdapter(){
+class OutfitViewAdapter(private val context : Context, private val titles : List<String>) : BaseAdapter(){
 
     override fun getCount(): Int {
         return titles.size
