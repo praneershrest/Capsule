@@ -18,6 +18,9 @@ data class Clothing (
     @ColumnInfo(name = "price")
     val price : Double = 0.0,
 
+    @ColumnInfo(name = "material")
+    val material : String,
+
     @ColumnInfo(name = "season")
     val season : String = "",
 
