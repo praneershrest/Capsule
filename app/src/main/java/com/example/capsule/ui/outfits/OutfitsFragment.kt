@@ -4,39 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.capsule.databinding.FragmentOutfitsBinding
+import com.example.capsule.R
 
 class OutfitsFragment : Fragment() {
 
-    private var _binding: FragmentOutfitsBinding? = null
+    private lateinit var listView : ListView
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    companion object {
+        private val TITLES : List<String> = listOf("Tops", "Bottoms", "Jackets", "Shoes")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val outfitsViewModel =
-            ViewModelProvider(this).get(OutfitsViewModel::class.java)
+        val v = inflater.inflate(R.layout.fragment_outfits, null)
 
-        _binding = FragmentOutfitsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        listView = v.findViewById(R.id.outfitListView)
+        listView.adapter = OutfitListViewAdapter(requireActivity(), TITLES)
 
-        val textView: TextView = binding.textHome
-        outfitsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        return v
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
