@@ -2,9 +2,9 @@
 # Capsule - Cmpt362 Project
 
 ### Members:
-- Praneer Shrestha
-- Grace Luo
-- Joshua Peng
+- Praneer Shrestha (301361473)
+- Grace Luo (301360747)
+- Joshua Peng (301340929)
 - Denzel Tjokroardi (301375072)
 - Chang Yun (301383041)
 
