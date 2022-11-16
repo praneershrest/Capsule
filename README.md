@@ -1,3 +1,4 @@
+![alt text](https://github.com/praneershrest/Capsule/blob/ReadMeShow1/app/src/main/res/drawable/images/capsuleLogo.png "Logo Title Text 1")
 # Capsule - Cmpt362 Project
 
 ### Members:
