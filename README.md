@@ -21,4 +21,4 @@ Link to our show and tell 1: [https://youtu.be/1vy5TqTqXsM](https://youtu.be/1vy
 ![alt text](https://github.com/praneershrest/Capsule/blob/main/app/src/main/res/drawable/imagesReadMe/MVVM.png "Logo Title Text 1")
 
 ### Some UI designs
-Link to some of UI mockup designs [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1).
+Link to some of our UI mockup designs [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1).
