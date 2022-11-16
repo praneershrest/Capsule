@@ -22,5 +22,4 @@ Link to our show and tell 1:
 
 ### Some UI designs
 ![alt text](https://github.com/praneershrest/Capsule/blob/ReadMeShow1/app/src/main/res/drawable/imagesReadMe/logOutfitSelected.png)
-![alt text](https://github.com/praneershrest/Capsule/blob/ReadMeShow1/app/src/main/res/drawable/imagesReadMe/addToCloset.png)
 ![alt text](https://github.com/praneershrest/Capsule/blob/ReadMeShow1/app/src/main/res/drawable/imagesReadMe/statsForItems.png)
