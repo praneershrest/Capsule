@@ -16,7 +16,7 @@ Below shows a timeline of events that highlights each milestone throughout the p
 Link to our project pitch: [https://www.youtube.com/watch?v=SJVSiRhHvcE](https://www.youtube.com/watch?v=SJVSiRhHvcE)
 
 ## Show And Tell 1
-Link to our show and tell 1: 
+Link to our show and tell 1: [https://youtu.be/1vy5TqTqXsM](https://youtu.be/1vy5TqTqXsM)
 ### MVVM
 ![alt text](https://github.com/praneershrest/Capsule/blob/ReadMeShow1/app/src/main/res/drawable/imagesReadMe/MVVM.png "Logo Title Text 1")
 
