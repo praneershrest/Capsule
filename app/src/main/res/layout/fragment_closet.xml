@@ -5,18 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.closet.ClosetFragment">
-
-    <TextView
-        android:id="@+id/text_dashboard"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/closetFragment">
+
+        <RelativeLayout
+            android:id = "@+id/mainClosetScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/text_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Take Photo"/>
+        </RelativeLayout>
+
+        <ViewStub
+            android:id = "@+id/noInventoryScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inflatedId="@+id/inflatedview"
+            android:layout="@layout/fragment_no_inventory_screen"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
