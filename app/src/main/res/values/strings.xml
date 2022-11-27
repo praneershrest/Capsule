@@ -24,4 +24,5 @@
     <string name="save_btn_take_photo">Save Item</string>
 
     <string name="fragment_key">Fragment Key</string>
+    <string name="title_tips_fragment">Tips for Building a Conscious Closet</string>
 </resources>
