@@ -22,4 +22,6 @@
     <string name="purchase_location_title">Purchase Location:</string>
     <string name="add_details">Add Details</string>
     <string name="save_btn_take_photo">Save Item</string>
+
+    <string name="fragment_key">Fragment Key</string>
 </resources>

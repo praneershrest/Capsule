@@ -36,7 +36,6 @@ class ClosetFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val FRAGMENT_KEY = "findThisFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +81,8 @@ class ClosetFragment : Fragment() {
                 nextFrag.arguments = args
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.closetFragment, nextFrag, FRAGMENT_KEY)
+                    .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.fragment_key.toString())
+                    .addToBackStack(null)
                     .commit()
             }
         }
@@ -108,7 +108,7 @@ class ClosetFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(FRAGMENT_KEY)
+        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(R.string.fragment_key.toString())
         if (fragment != null) {
             requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
         }

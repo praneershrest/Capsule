@@ -11,8 +11,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
 import com.example.capsule.Util
+import com.example.capsule.database.ClothingDatabase
+import com.example.capsule.database.ClothingDatabaseDao
+import com.example.capsule.database.ClothingHistoryDatabaseDao
+import com.example.capsule.database.Repository
+import com.example.capsule.model.Clothing
+import com.example.capsule.ui.closet.ClosetFragment
 import java.io.File
 
 private const val IMG_URI_KEY = R.string.img_uri_key.toString()
@@ -24,6 +31,13 @@ class ItemDetailsFragment : Fragment() {
 
     private lateinit var nameEditText: EditText
     private lateinit var priceEditText: EditText
+
+    private lateinit var database: ClothingDatabase
+    private lateinit var clothingDatabaseDao: ClothingDatabaseDao
+    private lateinit var clothingHistoryDatabaseDao: ClothingHistoryDatabaseDao
+    private lateinit var databaseRepository: Repository
+    private lateinit var factory: ItemDetailsViewModelFactory
+    private lateinit var itemDetailsViewModel: ItemDetailsViewModel
 
     private lateinit var categorySpinner: Spinner
     private lateinit var materialSpinner: Spinner
@@ -45,7 +59,16 @@ class ItemDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        database = ClothingDatabase.getInstance(requireActivity())
+        clothingDatabaseDao = database.clothingDatabaseDao
+        clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
+        databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
+        factory = ItemDetailsViewModelFactory(databaseRepository)
+        itemDetailsViewModel =
+            ViewModelProvider(this, factory)[ItemDetailsViewModel::class.java]
+
+        itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){println("Test " + it)}
+
         return inflater.inflate(R.layout.fragment_item_details, container, false)
     }
 
@@ -117,8 +140,26 @@ class ItemDetailsFragment : Fragment() {
         var category = categorySpinner.selectedItem.toString()
         var material = materialSpinner.selectedItem.toString()
         var season = seasonSpinner.selectedItem.toString()
-        var price = priceEditText.text.toString()
+        var price = "0.00"
+        if (!priceEditText.text.toString().isEmpty()) {
+            price = String.format("%.2f", priceEditText.text.toString().toDouble())
+        }
         var purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
-
+        var clothingEntry = Clothing(
+            name = itemName,
+            category = category,
+            material = material,
+            season = season,
+            price = price.toDouble(),
+            purchase_location = purchaseLocation
+        )
+        itemDetailsViewModel.insert(clothingEntry)
+        val nextFrag: Fragment? = ClosetFragment()
+        if (nextFrag != null) {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.fragment_key.toString())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 }
