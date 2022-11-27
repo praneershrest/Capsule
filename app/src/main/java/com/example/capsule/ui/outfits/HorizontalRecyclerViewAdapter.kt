@@ -9,9 +9,13 @@ import com.example.capsule.R
 
 // https://developer.android.com/develop/ui/views/layout/recyclerview
 // https://stackoverflow.com/questions/27194044/how-to-properly-highlight-selected-item-on-recyclerview
+/**
+ * Adapter that allows for horizontal scrolling of the images that
+ */
 class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>(){
 
-    private var selectedPos = RecyclerView.NO_POSITION
+    // set default position to be the first position or in other words, no clothes selected
+    private var selectedPos = 0
     companion object {
         // Place holder images, will interact with repository to get actual images
         private val stuff = listOf(R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24,
@@ -41,7 +45,14 @@ class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerV
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imageView.setImageResource(stuff[position])
+        // set the first option to be the no clothing selected option
+        if (position == 0) {
+            holder.imageView.setImageResource(R.drawable.ic_baseline_not_interested_24)
+        }
+        else {
+            holder.imageView.setImageResource(stuff[position-1])
+        }
+
         holder.itemView.isSelected = selectedPos == position
 
         holder.imageView.setOnClickListener {
@@ -52,5 +63,6 @@ class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerV
         }
     }
 
-    override fun getItemCount(): Int = stuff.size
+    // size is always at least one, accounting for no article of clothing selected
+    override fun getItemCount(): Int = stuff.size + 1
 }

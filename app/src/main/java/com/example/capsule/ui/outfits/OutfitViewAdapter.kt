@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capsule.R
 
+/**
+ * List view adapter where each row is a certain category of clothing
+ *
+ *
+ */
 class OutfitViewAdapter(private val context : Context, private val titles : List<String>) : BaseAdapter(){
 
     override fun getCount(): Int {
@@ -23,6 +28,7 @@ class OutfitViewAdapter(private val context : Context, private val titles : List
         return p0.toLong()
     }
 
+    // each item in the listview is a horizontal RecyclerView
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
         val v : View = View.inflate(context, R.layout.outfits_row_item, null)
 
