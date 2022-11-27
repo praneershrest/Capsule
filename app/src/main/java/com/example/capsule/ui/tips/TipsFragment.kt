@@ -21,7 +21,8 @@ class TipsFragment : Fragment() {
             , "How to be more clothes conscious?"
             , "How to be more clothes conscious?"
             , "How to be more clothes conscious?")
-        private val CHILD_LIST: List<String> = listOf("Never gonna give you up", "Never gonna let you down",
+        private val CHILD_LIST: List<String> = listOf("Never gonna give you up",
+            "Never gonna let you down",
             "Never gonna run around and desert you",
             "Never gonna make you cry",
             "Never gonna say goodbye",
