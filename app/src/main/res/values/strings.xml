@@ -22,4 +22,8 @@
     <string name="purchase_location_title">Purchase Location:</string>
     <string name="add_details">Add Details</string>
     <string name="save_btn_take_photo">Save Item</string>
+
+    <string name="title_tips_fragment">Tips for Building a Conscious Closet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
