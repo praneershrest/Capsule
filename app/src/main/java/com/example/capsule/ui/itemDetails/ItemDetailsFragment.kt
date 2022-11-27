@@ -26,7 +26,7 @@ private const val IMG_URI_KEY = R.string.img_uri_key.toString()
 private const val IMG_FILENAME_KEY = R.string.img_filename_key.toString()
 
 class ItemDetailsFragment : Fragment() {
-    private var imgUriString: String? = null
+    private lateinit var imgUriString: String
     private lateinit var imageView: ImageView
 
     private lateinit var nameEditText: EditText
@@ -50,7 +50,7 @@ class ItemDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            imgUriString = it.getString(IMG_URI_KEY)
+            imgUriString = it.getString(IMG_URI_KEY).toString()
             imgFile = it.getSerializable(IMG_FILENAME_KEY) as File
         }
     }
@@ -151,7 +151,8 @@ class ItemDetailsFragment : Fragment() {
             material = material,
             season = season,
             price = price.toDouble(),
-            purchase_location = purchaseLocation
+            purchase_location = purchaseLocation,
+            img_uri = imgUriString
         )
         itemDetailsViewModel.insert(clothingEntry)
         val nextFrag: Fragment? = ClosetFragment()

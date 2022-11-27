@@ -25,5 +25,8 @@ data class Clothing (
     val season : String = "",
 
     @ColumnInfo(name = "purchase_location")
-    val purchase_location : String = ""
+    val purchase_location : String = "",
+
+    @ColumnInfo(name = "img_uri")
+    val img_uri : String = ""
 )
