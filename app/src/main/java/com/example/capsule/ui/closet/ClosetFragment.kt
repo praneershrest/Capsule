@@ -52,6 +52,8 @@ class ClosetFragment : Fragment() {
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
         noInventoryView.inflate(); // inflate the layout
         noInventoryView.visibility = View.INVISIBLE;
+
+        // TODO - Change this to if there are things in database
         var pass = true
         if (pass) {
             var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
@@ -82,7 +84,6 @@ class ClosetFragment : Fragment() {
 
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.item_details_fragment_key.toString())
-                    .addToBackStack(null)
                     .commit()
             }
         }

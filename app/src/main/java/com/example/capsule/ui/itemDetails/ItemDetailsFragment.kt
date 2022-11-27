@@ -160,7 +160,6 @@ class ItemDetailsFragment : Fragment() {
         if (nextFrag != null) {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.closet_fragment_key.toString())
-                .addToBackStack(null)
                 .commit()
         }
     }
