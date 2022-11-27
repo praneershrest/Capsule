@@ -24,7 +24,7 @@ import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
 import java.io.File
 
-
+// TODO - Improve styling of the fragment
 class ClosetFragment : Fragment() {
 
     private var _binding: FragmentClosetBinding? = null
@@ -81,7 +81,7 @@ class ClosetFragment : Fragment() {
                 nextFrag.arguments = args
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.fragment_key.toString())
+                    .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.item_details_fragment_key.toString())
                     .addToBackStack(null)
                     .commit()
             }
@@ -108,7 +108,7 @@ class ClosetFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(R.string.fragment_key.toString())
+        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(R.string.item_details_fragment_key.toString())
         if (fragment != null) {
             requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
         }

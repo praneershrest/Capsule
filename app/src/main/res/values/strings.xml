@@ -23,6 +23,7 @@
     <string name="add_details">Add Details</string>
     <string name="save_btn_take_photo">Save Item</string>
 
-    <string name="fragment_key">Fragment Key</string>
+    <string name="item_details_fragment_key">Item Details Fragment Key</string>
+    <string name="closet_fragment_key">Closet Fragment Key</string>
     <string name="title_tips_fragment">Tips for Building a Conscious Closet</string>
 </resources>

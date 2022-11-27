@@ -67,7 +67,8 @@ class ItemDetailsFragment : Fragment() {
         itemDetailsViewModel =
             ViewModelProvider(this, factory)[ItemDetailsViewModel::class.java]
 
-        itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){println("Test " + it)}
+        // empty observer to allow using viewmodels to insert into database
+        itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){}
 
         return inflater.inflate(R.layout.fragment_item_details, container, false)
     }
@@ -136,10 +137,10 @@ class ItemDetailsFragment : Fragment() {
     private fun onSaveEntry(){
         saved = true
 
-        var itemName = nameEditText.text.toString()
-        var category = categorySpinner.selectedItem.toString()
-        var material = materialSpinner.selectedItem.toString()
-        var season = seasonSpinner.selectedItem.toString()
+        val itemName = nameEditText.text.toString()
+        val category = categorySpinner.selectedItem.toString()
+        val material = materialSpinner.selectedItem.toString()
+        val season = seasonSpinner.selectedItem.toString()
         var price = "0.00"
         if (!priceEditText.text.toString().isEmpty()) {
             price = String.format("%.2f", priceEditText.text.toString().toDouble())
@@ -158,7 +159,7 @@ class ItemDetailsFragment : Fragment() {
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.fragment_key.toString())
+                .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.closet_fragment_key.toString())
                 .addToBackStack(null)
                 .commit()
         }
