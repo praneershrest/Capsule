@@ -8,6 +8,18 @@
     <string name="title_closet">Closet</string>
     <string name="title_stats">Stats</string>
     <string name="title_tips">Tips</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="img_filename_key">imgFileNameKey</string>
+    <string name="img_uri_key">imgUriKey</string>
+
+    <string name="name_title">Item Name:</string>
+    <string name="name_placeholder">Enter a name for this </string>
+    <string name="category_title">Category:</string>
+    <string name="material_title">Material:</string>
+    <string name="season_title">Season:</string>
+    <string name="price_title">Price:</string>
+    <string name="price_placeholder">$ Your Price</string>
+    <string name="purchase_location_title">Purchase Location:</string>
+    <string name="add_details">Add Details</string>
+    <string name="save_btn_take_photo">Save Item</string>
 </resources>

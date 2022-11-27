@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_items">
+        <item>Tops</item>
+        <item>Outer Wear</item>
+        <item>Pants</item>
+        <item>Shoes</item>
+    </string-array>
+    <string-array name="material_items">
+        <item>Leather</item>
+        <item>Polyester</item>
+        <item>Cotton</item>
+        <item>Plastic</item>
+    </string-array>
+    <string-array name="season_items">
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Fall</item>
+        <item>Winter</item>
+    </string-array>
+    <string-array name="purchase_items">
+        <item>Store Bought</item>
+        <item>Thrift Store</item>
+        <item>Hand-me down</item>
+    </string-array>
+</resources>
