@@ -12,9 +12,18 @@ import com.example.capsule.R
 /**
  * List view adapter where each row is a certain category of clothing
  *
- *
  */
-class OutfitViewAdapter(private val context : Context, private val titles : List<String>) : BaseAdapter(){
+class OutfitViewAdapter(private val context : Context, private val titles : List<String>) : BaseAdapter(), HorizontalRecyclerViewAdapter.OnClothingSelectedListener{
+
+    companion object {
+        // Place holder images, will interact with repository to get actual images
+        private val stuff = listOf(
+            listOf(R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24)
+            , listOf(R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp)
+            , listOf(R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp)
+            , listOf(R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground)
+        )
+    }
 
     override fun getCount(): Int {
         return titles.size
@@ -38,8 +47,16 @@ class OutfitViewAdapter(private val context : Context, private val titles : List
         textView.text = titles[p0]
 
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = HorizontalRecyclerViewAdapter()
+        recyclerView.adapter = HorizontalRecyclerViewAdapter(p0, stuff[p0], this)
 
         return v
+    }
+
+    // TODO Implement onClothingSelected position here, possibly replace "position" parameter with
+    //  clothing ID or even the ClothingEntry
+    // this function is called whenever the user selects a new item and is highlighted
+    // clothingCategory represents the row and
+    override fun onClothingSelected(clothingCategory: Int, position: Int) {
+        println("Selected position: $clothingCategory $position")
     }
 }

@@ -11,23 +11,25 @@ import com.example.capsule.R
 // https://stackoverflow.com/questions/27194044/how-to-properly-highlight-selected-item-on-recyclerview
 /**
  * Adapter that allows for horizontal scrolling of the images that
+ * @property clothingCategory the category of clothing such as Shirts or Jackets
+ * @property clothing List of clothing entries
+ * @property clothingSelectedListener
  */
-class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>(){
+class HorizontalRecyclerViewAdapter(private val clothingCategory: Int,
+                                    private val clothing : List<Int>,
+                                    private val clothingSelectedListener : OnClothingSelectedListener) : RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>(){
+    // TODO: change clothing into either List of ImagePaths or List of ClothingEntries
+    //  and change how ImageView is set
 
     // set default position to be the first position or in other words, no clothes selected
     private var selectedPos = 0
-    companion object {
-        // Place holder images, will interact with repository to get actual images
-        private val stuff = listOf(R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24,
-            R.drawable.ic_outline_shopping_bag_24,
-            R.drawable.ic_home_black_24dp,
-            R.drawable.ic_notifications_black_24dp,
-            R.drawable.ic_outline_shopping_bag_24,
-            R.drawable.ic_home_black_24dp,
-            R.drawable.ic_notifications_black_24dp,
-            R.drawable.ic_outline_shopping_bag_24,
-            R.drawable.ic_home_black_24dp,
-            R.drawable.ic_notifications_black_24dp)
+
+
+    /**
+     * Interface to implement when you want to do something after a user selects a piece of clothing
+     */
+    interface OnClothingSelectedListener {
+        fun onClothingSelected(clothingCategory : Int, position: Int)
     }
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
@@ -50,7 +52,7 @@ class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerV
             holder.imageView.setImageResource(R.drawable.ic_baseline_not_interested_24)
         }
         else {
-            holder.imageView.setImageResource(stuff[position-1])
+            holder.imageView.setImageResource(clothing[position-1])
         }
 
         holder.itemView.isSelected = selectedPos == position
@@ -59,10 +61,10 @@ class HorizontalRecyclerViewAdapter() : RecyclerView.Adapter<HorizontalRecyclerV
             notifyItemChanged(selectedPos)
             selectedPos = holder.layoutPosition
             notifyItemChanged(selectedPos)
-            println("Position: $position ${holder.layoutPosition}")
+            clothingSelectedListener.onClothingSelected(clothingCategory, position)
         }
     }
 
     // size is always at least one, accounting for no article of clothing selected
-    override fun getItemCount(): Int = stuff.size + 1
+    override fun getItemCount(): Int = clothing.size + 1
 }
