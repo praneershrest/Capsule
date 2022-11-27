@@ -24,7 +24,7 @@ import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
 import java.io.File
 
-
+// TODO - Improve styling of the fragment
 class ClosetFragment : Fragment() {
 
     private var _binding: FragmentClosetBinding? = null
@@ -36,7 +36,6 @@ class ClosetFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val FRAGMENT_KEY = "findThisFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +52,8 @@ class ClosetFragment : Fragment() {
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
         noInventoryView.inflate(); // inflate the layout
         noInventoryView.visibility = View.INVISIBLE;
+
+        // TODO - Change this to if there are things in database
         var pass = true
         if (pass) {
             var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
@@ -82,7 +83,7 @@ class ClosetFragment : Fragment() {
                 nextFrag.arguments = args
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.closetFragment, nextFrag, FRAGMENT_KEY)
+                    .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.item_details_fragment_key.toString())
                     .commit()
             }
         }
@@ -108,7 +109,7 @@ class ClosetFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(FRAGMENT_KEY)
+        val fragment: Fragment? = requireActivity().supportFragmentManager.findFragmentByTag(R.string.item_details_fragment_key.toString())
         if (fragment != null) {
             requireActivity().supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
