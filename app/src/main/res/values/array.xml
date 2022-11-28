@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_items">
+        <item>Tops</item>
+        <item>Outerwear</item>
+        <item>Pants</item>
+        <item>Shoes</item>
+    </string-array>
+    <string-array name="material_items">
+        <item>Cotton</item>
+        <item>Leather</item>
+        <item>Polyester</item>
+        <item>Wool</item>
+        <item>Nylon</item>
+        <item>Acrylic</item>
+        <item>Rubber</item>
+    </string-array>
+    <string-array name="season_items">
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Fall</item>
+        <item>Winter</item>
+    </string-array>
+    <string-array name="purchase_items">
+        <item>Brand new</item>
+        <item>Thrifted</item>
+        <item>Second-hand online</item>
+    </string-array>
+    <string-array name="tips_headings">
+        <item>What is fast fashion?</item>
+        <item>What is slow fashion?</item>
+        <item>What is a capsule wardrobe?</item>
+        <item>What should I think about before making a purchase?</item>
+        <item>What should I do with clothes I don\'t wear anymore?</item>
+        <item>What fabrics should I look for?</item>
+        <item>Where should I shop from?</item>
+    </string-array>
+    <integer-array name="material_graph_colours">
+        <item>@color/third</item>
+        <item>@color/graph_1_teal</item>
+        <item>@color/graph_2_light_teal</item>
+        <item>@color/graph_3_green</item>
+        <item>@color/graph_4_lime</item>
+        <item>@color/graph_5_ochre</item>
+        <item>@color/graph_6_orange</item>
+    </integer-array>
+    <integer-array name="purchase_loc_graph_colours">
+        <item>@color/second</item>
+        <item>@color/graph_4_lime</item>
+        <item>@color/graph_6_orange</item>
+    </integer-array>
+</resources>

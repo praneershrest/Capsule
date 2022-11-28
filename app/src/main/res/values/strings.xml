@@ -8,8 +8,31 @@
     <string name="title_closet">Closet</string>
     <string name="title_stats">Stats</string>
     <string name="title_tips">Tips</string>
+
+    <string name="img_filename_key">imgFileNameKey</string>
+    <string name="img_uri_key">imgUriKey</string>
+
+    <string name="name_title">Item Name:</string>
+    <string name="name_placeholder">Enter a name for this </string>
+    <string name="category_title">Category:</string>
+    <string name="material_title">Material:</string>
+    <string name="season_title">Season:</string>
+    <string name="price_title">Price:</string>
+    <string name="price_placeholder">$ Your Price</string>
+    <string name="purchase_location_title">Purchase Location:</string>
+    <string name="add_details">Add Details</string>
+    <string name="save_btn_take_photo">Save Item</string>
+
+    <string name="item_details_fragment_key">Item Details Fragment Key</string>
+    <string name="closet_fragment_key">Closet Fragment Key</string>
+    <string name="title_tips_fragment">Tips for Building a Conscious Closet</string>
+
+    <string name="stats_material_title">Closet Material Composition</string>
+    <string name="stats_frequency_title">Frequency of Wear</string>
+    <string name="stats_purchase_loc_title">Purchase Location</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    
+
     <string name="log_your_own_outfit">Log your own outfit</string>
+
 </resources>
