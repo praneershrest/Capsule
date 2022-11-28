@@ -12,6 +12,8 @@
         <item>Polyester</item>
         <item>Wool</item>
         <item>Nylon</item>
+        <item>Acrylic</item>
+        <item>Rubber</item>
     </string-array>
     <string-array name="season_items">
         <item>Spring</item>
@@ -33,4 +35,18 @@
         <item>What fabrics should I look for?</item>
         <item>Where should I shop from?</item>
     </string-array>
+    <integer-array name="material_graph_colours">
+        <item>@color/third</item>
+        <item>@color/graph_1_teal</item>
+        <item>@color/graph_2_light_teal</item>
+        <item>@color/graph_3_green</item>
+        <item>@color/graph_4_lime</item>
+        <item>@color/graph_5_ochre</item>
+        <item>@color/graph_6_orange</item>
+    </integer-array>
+    <integer-array name="purchase_loc_graph_colours">
+        <item>@color/second</item>
+        <item>@color/graph_4_lime</item>
+        <item>@color/graph_6_orange</item>
+    </integer-array>
 </resources>
