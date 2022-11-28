@@ -1,5 +1,8 @@
 package com.example.capsule.ui.itemDetails
 
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.lifecycle.ViewModelProvider
+import com.example.capsule.MainActivity
 import com.example.capsule.R
 import com.example.capsule.Util
 import com.example.capsule.database.ClothingDatabase
@@ -47,6 +51,8 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var imgUri: Uri
     private var saved = false
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,6 +65,7 @@ class ItemDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
@@ -85,7 +92,7 @@ class ItemDetailsFragment : Fragment() {
         materialSpinner = view.findViewById(R.id.materialSpinner)
         seasonSpinner = view.findViewById(R.id.seasonSpinner)
         purchaseLocationSpinner = view.findViewById(R.id.purchaseSpinner)
-        var onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
+        val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
             onSaveEntry()
         }
@@ -93,25 +100,25 @@ class ItemDetailsFragment : Fragment() {
     }
 
     fun createAdaptors() {
-        var categoryAdapter = ArrayAdapter.createFromResource(
+        val categoryAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.category_items,
             android.R.layout.simple_spinner_item
         )
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var materialAdapter = ArrayAdapter.createFromResource(
+        val materialAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.material_items,
             android.R.layout.simple_spinner_item
         )
         materialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var seasonAdapter = ArrayAdapter.createFromResource(
+        val seasonAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.season_items,
             android.R.layout.simple_spinner_item
         )
         seasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var purchaseLocationAdapter = ArrayAdapter.createFromResource(
+        val purchaseLocationAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.purchase_items,
             android.R.layout.simple_spinner_item
@@ -137,6 +144,7 @@ class ItemDetailsFragment : Fragment() {
     private fun onSaveEntry(){
         saved = true
 
+        val isDatabaseEmpty = sharedPreferences.getBoolean(getString(R.string.empty_database), true)
         val itemName = nameEditText.text.toString()
         val category = categorySpinner.selectedItem.toString()
         val material = materialSpinner.selectedItem.toString()
@@ -145,8 +153,8 @@ class ItemDetailsFragment : Fragment() {
         if (!priceEditText.text.toString().isEmpty()) {
             price = String.format("%.2f", priceEditText.text.toString().toDouble())
         }
-        var purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
-        var clothingEntry = Clothing(
+        val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
+        val clothingEntry = Clothing(
             name = itemName,
             category = category,
             material = material,
@@ -156,6 +164,13 @@ class ItemDetailsFragment : Fragment() {
             img_uri = imgUriString
         )
         itemDetailsViewModel.insert(clothingEntry)
+
+        // If database was empty meaning a first time user flow, restart MainActivity with toggled flags
+        if(isDatabaseEmpty) {
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            startActivity(intent)
+        }
+
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
             requireActivity().supportFragmentManager.beginTransaction()

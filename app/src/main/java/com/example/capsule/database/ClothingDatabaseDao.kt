@@ -27,5 +27,6 @@ interface ClothingDatabaseDao {
     @Query("DELETE FROM CLOTHING_TABLE")
     fun deleteAllClothing()
 
-    
+    @Query("SELECT COUNT(*) FROM clothing_table")
+    fun getClothingTableSize() : Flow<Int>
 }

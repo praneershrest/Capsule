@@ -31,6 +31,8 @@
     <string name="title_welcome_page">Hello!\nWelcome to Capsule</string>
     <string name="button_welcome_page">Upload your closet</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="shared_preferences">Shared Preferences</string>
+    <string name="empty_database">empty_database</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

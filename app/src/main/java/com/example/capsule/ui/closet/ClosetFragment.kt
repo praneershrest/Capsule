@@ -1,7 +1,9 @@
 package com.example.capsule.ui.closet
 
 import android.app.Activity
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -27,6 +29,7 @@ import java.io.File
 // TODO - Improve styling of the fragment
 class ClosetFragment : Fragment() {
 
+    private lateinit var sharedPreferences: SharedPreferences
     private var _binding: FragmentClosetBinding? = null
     private lateinit var noInventoryView: ViewStub
     private lateinit var cameraResult: ActivityResultLauncher<Intent>
@@ -43,22 +46,20 @@ class ClosetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val closetViewModel =
-            ViewModelProvider(this).get(ClosetViewModel::class.java)
+            ViewModelProvider(this)[ClosetViewModel::class.java]
         _binding = FragmentClosetBinding.inflate(inflater, container, false)
         val root: View = binding.root
         Util.checkPermissions(requireActivity())
 
-
+        sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
-        noInventoryView.inflate(); // inflate the layout
-        noInventoryView.visibility = View.INVISIBLE;
+        noInventoryView.inflate() // inflate the layout
+        noInventoryView.visibility = View.INVISIBLE
 
-        // TODO - Change this to if there are things in database
-        var pass = true
-        if (pass) {
-            var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
+        if (sharedPreferences.getBoolean(getString(R.string.empty_database), true)) {
+            val mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
             mainScreen.visibility = View.INVISIBLE
-            noInventoryView.visibility = View.VISIBLE;
+            noInventoryView.visibility = View.VISIBLE
         }
 
         val textView: TextView = binding.textDashboard
@@ -87,14 +88,14 @@ class ClosetFragment : Fragment() {
                     .commit()
             }
         }
-        var takePhotoBtn: Button = view.findViewById(R.id.take_photo_btn)
+        val takePhotoBtn: Button = view.findViewById(R.id.take_photo_btn)
         takePhotoBtn.setOnClickListener {
             onTakePhoto()
         }
     }
 
 
-    fun onTakePhoto() {
+    private fun onTakePhoto() {
         imgFile = Util.createImageFile(requireActivity())
         imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
 

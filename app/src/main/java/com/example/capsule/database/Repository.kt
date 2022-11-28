@@ -14,6 +14,7 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val allMaterials : Flow<List<String>> = clothingDatabaseDao.getAllMaterial()
     val allPurchaseLocations : Flow<List<String>> = clothingDatabaseDao.getAllPurchaseLocations()
     val allClothingHistory : Flow<List<ClothingHistory>> = clothingHistoryDatabaseDao.getAllClothingHistory()
+    val clothingTableSize: Flow<Int> = clothingDatabaseDao.getClothingTableSize()
 
     fun insertClothing(clothing : Clothing) {
         CoroutineScope(IO).launch {
@@ -50,6 +51,4 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
             clothingHistoryDatabaseDao.deleteAllClothingHistory()
         }
     }
-
-
 }
