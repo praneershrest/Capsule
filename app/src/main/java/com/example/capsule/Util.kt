@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -44,6 +43,26 @@ object Util {
             ".jpg", /* suffix */
             storageDir /* directory */
         )
+    }
+
+    object Season{
+        const val SPRING = "Spring"
+        const val SUMMER = "Summer"
+        const val FALL = "Fall"
+        const val WINTER = "Winter"
+    }
+
+    fun determineSeason(temp: Double) : String{
+        if(temp < 5 ){
+            return Season.WINTER
+        }
+        else if (temp > 5 && temp < 20){
+            return Season.SPRING
+        }
+        else if(temp > 20){
+            return Season.SUMMER
+        }
+        return "none"
     }
 
     fun calendarToString(cal: Calendar) : String {
