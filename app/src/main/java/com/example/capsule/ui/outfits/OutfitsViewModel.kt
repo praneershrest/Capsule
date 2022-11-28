@@ -1,13 +1,22 @@
 package com.example.capsule.ui.outfits
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.capsule.database.Repository
+import com.example.capsule.model.Clothing
 
-class OutfitsViewModel : ViewModel() {
+class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    val allClothingLiveData : LiveData<List<Clothing>> = repository.allClothing.asLiveData()
+
+}
+
+class OutfitsViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(OutfitsViewModel::class.java)) {
+            return OutfitsViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Passed in modelClass not OutfitsViewModel")
     }
-    val text: LiveData<String> = _text
+
 }
