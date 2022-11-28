@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,7 +18,6 @@ import java.util.*
 
 object Util {
     fun checkPermissions(activity: Activity?) {
-        if (Build.VERSION.SDK_INT < 23) return
         if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), 0)
@@ -27,10 +25,9 @@ object Util {
     }
 
     fun getBitmap(context: Context, imgUri: Uri): Bitmap {
-        var bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
+        val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
         val matrix = Matrix()
-        var ret = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        return ret
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     @Throws(IOException::class)
@@ -43,5 +40,25 @@ object Util {
             ".jpg", /* suffix */
             storageDir /* directory */
         )
+    }
+
+    object Season{
+        const val SPRING = "Spring"
+        const val SUMMER = "Summer"
+        const val FALL = "Fall"
+        const val WINTER = "Winter"
+    }
+
+    fun determineSeason(temp: Double) : String{
+        if(temp < 5 ){
+            return Season.WINTER
+        }
+        else if (temp > 5 && temp < 20){
+            return Season.SPRING
+        }
+        else if(temp > 20){
+            return Season.SUMMER
+        }
+        return "none"
     }
 }
