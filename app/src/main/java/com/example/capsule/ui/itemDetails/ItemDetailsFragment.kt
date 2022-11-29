@@ -1,5 +1,6 @@
 package com.example.capsule.ui.itemDetails
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
 import com.example.capsule.Util
@@ -38,6 +40,7 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var databaseRepository: Repository
     private lateinit var factory: ItemDetailsViewModelFactory
     private lateinit var itemDetailsViewModel: ItemDetailsViewModel
+    private lateinit var closetFragmentResult: ActivityResultLauncher<Intent>
 
     private lateinit var categorySpinner: Spinner
     private lateinit var materialSpinner: Spinner
@@ -68,7 +71,7 @@ class ItemDetailsFragment : Fragment() {
             ViewModelProvider(this, factory)[ItemDetailsViewModel::class.java]
 
         // empty observer to allow using viewmodels to insert into database
-        itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){}
+        itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){println("test " + it)}
 
         return inflater.inflate(R.layout.fragment_item_details, container, false)
     }
@@ -158,8 +161,12 @@ class ItemDetailsFragment : Fragment() {
         itemDetailsViewModel.insert(clothingEntry)
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
+            // TODO - possibly figure out the proper way to handle fragments but this works right now
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, nextFrag, R.string.closet_fragment_key.toString())
+                .remove(this)
+                .commit()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.closetFragment, nextFrag, R.string.closet_fragment_key.toString())
                 .commit()
         }
     }
