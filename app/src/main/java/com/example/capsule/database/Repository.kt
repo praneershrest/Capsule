@@ -16,6 +16,10 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val allPurchaseLocations : Flow<List<String>> = clothingDatabaseDao.getAllPurchaseLocations()
     val allClothingHistory : Flow<List<ClothingHistory>> = clothingHistoryDatabaseDao.getAllClothingHistory()
 
+    fun clothesByCategoryForSeason(category: String, season: String): Flow<List<Clothing>> {
+        return clothingDatabaseDao.getClothingByCategoryForSeason(category, season)
+    }
+
     val topsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Tops")
     val bottomsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Bottoms")
     val outerwearFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Outerwear")
