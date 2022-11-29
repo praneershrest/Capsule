@@ -9,8 +9,17 @@ class ClothingHistory (
     @PrimaryKey(autoGenerate = true)
     val id : Long = 0L,
 
-    @ColumnInfo(name="clothing_id")
-    val clothingId : Long = 0L,
+    @ColumnInfo(name="top_id")
+    val top_id : Long = 0L,
+
+    @ColumnInfo(name="bottom_id")
+    val bottom_id : Long = 0L,
+
+    @ColumnInfo(name="outerwear_id")
+    val outerwear_id : Long = 0L,
+
+    @ColumnInfo(name="shoe_id")
+    val shoe_id : Long = 0L,
 
     @ColumnInfo(name="date")
     val date : String = ""
