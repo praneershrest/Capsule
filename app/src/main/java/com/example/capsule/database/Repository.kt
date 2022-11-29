@@ -2,6 +2,7 @@ package com.example.capsule.database
 
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
+import com.example.capsule.ui.stats.ItemWearFrequency
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,11 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val allMaterials : Flow<List<String>> = clothingDatabaseDao.getAllMaterial()
     val allPurchaseLocations : Flow<List<String>> = clothingDatabaseDao.getAllPurchaseLocations()
     val allClothingHistory : Flow<List<ClothingHistory>> = clothingHistoryDatabaseDao.getAllClothingHistory()
+
+    val topsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Tops")
+    val bottomsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Bottoms")
+    val outerwearFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Outerwear")
+    val shoesFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Shoes")
 
     fun insertClothing(clothing : Clothing) {
         CoroutineScope(IO).launch {
@@ -48,6 +54,12 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     fun deleteAllClothingHistory() {
         CoroutineScope(IO).launch {
             clothingHistoryDatabaseDao.deleteAllClothingHistory()
+        }
+    }
+
+    fun getItemFrequenciesForCategory(category: String) {
+        CoroutineScope(IO).launch {
+            clothingHistoryDatabaseDao.getItemFrequenciesForCategory(category)
         }
     }
 

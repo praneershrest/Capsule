@@ -20,10 +20,9 @@
         <ExpandableListView
             android:id="@+id/expandableListView"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="550dp"
             android:layoutDirection="rtl"
-            android:divider="@color/black">
-        </ExpandableListView>
+            android:divider="@color/black"/>
 
     </FrameLayout>
 </LinearLayout>
