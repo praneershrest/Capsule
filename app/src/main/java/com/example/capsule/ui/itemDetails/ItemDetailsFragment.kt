@@ -2,15 +2,13 @@ package com.example.capsule.ui.itemDetails
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
 import com.example.capsule.Util
@@ -21,6 +19,9 @@ import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
 import java.io.File
+import java.lang.Double.parseDouble
+import java.text.NumberFormat
+
 
 private const val IMG_URI_KEY = R.string.img_uri_key.toString()
 private const val IMG_FILENAME_KEY = R.string.img_filename_key.toString()
@@ -142,8 +143,9 @@ class ItemDetailsFragment : Fragment() {
         val material = materialSpinner.selectedItem.toString()
         val season = seasonSpinner.selectedItem.toString()
         var price = "0.00"
-        if (!priceEditText.text.toString().isEmpty()) {
-            price = String.format("%.2f", priceEditText.text.toString().toDouble())
+        if (priceEditText.text.toString().isNotEmpty()) {
+
+            price = String.format("%.2f", parseDouble(priceEditText.text.toString()))
         }
         var purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
         var clothingEntry = Clothing(
