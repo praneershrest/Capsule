@@ -14,4 +14,4 @@ class ClothingHistory (
 
     @ColumnInfo(name="date")
     val date : String = ""
-    )
+)

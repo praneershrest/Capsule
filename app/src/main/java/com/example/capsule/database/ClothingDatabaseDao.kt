@@ -21,11 +21,12 @@ interface ClothingDatabaseDao {
     @Query("SELECT purchase_location FROM clothing_table")
     fun getAllPurchaseLocations() : Flow<List<String>>
 
+    @Query("SELECT * FROM clothing_table WHERE season = :season AND category = :category")
+    fun getClothingByCategoryForSeason(category: String, season : String) : Flow<List<Clothing>>
+
     @Query("DELETE FROM clothing_table WHERE id = :id")
     fun deleteClothing(id : Long)
 
     @Query("DELETE FROM CLOTHING_TABLE")
     fun deleteAllClothing()
-
-    
 }
