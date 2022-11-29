@@ -4,6 +4,9 @@ import androidx.lifecycle.*
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 
+// TODO add function to add clothing history to database
+//  and also change allClothingLiveData into List<List<Clothing>> where the row will
+//  represent each category of clothing
 class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
     val allClothingLiveData : LiveData<List<Clothing>> = repository.allClothing.asLiveData()

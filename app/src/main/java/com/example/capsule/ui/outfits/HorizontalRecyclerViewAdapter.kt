@@ -27,6 +27,8 @@ class HorizontalRecyclerViewAdapter(private val clothingCategory: Int,
 
     /**
      * Interface to implement when you want to do something after a user selects a piece of clothing
+     *
+     * TODO change function so that it passes Clothing.id or Clothing itself
      */
     interface OnClothingSelectedListener {
         fun onClothingSelected(clothingCategory : Int, position: Int)

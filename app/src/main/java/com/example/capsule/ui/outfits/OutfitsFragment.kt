@@ -16,12 +16,16 @@ import com.example.capsule.R
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
+import com.example.capsule.model.ClothingHistory
 
 class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSelectedListener {
+
+    private lateinit var clothingCategoryStrList : Array<String>
 
     private lateinit var listView : ListView
     private lateinit var logOutfitButton : Button
 
+    private lateinit var clothingHistory: ClothingHistory
     private lateinit var outfitsListViewAdapter : OutfitsListViewAdapter
     private lateinit var outfitsViewModel: OutfitsViewModel
 
@@ -29,6 +33,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         private val TITLES : List<String> = listOf("Tops", "Bottoms", "Jackets", "Shoes")
     }
 
+    // TODO edit adapter to use List of clothing instead of adapter
     inner class OutfitsListViewAdapter(private var clothing : List<Clothing>) : BaseAdapter() {
 
         // just placeholder values A List<List<Clothing>> instead
@@ -41,11 +46,11 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         )
 
         override fun getCount(): Int {
-            return TITLES.size
+            return clothingCategoryStrList.size
         }
 
         override fun getItem(p0: Int): Any {
-            return TITLES[p0]
+            return clothingCategoryStrList[p0]
         }
 
         override fun getItemId(p0: Int): Long {
@@ -58,7 +63,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             val textView : TextView = v.findViewById(R.id.outfitRowTitleTextView)
             val recyclerView : RecyclerView = v.findViewById(R.id.outfitRowRecyclerView)
 
-            textView.text = TITLES[p0]
+            textView.text = clothingCategoryStrList[p0]
 
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = HorizontalRecyclerViewAdapter(p0, stuff[p0], this@OutfitsFragment)
@@ -78,22 +83,26 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
     ): View {
         val v = inflater.inflate(R.layout.fragment_outfits, null)
 
-        listView = v.findViewById(R.id.outfitListView)
-        val l = ArrayList<Clothing>()
-        outfitsListViewAdapter = OutfitsListViewAdapter(l)
-        listView.adapter = outfitsListViewAdapter //OutfitViewAdapter(requireActivity(), TITLES)
-
+        clothingCategoryStrList = resources.getStringArray(R.array.category_items)
+        initializeListView(v)
         initializeButton(v)
         initializeOutfitsViewModel()
 
         return v
     }
 
+    // TODO add function to add clothing history to database
     private fun initializeButton(v : View) {
         logOutfitButton = v.findViewById(R.id.manuallyLogOutfitButton)
         logOutfitButton.setOnClickListener {
             // put button function here to view model
         }
+    }
+
+    private fun initializeListView(v : View) {
+        listView = v.findViewById(R.id.outfitListView)
+        outfitsListViewAdapter = OutfitsListViewAdapter(ArrayList<Clothing>())
+        listView.adapter = outfitsListViewAdapter
     }
 
     private fun initializeOutfitsViewModel() {
@@ -106,8 +115,9 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         }
     }
 
+    // TODO edit function so that it modifies the ClothingHistory field
     override fun onClothingSelected(clothingCategory: Int, position: Int) {
-        println("debug: Clothing selected: $clothingCategory, $position")
+        println("CLOTHING CATEGORY: ${clothingCategoryStrList[clothingCategory]}")
     }
 
 }
