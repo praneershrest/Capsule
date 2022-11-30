@@ -2,6 +2,7 @@ package com.example.capsule.database
 
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
+import com.example.capsule.ui.closet.ClosetItemData
 import com.example.capsule.ui.outfitHistory.RecentClothing
 import com.example.capsule.ui.stats.ItemWearFrequency
 import com.example.capsule.ui.stats.MaterialFrequency
@@ -23,6 +24,11 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val bottomsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Bottoms")
     val outerwearFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Outerwear")
     val shoesFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Shoes")
+
+    val topsAllFrequencies : Flow<List<ClosetItemData>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Tops")
+    val bottomsAllFrequencies : Flow<List<ClosetItemData>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Bottoms")
+    val outerwearAllFrequencies : Flow<List<ClosetItemData>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Outerwear")
+    val shoesAllFrequencies : Flow<List<ClosetItemData>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Shoes")
 
     val materialFrequencies: Flow<List<MaterialFrequency>> = clothingDatabaseDao.getMaterialCount()
     val purchaseLocationFrequencies: Flow<List<PurchaseLocationFrequency>> = clothingDatabaseDao.getPurchaseLocationCount()

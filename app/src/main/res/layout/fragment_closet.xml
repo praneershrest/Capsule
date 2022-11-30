@@ -4,42 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/closetFragment"
     tools:context=".ui.closet.ClosetFragment">
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/mainClosetScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab"
+            app:tabTextColor="@color/fifth"
+            app:tabTextAppearance="@style/AppTheme.FreqTabLayoutText"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager1"
+            android:layout_below="@id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"/>
+        <LinearLayout
+            android:layout_below="@id/viewPager1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/clothes_title"
+                android:text="Oatmeal Cardigan"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/price_per_wear"
+                android:text="$10.00 / wear"/>
+
+            <ListView
+                android:id="@+id/clothingDetailsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+                <!-- TODO Need to implement remove Button -->
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Remove Item"/>-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/icon_plus"
+                android:contentDescription="@string/closet_fragment_key"
+                android:layout_margin="16dp"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+    <ViewStub
+        android:id="@+id/noInventoryScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/closetFragment">
-
-        <RelativeLayout
-            android:id = "@+id/mainClosetScreen"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/text_dashboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Take Photo"/>
-        </RelativeLayout>
-
-        <ViewStub
-            android:id = "@+id/noInventoryScreen"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inflatedId="@+id/inflatedview"
-            android:layout="@layout/fragment_no_inventory_screen"/>
-    </FrameLayout>
+        android:inflatedId="@+id/inflatedview"
+        android:layout="@layout/fragment_no_inventory_screen"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
