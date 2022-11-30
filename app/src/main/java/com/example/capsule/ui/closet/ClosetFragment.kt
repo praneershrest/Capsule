@@ -60,7 +60,7 @@ class ClosetFragment : Fragment() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var clothingDescriptionListView: ListView
     private lateinit var allClothingEntries: List<Clothing>
-    private lateinit var allFrequencies: List<ItemWearFrequency>
+    private lateinit var allFrequencies: List<ClosetItemData>
 
     private var selectedTab = 0
 

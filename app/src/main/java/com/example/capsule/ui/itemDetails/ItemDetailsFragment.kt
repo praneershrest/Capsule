@@ -157,9 +157,10 @@ class ItemDetailsFragment : Fragment() {
         arguments?.clear()
         arguments = null
         if (!saved){
-            if (imgFile != null) {
-                imgFile.delete()
-            }
+            // TODO - Need to figure out to delete existing file items
+//            if (imgFile != null) {
+//                imgFile.delete()
+//            }
         }
         super.onDestroy()
     }
