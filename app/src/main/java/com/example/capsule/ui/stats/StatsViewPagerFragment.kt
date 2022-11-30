@@ -34,8 +34,6 @@ class StatsViewPagerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val statsViewModel =
-            ViewModelProvider(this).get(StatsViewModel::class.java)
 
         // Set up fragments for each tab
         materialStatsFragment = MaterialStatsFragment()
