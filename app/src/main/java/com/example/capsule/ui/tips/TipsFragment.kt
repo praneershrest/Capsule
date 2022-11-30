@@ -12,21 +12,8 @@ class TipsFragment : Fragment() {
 
     private lateinit var expandableListView: ExpandableListView
     private lateinit var tipsExpandableListViewAdapter: TipsExpandableListViewAdapter
-
-    companion object {
-        // convert this into a string array in xml file later
-        private val GROUP_LIST : List<String> = listOf("How to be more clothes conscious?"
-            , "How to be more clothes conscious?"
-            , "How to be more clothes conscious?"
-            , "How to be more clothes conscious?"
-            , "How to be more clothes conscious?"
-            , "How to be more clothes conscious?")
-        private val CHILD_LIST: List<String> = listOf("Never gonna give you up", "Never gonna let you down",
-            "Never gonna run around and desert you",
-            "Never gonna make you cry",
-            "Never gonna say goodbye",
-            "Never gonna tell a lie and hurt you",)
-    }
+    private lateinit var headings: List<String>
+    private lateinit var childList: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +22,11 @@ class TipsFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_tips, container, false)
 
+        headings = activity?.resources?.getStringArray(R.array.tips_headings)?.toList()!!
+        //TODO: Fill in content and convert into a string array in xml file
+        childList = (activity?.resources?.getTextArray(R.array.tips_content)?.toList() as List<String>?)!!
         expandableListView = v.findViewById(R.id.expandableListView)
-        tipsExpandableListViewAdapter = TipsExpandableListViewAdapter(requireActivity(), GROUP_LIST, CHILD_LIST)
+        tipsExpandableListViewAdapter = TipsExpandableListViewAdapter(requireActivity(), headings, childList)
         expandableListView.setAdapter(tipsExpandableListViewAdapter)
 
         return v

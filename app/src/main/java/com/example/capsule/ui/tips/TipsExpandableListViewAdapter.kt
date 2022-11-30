@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.capsule.R
 
@@ -36,10 +37,10 @@ class TipsExpandableListViewAdapter(private val context : Context, private val t
         return true
     }
 
-    override fun getGroupView(p0: Int, p1: Boolean, p2: View?, p3: ViewGroup?): View {
+    override fun getGroupView(position: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
         val v = View.inflate(context, R.layout.group_item, null)
-        val textView : TextView= v.findViewById(R.id.groupItemTextView)
-        textView.text = titleList[p0]
+        val textView : TextView = v.findViewById(R.id.groupItemTextView)
+        textView.text = titleList[position]
 
         return textView
     }

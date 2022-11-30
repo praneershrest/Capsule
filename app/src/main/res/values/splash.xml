@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.App.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#ffffff</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_notifications_black_24dp</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
         <item name="postSplashScreenTheme">@style/Theme.Capsule</item>
     </style>
 </resources>
