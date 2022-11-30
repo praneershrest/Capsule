@@ -28,4 +28,4 @@ Link to some of our UI mockup designs [here](https://www.figma.com/proto/IYwoqCm
 Link to our show and tell 1: YOUTUBE VID
 
 ### Threaded Diagram
-![alt text](https://github.com/praneershrest/Capsule/blob/UploadThreadedDiagram/Threaded%20Diagram.png "Logo Title Text 1")
+![alt text](https://github.com/praneershrest/Capsule/blob/main/Threaded%20Diagram.png "Logo Title Text 1")
