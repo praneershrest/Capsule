@@ -25,7 +25,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
     private lateinit var listView : ListView
     private lateinit var logOutfitButton : Button
 
-    private lateinit var clothingHistory: ClothingHistory
+    private lateinit var clothingHistoryList : ArrayList<ClothingHistory>
     private lateinit var outfitsListViewAdapter : OutfitsListViewAdapter
     private lateinit var outfitsViewModel: OutfitsViewModel
 
@@ -34,7 +34,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
     }
 
     // TODO edit adapter to use List of clothing instead of adapter
-    inner class OutfitsListViewAdapter(private var clothing : List<Clothing>) : BaseAdapter() {
+    inner class OutfitsListViewAdapter(private var clothing : ArrayList<List<Clothing>>) : BaseAdapter() {
 
         // just placeholder values A List<List<Clothing>> instead
         // to get the actual images
@@ -66,13 +66,13 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             textView.text = clothingCategoryStrList[p0]
 
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HorizontalRecyclerViewAdapter(p0, stuff[p0], this@OutfitsFragment)
+            recyclerView.adapter = HorizontalRecyclerViewAdapter(clothingCategoryStrList[p0], clothing[p0], this@OutfitsFragment)
 
             return v
         }
 
-        fun replace(clothing : List<Clothing>) {
-            this.clothing = clothing
+        fun replace(row: Int, clothing : List<Clothing>) {
+            this.clothing[row] = clothing
         }
     }
 
@@ -83,12 +83,21 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
     ): View {
         val v = inflater.inflate(R.layout.fragment_outfits, null)
 
-        clothingCategoryStrList = resources.getStringArray(R.array.category_items)
+
+        initializeLists()
         initializeListView(v)
-        initializeButton(v)
         initializeOutfitsViewModel()
+        initializeButton(v)
 
         return v
+    }
+
+    private fun initializeLists() {
+        clothingCategoryStrList = resources.getStringArray(R.array.category_items)
+        clothingHistoryList = ArrayList()
+        for (i in 1..clothingCategoryStrList.size) {
+            clothingHistoryList.add(ClothingHistory())
+        }
     }
 
     // TODO add function to add clothing history to database
@@ -96,12 +105,18 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         logOutfitButton = v.findViewById(R.id.manuallyLogOutfitButton)
         logOutfitButton.setOnClickListener {
             // put button function here to view model
+            outfitsViewModel.insertOutfit(clothingHistoryList)
         }
     }
 
     private fun initializeListView(v : View) {
         listView = v.findViewById(R.id.outfitListView)
-        outfitsListViewAdapter = OutfitsListViewAdapter(ArrayList<Clothing>())
+        val emptyArrayList : ArrayList<List<Clothing>> = arrayListOf()
+        for (i in clothingCategoryStrList.indices) {
+            emptyArrayList.add(listOf())
+        }
+
+        outfitsListViewAdapter = OutfitsListViewAdapter(emptyArrayList)
         listView.adapter = outfitsListViewAdapter
     }
 
@@ -109,15 +124,19 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         val clothingDatabase = ClothingDatabase.getInstance(requireActivity())
         val repository = Repository(clothingDatabase.clothingDatabaseDao, clothingDatabase.clothingHistoryDatabaseDao)
         outfitsViewModel = ViewModelProvider(requireActivity(), OutfitsViewModelFactory(repository))[OutfitsViewModel::class.java]
-        outfitsViewModel.allClothingLiveData.observe(requireActivity()) {
-            outfitsListViewAdapter.replace(it)
-            outfitsListViewAdapter.notifyDataSetChanged()
+
+        for ((i, allClothingInCategory) in outfitsViewModel.allClothingHistoryCategoryList.withIndex()) {
+            allClothingInCategory.observe(requireActivity()) {
+                outfitsListViewAdapter.replace(i, it)
+                outfitsListViewAdapter.notifyDataSetChanged()
+            }
         }
     }
 
     // TODO edit function so that it modifies the ClothingHistory field
-    override fun onClothingSelected(clothingCategory: Int, position: Int) {
-        println("CLOTHING CATEGORY: ${clothingCategoryStrList[clothingCategory]}")
+    override fun onClothingSelected(clothingCategory: String, clothingId: Long) {
+        val index = clothingCategoryStrList.indexOf(clothingCategory)
+        clothingHistoryList.get(index).clothingId = clothingId
     }
 
 }

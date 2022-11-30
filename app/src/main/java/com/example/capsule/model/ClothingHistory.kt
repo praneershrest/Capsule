@@ -10,7 +10,7 @@ class ClothingHistory (
     val id : Long = 0L,
 
     @ColumnInfo(name="clothing_id")
-    val clothingId : Long = 0L,
+    var clothingId : Long = 0L,
 
     @ColumnInfo(name="date")
     val date : String = ""

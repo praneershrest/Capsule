@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.capsule.model.Clothing
+import com.example.capsule.model.ClothingHistory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,6 +21,9 @@ interface ClothingDatabaseDao {
 
     @Query("SELECT purchase_location FROM clothing_table")
     fun getAllPurchaseLocations() : Flow<List<String>>
+
+    @Query("SELECT * FROM clothing_table WHERE category = :category")
+    fun getAllClothingInCategory(category: String) : Flow<List<Clothing>>
 
     @Query("DELETE FROM clothing_table WHERE id = :id")
     fun deleteClothing(id : Long)
