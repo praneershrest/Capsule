@@ -35,6 +35,96 @@
         <item>What fabrics should I look for?</item>
         <item>Where should I shop from?</item>
     </string-array>
+    <string-array name="tips_content">
+        <item>Fast fashion can be defined as cheap,
+            trendy clothing that samples ideas from the catwalk or
+            celebrity culture and turns them into garments in
+            high street stores at breakneck speed to meet consumer demand.
+            The idea is to get the newest styles on the market as fast as possible,
+            so shoppers can snap them up while they are still at the height of
+            their popularity and then, sadly, discard them after a few wears.
+            It plays into the idea that outfit repeating is a fashion faux pas and
+            that if you want to stay relevant, you have to sport the latest looks as
+            they happen. It forms a key part of the toxic system of overproduction
+            and consumption that has made fashion one of the world’s largest polluters. [Source: Good on You]</item>
+        <item>Essentially, slow fashion is thinking before you buy clothes.
+            Not just thinking about whether you really need that tempting
+            mainstream shirt posing behind the counter of some well-known clothing
+            brand\'s store or not, but thinking about where the garments come from
+            and being aware of how they are created. It is a new eco-friendly approach to
+            fashion that focuses on sustainability, recycling, or acquiring second-hand
+            clothes and encourages the idea of buying better quality garments
+            that will last longer, making sure that their manufacturing processes
+            have been fair and ethical to people, animals and the environment in general. [Source: The Eco Hub]</item>
+        <item>A capsule wardrobe is a limited selection of interchangeable clothing pieces
+            that complement each other. These are often classic pieces that do not
+            go out of style and are primarily composed of neutral colors. A capsule
+            wardrobe allows you to create a variety of different outfits with a small
+            selection of clothes. [Source: Sustainably Chic]</item>
+        <item>Here are 7 questions to ask before you purchase a new clothing item:\n
+        <b>1. Where will I wear it?\n
+        2. Can I think of at least 5 outfits to wear it with?\n
+        3. Is it easy to wash?\n
+        4. Is it comfortable?\n
+        5. Would I still want it if it wasn\'t on sale?\n
+        6. Does it fit my body right now?\n
+            7. Is it too trendy?</b></item>
+        <item>The average American throws away 81 pounds of clothing each year.
+            Unfortunately, it takes years and decades for most fabrics to break down.
+            Natural materials like cotton, linen, hemp, and silk can biodegrade pretty quickly in the right conditions,
+            from a couple weeks to around half a year. Wool and bamboo take longer, often decomposing in 1-5 years.
+            Synthetic fabrics (which is what most conventional clothes are made of, like polyester)
+            can take anywhere from 20-200 years to break down!\n\n
+            It\'s a common misconception that you need to get rid of all your fast
+            fashion when you begin your sustainable fashion journey.
+            If you like certain fast fashion pieces and wear them regularly, keep them.
+            Sustainable fashion isn’t really about what brands are in your wardrobe.
+            It\'s more about your mindset and habits. A person who buys fast fashion,
+            but only buys what they need and makes their clothes last a long time,
+            is way more sustainable than a person who buys excessively from sustainable brands. [Source: Imperfect Idealist]\n\n
+            If there are items that you haven\'t worn in over 1-2 years, you can consider:\n
+            <b>1. Repurpose clothes in poor condition.</b> For example, you can use old, holey socks as cleaning rags.\n
+            <b>2. Bring nicer items to a consignment shop.</b>\n
+            <b>3. Sell your clothes online.</b> Try posting your clothing on platforms like
+            Depop, Poshmark, or Facebook Marketplace.\n
+            <b>4. Compost clothes made from natural fibers.</b>\n
+            <b>5. Donate them to charity or thrift stores.</b>
+            Why is donating your clothes low on the list?
+            Sadly, only 20% of clothes donated to thrift stores
+            is actually sold—the rest is trashed or sold to developing countries,
+            where it puts local textile workers out of jobs. If you can get rid
+            of your clothing through one of the earlier methods,
+            it’s more likely to actually stay out of the trash.
+        </item>
+        <item>
+            Generally, natural fabrics like organic cotton and linen (made from plants) and Tencel (made from sustainable wood pulp)
+            are more sustainable than man-made fabrics like Polyester and Nylon.\n
+            Sustainable fabrics:\n
+            <b>Organic cotton</b>\n
+            <b>Hemp</b>\n
+            <b>Linen</b>\n
+            <b>Silk</b>\n
+            <b>Wool</b>\n
+            <b>Lenzing Tencel</b>\n\n
+            <b>Unsustainable fabrics to avoid:</b>\n
+            <b>Polyester.</b>
+            This is short for any fabric made from a synthetic, man-made polymer,
+            which means polyester is essentially plastic.\n
+            <b>Nylon.</b> Nylon is a silky thermoplastic,
+            often made from fossil fuels, that can be melted and
+            turned into fabric fibres.\n
+            <b>Acrylic.</b> This is a fabric made from plastic
+            threads created through the use of fossil fuels like petroleum.\n
+            <b>Cotton.</b> This is a natural fibre that causes problems
+            due to high water consumption, high levels of pesticides and pollution when overfarmed.\n
+            <b>Rayon.</b> This is a fibre that comes from natural wood pulp
+            but requires harmful chemicals to convert it to cellulose,
+            and can also be dangerous to wear. [Source: FutureLearn]\n
+        </item>
+        <item>
+            Thrift stores, second-hand platforms, sustainable brands.
+        </item>
+    </string-array>
     <integer-array name="material_graph_colours">
         <item>@color/third</item>
         <item>@color/graph_1_teal</item>
