@@ -6,6 +6,12 @@ import java.lang.IllegalArgumentException
 
 class StatsViewModel(private val repository: Repository) : ViewModel() {
     val topsFrequencies = repository.topsFrequencies.asLiveData()
+    val bottomsFrequencies = repository.bottomsFrequencies.asLiveData()
+    val shoesFrequencies = repository.shoesFrequencies.asLiveData()
+    val outerwearFrequencies = repository.outerwearFrequencies.asLiveData()
+
+    val materialFrequencies = repository.materialFrequencies.asLiveData()
+    val purchaseLocationFrequencies = repository.purchaseLocationFrequencies.asLiveData()
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is stats Fragment"
