@@ -2,34 +2,26 @@ package com.example.capsule.ui.outfitSuggestion
 
 import androidx.lifecycle.*
 import com.example.capsule.database.Repository
-import com.example.capsule.model.Clothing
+import com.example.capsule.model.ClothingHistory
 import java.lang.IllegalArgumentException
 
-class OutfitSuggestionViewModel(repository: Repository, season: String) : ViewModel() {
-    private val _topsForSeasonLiveData = repository.clothesByCategoryForSeason("Tops", season).asLiveData()
-    private val _bottomsForSeasonLiveData = repository.clothesByCategoryForSeason("Bottoms", season).asLiveData()
-    private val _outerwearForSeasonLiveData = repository.clothesByCategoryForSeason("Outerwear", season).asLiveData()
-    private val _shoesForSeasonLiveData = repository.clothesByCategoryForSeason("Shoes", season).asLiveData()
+class OutfitSuggestionViewModel(private val repository: Repository, private val season: String) : ViewModel() {
 
-    private val _topsFrequencies = repository.topsFrequencies.asLiveData()
-    private val _bottomsFrequencies = repository.bottomsFrequencies.asLiveData()
-    private val _outerwearFrequencies = repository.outerwearFrequencies.asLiveData()
-    private val _shoesFrequencies = repository.shoesFrequencies.asLiveData()
+    private val _suggestedTopLiveData = repository.suggestedClothingByCategoryForSeason("Tops", season).asLiveData()
+    val suggestedTopLiveData = _suggestedTopLiveData
 
-    val topsForSeasonLiveData = _topsForSeasonLiveData
-    val bottomsForSeasonLiveData =_bottomsForSeasonLiveData
-    val outerwearForSeasonLiveData = _outerwearForSeasonLiveData
-    val shoesForSeasonLiveData = _shoesForSeasonLiveData
+    private val _suggestedBottomLiveData = repository.suggestedClothingByCategoryForSeason("Bottoms", season).asLiveData()
+    val suggestedBottomLiveData = _suggestedBottomLiveData
 
-    val topsFrequencies = _topsFrequencies
-    val bottomsFrequencies = _bottomsFrequencies
-    val outerwearFrequencies = _outerwearFrequencies
-    val shoesFrequencies = _shoesFrequencies
+    private val _suggestedOuterwearLiveData = repository.suggestedClothingByCategoryForSeason("Outerwear", season).asLiveData()
+    val suggestedOuterwearLiveData = _suggestedOuterwearLiveData
 
-    val suggestedTop = MutableLiveData<Clothing>()
-    val suggestedBottom = MutableLiveData<Clothing>()
-    val suggestedOuterwear = MutableLiveData<Clothing>()
-    val suggestedShoes = MutableLiveData<Clothing>()
+    private val _suggestedShoesLiveData = repository.suggestedClothingByCategoryForSeason("Shoes", season).asLiveData()
+    val suggestedShoesLiveData = _suggestedShoesLiveData
+
+    fun insert(clothingHistoryEntry: ClothingHistory) {
+        repository.insertClothingHistory(clothingHistoryEntry)
+    }
 }
 
 class OutfitSuggestionViewModelFactory (private val repository: Repository, private val season: String) : ViewModelProvider.Factory {

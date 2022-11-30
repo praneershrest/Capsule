@@ -1,8 +1,5 @@
 package com.example.capsule.ui.outfitSuggestion
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,18 +17,22 @@ import com.example.capsule.database.ClothingHistoryDatabaseDao
 import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentOutfitSuggestionsBinding
 import com.example.capsule.model.Clothing
-import com.example.capsule.ui.stats.ItemWearFrequency
-import kotlin.collections.HashMap
+import com.example.capsule.model.ClothingHistory
+import java.util.Calendar
 
 class OutfitSuggestionFragment: Fragment() {
-    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
     private lateinit var clothingHistoryDatabaseDao: ClothingHistoryDatabaseDao
     private lateinit var databaseRepository: Repository
     private lateinit var factory: OutfitSuggestionViewModelFactory
-    private lateinit var outfitsViewModel: OutfitSuggestionViewModel
+    private lateinit var outfitSuggestionViewModel: OutfitSuggestionViewModel
+
+    private lateinit var suggestedTop: Clothing
+    private lateinit var suggestedBottom: Clothing
+    private lateinit var suggestedOuterwear: Clothing
+    private lateinit var suggestedShoes: Clothing
 
     private lateinit var suggestedTopImageView: ImageView
     private lateinit var suggestedBottomImageView: ImageView
@@ -39,6 +40,8 @@ class OutfitSuggestionFragment: Fragment() {
     private lateinit var suggestedShoesImageView: ImageView
     private lateinit var logSuggestedOutfitButton: Button
     private lateinit var logManualOutfitButton: Button
+
+    private lateinit var calendar: Calendar
 
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
@@ -63,118 +66,79 @@ class OutfitSuggestionFragment: Fragment() {
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
 
         val season = getSeason()
-
-        sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
+        calendar = Calendar.getInstance()
 
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
         databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
         factory = OutfitSuggestionViewModelFactory(databaseRepository, season)
-        outfitsViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
+        outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
-        /*
-            ViewModels for each category is triggered initially with changes to season
-            The suggested clothing for each category is calculated and set to MutableLiveData
-            The MutableLiveData is tracked and changes to it trigger the images in the view to be changed
-            The suggested cloth's URI is saved in SharedPreferences so that the suggested clothing can be displayed when returning to fragment
-        */
-        outfitsViewModel.topsForSeasonLiveData.observe(requireActivity()) { tops ->
-            outfitsViewModel.topsFrequencies.observe(requireActivity()) { topsFreq ->
-                outfitsViewModel.suggestedTop.value = getSuggestedClothingId(tops, topsFreq)
-                with(sharedPreferences.edit()) {
-                    putString(getString(R.string.suggested_top_uri), outfitsViewModel.suggestedTop.value?.img_uri)
-                    apply()
-                }
-            }
-        }
-
-        outfitsViewModel.bottomsForSeasonLiveData.observe(requireActivity()) { bottoms ->
-            outfitsViewModel.bottomsFrequencies.observe(requireActivity()) { bottomsFreq ->
-                outfitsViewModel.suggestedBottom.value = getSuggestedClothingId(bottoms, bottomsFreq)
-                with(sharedPreferences.edit()) {
-                    putString(getString(R.string.suggested_bottom_uri), outfitsViewModel.suggestedBottom.value?.img_uri)
-                    apply()
-                }
-            }
-        }
-
-        outfitsViewModel.outerwearForSeasonLiveData.observe(requireActivity()) { outerwear ->
-            outfitsViewModel.outerwearFrequencies.observe(requireActivity()) { outerwearFreq ->
-                outfitsViewModel.suggestedOuterwear.value = getSuggestedClothingId(outerwear, outerwearFreq)
-                with(sharedPreferences.edit()) {
-                    putString(getString(R.string.suggested_outerwear_uri), outfitsViewModel.suggestedOuterwear.value?.img_uri)
-                    apply()
-                }
-            }
-        }
-
-        outfitsViewModel.shoesForSeasonLiveData.observe(requireActivity()) { shoes ->
-            outfitsViewModel.shoesFrequencies.observe(requireActivity()) { shoesFreq ->
-                outfitsViewModel.suggestedShoes.value = getSuggestedClothingId(shoes, shoesFreq)
-                with(sharedPreferences.edit()) {
-                    putString(getString(R.string.suggested_shoes_uri), outfitsViewModel.suggestedShoes.value?.img_uri)
-                    apply()
-                }
-            }
-        }
-
-        /*
-            When the value of the suggested clothing (for particular category) changes the image is updated
-        */
-        outfitsViewModel.suggestedTop.observe(requireActivity()) {
+        outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
             if(it != null) {
-                suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), Uri.parse(it.img_uri)))
-            }
-        }
-        outfitsViewModel.suggestedBottom.observe(requireActivity()) {
-            if(it != null) {
-                suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), Uri.parse(it.img_uri)))
-            }
-        }
-        outfitsViewModel.suggestedOuterwear.observe(requireActivity()) {
-            if(it != null) {
-                suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), Uri.parse(it.img_uri)))
-            }
-        }
-        outfitsViewModel.suggestedShoes.observe(requireActivity()) {
-            if(it != null) {
-                suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), Uri.parse(it.img_uri)))
+                suggestedTop = it
+                suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
             }
         }
 
-        // TODO handle inserting suggested outfit to clothing_history_table
+        outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
+            if(it != null) {
+                suggestedBottom = it
+                suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            }
+        }
+
+        outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
+            if(it != null) {
+                suggestedOuterwear = it
+                suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            }
+        }
+
+        outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
+            if(it != null) {
+                suggestedShoes = it
+                suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            }
+        }
+
         logSuggestedOutfitButton.setOnClickListener {
-            println("LOG SUGGESTED OUTFIT CLICKED")
+            val formattedDate = Util.calendarToString(calendar)
+            if(!::suggestedTop.isInitialized) {
+                val entry = ClothingHistory(
+                    clothingId = suggestedTop.id,
+                    date = formattedDate
+                )
+                outfitSuggestionViewModel.insert(entry)
+            }
+            if(!::suggestedBottom.isInitialized) {
+                val entry = ClothingHistory(
+                    clothingId = suggestedBottom.id,
+                    date = formattedDate
+                )
+                outfitSuggestionViewModel.insert(entry)
+            }
+            if(::suggestedOuterwear.isInitialized) {
+                val entry = ClothingHistory(
+                    clothingId = suggestedOuterwear.id,
+                    date = formattedDate
+                )
+                outfitSuggestionViewModel.insert(entry)
+            }
+            if(!::suggestedShoes.isInitialized) {
+                val entry = ClothingHistory(
+                    clothingId = suggestedShoes.id,
+                    date = formattedDate
+                )
+                outfitSuggestionViewModel.insert(entry)
+            }
+            // TODO: change Fragment to OutfitHistory
         }
 
         // TODO handle moving to OutfitFragment
         logManualOutfitButton.setOnClickListener {
             println("LOG MANUAL OUTFIT CLICKED")
-        }
-
-        /*
-            Check if there is a suggested outfit and display it
-            When season changes, the ViewModel will be triggered and the SharedPreference values will be updated with the new suggested items
-        */
-        val suggestedTopUriString = sharedPreferences.getString(getString(R.string.suggested_top_uri), "EMPTY")
-        if(suggestedTopUriString?.isNotEmpty() == true) {
-            suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), suggestedTopUriString.toUri()))
-        }
-
-        val suggestedBottomUriString = sharedPreferences.getString(getString(R.string.suggested_bottom_uri), "")
-        if(suggestedBottomUriString?.isNotEmpty() == true) {
-            suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), suggestedBottomUriString.toUri()))
-        }
-
-        val suggestedOuterwearUriString = sharedPreferences.getString(getString(R.string.suggested_outerwear_uri), "")
-        if(suggestedOuterwearUriString?.isNotEmpty() == true) {
-            suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), suggestedOuterwearUriString.toUri()))
-        }
-
-        val suggestedShoesUriString = sharedPreferences.getString(getString(R.string.suggested_shoes_uri), "")
-        if(suggestedShoesUriString?.isNotEmpty() == true) {
-            suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), suggestedShoesUriString.toUri()))
         }
 
         return root
@@ -183,37 +147,6 @@ class OutfitSuggestionFragment: Fragment() {
     // TODO get season from api
     private fun getSeason() : String {
         return "Winter"
-    }
-
-    private fun initFreqMap(clothingList: List<Clothing>) : HashMap<Long, Int> {
-        val map: HashMap<Long, Int> = HashMap()
-        clothingList.forEach {
-            map[it.id] = 0
-        }
-        return map
-    }
-
-    private fun getSuggestedClothingId(clothingList: List<Clothing>, frequencyList: List<ItemWearFrequency>) : Clothing? {
-        var suggestedId: Long = 0
-        var minFrequency: Int = Int.MAX_VALUE
-        val frequencyMap = initFreqMap(clothingList)
-        frequencyList.forEach {
-            if(frequencyMap.containsKey(it.clothing_id)) {
-                frequencyMap[it.clothing_id] = it.frequency
-            }
-        }
-        frequencyMap.forEach {
-            if(it.value < minFrequency) {
-                minFrequency = it.value
-                suggestedId = it.key
-            }
-        }
-        clothingList.forEach {
-            if(it.id == suggestedId) {
-                return it
-            }
-        }
-        return null
     }
 
     override fun onDestroyView() {
