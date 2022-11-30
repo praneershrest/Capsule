@@ -52,7 +52,9 @@
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tops_category">Tops</string>
+    <string name="bottoms_category">Bottoms</string>
+    <string name="shoes_category">Shoes</string>
+    <string name="outerwear_category">Outerwear</string>
 
 </resources>

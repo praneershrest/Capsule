@@ -3,6 +3,8 @@ package com.example.capsule.database
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
 import com.example.capsule.ui.stats.ItemWearFrequency
+import com.example.capsule.ui.stats.MaterialFrequency
+import com.example.capsule.ui.stats.PurchaseLocationFrequency
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +22,9 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val bottomsFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Bottoms")
     val outerwearFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Outerwear")
     val shoesFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Shoes")
+
+    val materialFrequencies: Flow<List<MaterialFrequency>> = clothingDatabaseDao.getMaterialCount()
+    val purchaseLocationFrequencies: Flow<List<PurchaseLocationFrequency>> = clothingDatabaseDao.getPurchaseLocationCount()
 
     fun suggestedClothingByCategoryForSeason(category: String, season: String) : Flow<Clothing> {
         return clothingDatabaseDao.getSuggestedClothingByCategoryForSeason(category, season)

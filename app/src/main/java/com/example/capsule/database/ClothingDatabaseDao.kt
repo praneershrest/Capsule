@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.capsule.model.Clothing
+import com.example.capsule.ui.stats.MaterialFrequency
+import com.example.capsule.ui.stats.PurchaseLocationFrequency
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -36,4 +38,13 @@ interface ClothingDatabaseDao {
 
     @Query("DELETE FROM CLOTHING_TABLE")
     fun deleteAllClothing()
+
+    @Query("SELECT material, count(material) as frequency FROM clothing_table " +
+            "GROUP BY material")
+    fun getMaterialCount(): Flow<List<MaterialFrequency>>
+
+    @Query("SELECT purchase_location, count(purchase_location) as frequency FROM clothing_table " +
+            "GROUP BY purchase_location")
+    fun getPurchaseLocationCount(): Flow<List<PurchaseLocationFrequency>>
+
 }
