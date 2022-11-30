@@ -51,22 +51,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:id="@+id/suggested_top_iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="@string/suggested_top"/>
 
             <Space
-                android:layout_width="20dp"
+                android:layout_width="10dp"
                 android:layout_height="0dp"/>
 
             <ImageView
                 android:id="@+id/suggested_bottom_iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="@string/suggested_bottom"/>
 
         </LinearLayout>
@@ -78,18 +78,18 @@
 
             <ImageView
                 android:id="@+id/suggested_outerwear_iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="@string/suggested_outerwear"/>
 
             <Space
-                android:layout_width="20dp"
+                android:layout_width="10dp"
                 android:layout_height="0dp"/>
 
             <ImageView
                 android:id="@+id/suggested_shoes_iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="@string/suggested_shoes"/>
 
         </LinearLayout>
