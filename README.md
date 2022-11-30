@@ -17,8 +17,15 @@ Link to our project pitch: [https://www.youtube.com/watch?v=SJVSiRhHvcE](https:/
 
 ## Show And Tell 1
 Link to our show and tell 1: [https://youtu.be/xPgDwgtINC8](https://youtu.be/xPgDwgtINC8)
+
 ### MVVM
 ![alt text](https://github.com/praneershrest/Capsule/blob/main/app/src/main/res/drawable/imagesReadMe/MVVM.png "Logo Title Text 1")
 
 ### Some UI designs
 Link to some of our UI mockup designs [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1)
+
+## Show And Tell 2
+Link to our show and tell 1: YOUTUBE VID
+
+### Threaded Diagram
+![alt text](https://github.com/praneershrest/Capsule/blob/UploadThreadedDiagram/Threaded%20Diagram.png "Logo Title Text 1")
