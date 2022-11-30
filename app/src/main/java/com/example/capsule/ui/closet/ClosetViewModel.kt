@@ -6,10 +6,10 @@ import java.lang.IllegalArgumentException
 
 class ClosetViewModel(private val repository: Repository) : ViewModel() {
     private val _allClothingEntriesLiveData = repository.allClothing.asLiveData()
-    private val _topsFrequenciesLiveData = repository.topsFrequencies.asLiveData()
-    private val _bottomsFrequenciesLiveData = repository.bottomsFrequencies.asLiveData()
-    private val _outerwearFrequenciesLiveData = repository.outerwearFrequencies.asLiveData()
-    private val _shoesFrequenciesLiveData = repository.shoesFrequencies.asLiveData()
+    private val _topsFrequenciesLiveData = repository.topsAllFrequencies.asLiveData()
+    private val _bottomsFrequenciesLiveData = repository.bottomsAllFrequencies.asLiveData()
+    private val _outerwearFrequenciesLiveData = repository.outerwearAllFrequencies.asLiveData()
+    private val _shoesFrequenciesLiveData = repository.shoesAllFrequencies.asLiveData()
 
     val allClothingEntriesLiveData = _allClothingEntriesLiveData
     val topsFrequenciesLiveData = _topsFrequenciesLiveData

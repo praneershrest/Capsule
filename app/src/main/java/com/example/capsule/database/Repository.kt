@@ -21,6 +21,11 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
     val outerwearFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Outerwear")
     val shoesFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getItemFrequenciesForCategory("Shoes")
 
+    val topsAllFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Tops")
+    val bottomsAllFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Bottoms")
+    val outerwearAllFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Outerwear")
+    val shoesAllFrequencies : Flow<List<ItemWearFrequency>> = clothingHistoryDatabaseDao.getAllClothingFrequencies("Shoes")
+
     fun insertClothing(clothing : Clothing) {
         CoroutineScope(IO).launch {
             clothingDatabaseDao.insertClothing(clothing)
