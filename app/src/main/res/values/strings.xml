@@ -30,6 +30,11 @@
     <string name="stats_material_title">Closet Material Composition</string>
     <string name="stats_frequency_title">Frequency of Wear</string>
     <string name="stats_purchase_loc_title">Purchase Location</string>
+
+    <string name="add_items_to_closet_title">Add new items to closet</string>
+    <string name="take_photo">Take photo</string>
+    <string name="upload_photo">Upload photo</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
