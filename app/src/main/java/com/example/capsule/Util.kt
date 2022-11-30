@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Month
 import java.util.*
 
 object Util {
@@ -50,14 +52,18 @@ object Util {
     }
 
     fun determineSeason(temp: Double) : String{
+        val month = Calendar.getInstance().get(Calendar.MONTH)+1
         if(temp < 5 ){
             return Season.WINTER
         }
-        else if (temp > 5 && temp < 20){
+        else if (temp > 5 && temp < 20 && month > 3 && month < 7){
             return Season.SPRING
         }
         else if(temp > 20){
             return Season.SUMMER
+        }
+        else if (temp > 5 && temp < 20 && month > 8 && month < 12){
+            return Season.FALL
         }
         return "none"
     }
