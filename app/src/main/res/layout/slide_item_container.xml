@@ -7,7 +7,7 @@
     >
     <ImageView
         android:id="@+id/imageContainer"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
 
 </LinearLayout>

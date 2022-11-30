@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -35,11 +36,11 @@ import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
 import com.example.capsule.ui.stats.ItemWearFrequency
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.selects.select
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Math.abs
+
 
 // TODO - Improve styling of the fragment
 class ClosetFragment : Fragment() {
@@ -69,6 +70,8 @@ class ClosetFragment : Fragment() {
     private lateinit var clothesTitle: TextView
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
+
+    private lateinit var itemWearFreq: List<ItemWearFrequency>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -102,37 +105,34 @@ class ClosetFragment : Fragment() {
         closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops"){
                 allFrequencies = it
-                //loadData(0)
-                // instantiateHorizontalScrollView()
+                loadData(0)
+                 instantiateHorizontalScrollView()
             }
         }
 
         closetViewModel.bottomsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms"){
                 allFrequencies = it
-                // loadData(0)
-                // instantiateHorizontalScrollView()
+                 loadData(0)
+                 instantiateHorizontalScrollView()
             }
         }
 
         closetViewModel.outerwearFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear"){
                 allFrequencies = it
-                // loadData(0)
-                // instantiateHorizontalScrollView()
+                 loadData(0)
+                 instantiateHorizontalScrollView()
             }
         }
 
         closetViewModel.shoesFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes"){
                 allFrequencies = it
-                // loadData(0)
-                // instantiateHorizontalScrollView()
+                 loadData(0)
+                 instantiateHorizontalScrollView()
             }
         }
-
-        clothesTitle = root.findViewById(R.id.clothes_title)
-        costPerWear = root.findViewById(R.id.price_per_wear)
 
         tabLayout = root.findViewById(R.id.tab)
         for (category in categoryList) {
@@ -183,6 +183,12 @@ class ClosetFragment : Fragment() {
             var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
             mainScreen.visibility = View.INVISIBLE
             noInventoryView.visibility = View.VISIBLE
+            noInventoryView.alpha = 0.5f
+        }
+
+        val fab: View = root.findViewById(R.id.fabBtn)
+        fab.setOnClickListener { view ->
+            noInventoryView.visibility = View.VISIBLE
         }
 
         return root
@@ -222,17 +228,20 @@ class ClosetFragment : Fragment() {
 
         var takePhotoBtn: Button = view.findViewById(R.id.take_photo_btn)
         takePhotoBtn.setOnClickListener {
+            noInventoryView.visibility = View.INVISIBLE
             onTakePhoto()
         }
 
         var uploadPhotoBtn: Button = view.findViewById(R.id.upload_photo_btn)
         uploadPhotoBtn.setOnClickListener {
+            noInventoryView.visibility = View.INVISIBLE
             onUploadPhoto()
         }
     }
 
     private fun loadData(idx: Int){
-        println("idx here $idx")
+        clothesTitle = root.findViewById(R.id.clothes_title)
+        costPerWear = root.findViewById(R.id.price_per_wear)
         clothingDescriptionItems.clear()
         if (allFrequencies.isNotEmpty()) {
             var itemWearFreq = allFrequencies[idx]
@@ -285,7 +294,6 @@ class ClosetFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                println("position $position")
                 loadData(position)
             }
         })

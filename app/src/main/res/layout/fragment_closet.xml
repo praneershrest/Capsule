@@ -10,6 +10,7 @@
         android:id="@+id/mainClosetScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,10 +52,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Remove Item"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/icon_plus"
+                android:contentDescription="@string/closet_fragment_key"
+                android:layout_margin="16dp"
+                />
         </LinearLayout>
+
     </RelativeLayout>
     <ViewStub
-        android:id = "@+id/noInventoryScreen"
+        android:id="@+id/noInventoryScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inflatedId="@+id/inflatedview"
