@@ -22,3 +22,10 @@ Link to our show and tell 1: [https://youtu.be/xPgDwgtINC8](https://youtu.be/xPg
 
 ### Some UI designs
 Link to some of our UI mockup designs [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1)
+
+
+## Show and Tell 2
+Link to our show and tell 2: 
+
+###Threading Diagram
+
