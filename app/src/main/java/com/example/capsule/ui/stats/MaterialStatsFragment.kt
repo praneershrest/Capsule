@@ -46,6 +46,7 @@ class MaterialStatsFragment: Fragment() {
 
         entries = ArrayList()
         materialFrequencyList = ArrayList()
+        chart = view.findViewById(R.id.material_pie_chart)
 
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.materialFrequencies.observe(requireActivity()) {
@@ -53,7 +54,6 @@ class MaterialStatsFragment: Fragment() {
             displayPieChart()
         }
 
-        chart = view.findViewById(R.id.material_pie_chart)
         initPieChart()
         return view
     }
