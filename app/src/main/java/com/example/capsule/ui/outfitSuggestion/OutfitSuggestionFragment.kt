@@ -104,14 +104,14 @@ class OutfitSuggestionFragment: Fragment() {
         }
 
         logSuggestedOutfitButton.setOnClickListener {
-            if(!::suggestedTop.isInitialized) {
+            if(::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
                     date = calendar.timeInMillis
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(!::suggestedBottom.isInitialized) {
+            if(::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedBottom.id,
                     date = calendar.timeInMillis
@@ -125,7 +125,7 @@ class OutfitSuggestionFragment: Fragment() {
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(!::suggestedShoes.isInitialized) {
+            if(::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedShoes.id,
                     date = calendar.timeInMillis
