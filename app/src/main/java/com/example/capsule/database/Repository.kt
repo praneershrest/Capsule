@@ -2,6 +2,7 @@ package com.example.capsule.database
 
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
+import com.example.capsule.ui.outfitHistory.RecentClothing
 import com.example.capsule.ui.stats.ItemWearFrequency
 import com.example.capsule.ui.stats.MaterialFrequency
 import com.example.capsule.ui.stats.PurchaseLocationFrequency
@@ -28,6 +29,10 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
 
     fun suggestedClothingByCategoryForSeason(category: String, season: String) : Flow<Clothing> {
         return clothingDatabaseDao.getSuggestedClothingByCategoryForSeason(category, season)
+    }
+
+    fun getAllClothingBetweenDates(startDate: Long, endDate: Long) : Flow<List<RecentClothing>> {
+        return clothingHistoryDatabaseDao.getAllClothingBetweenDates(startDate, endDate)
     }
 
     fun insertClothing(clothing : Clothing) {
