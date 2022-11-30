@@ -107,28 +107,32 @@ class OutfitSuggestionFragment: Fragment() {
             if(::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
-                    date = calendar.timeInMillis
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
             if(::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedBottom.id,
-                    date = calendar.timeInMillis
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
             if(::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedOuterwear.id,
-                    date = calendar.timeInMillis
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
             if(::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedShoes.id,
-                    date = calendar.timeInMillis
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
