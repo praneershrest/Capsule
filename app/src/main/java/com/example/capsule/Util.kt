@@ -50,4 +50,10 @@ object Util {
         val sdf: DateFormat = SimpleDateFormat("EEE, MMM d, yyyy")
         return sdf.format(cal.time)
     }
+
+    fun millisToStringFormattedDate(millis: Long) : String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+        return calendarToString(calendar)
+    }
 }

@@ -46,12 +46,15 @@
     <string name="suggested_bottom">Suggested Bottom</string>
     <string name="suggested_outerwear">Suggested Outerwear</string>
     <string name="suggested_shoes">Suggested Shoes</string>
-
-
+    
     <string name="add_items_to_closet_title">Add new items to closet</string>
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
 
+    <string name="outfit_history_recent">Your recent outfits</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="suggested_outfit">Suggested Outfit</string>
     <string name="tops_category">Tops</string>
     <string name="bottoms_category">Bottoms</string>
     <string name="shoes_category">Shoes</string>
