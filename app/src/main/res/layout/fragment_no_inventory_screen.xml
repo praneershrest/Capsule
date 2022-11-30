@@ -3,42 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/grey_background">
+    android:background="@color/grey_background"
+    android:gravity="center">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="220dp"
-        android:background="@color/light_green"
-        android:layout_marginBottom="100dp">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/add_to_closet_background"
+        android:layout_marginBottom="100dp"
+        android:padding="20dp">
 
-        <LinearLayout
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add New Items to closet"
-                android:layout_gravity="center"/>
-            <Button
+                android:text="@string/add_items_to_closet_title"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/fifth"
+                android:layout_marginVertical="15dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/take_photo_btn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:layout_gravity="center"
-                android:text="Take Photo"/>
+                android:text="@string/take_photo"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/fourth"
+                android:background="@drawable/rounded_button_white"
+                android:layout_marginBottom="10dp"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/upload_photo_btn"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:layout_gravity="center"
-                android:text="Upload Photo"/>
-        </LinearLayout>
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/fourth"
+                android:text="@string/upload_photo"
+                android:background="@drawable/rounded_button_white"
+                android:layout_marginBottom="15dp"
+                />
     </LinearLayout>
 </LinearLayout>
