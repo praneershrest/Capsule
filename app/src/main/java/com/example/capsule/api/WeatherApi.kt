@@ -36,15 +36,5 @@ class WeatherApi{
         withContext(Main){
             outfitsViewModel.temp.value = temp
         }
-
     }
-
-
-
-
-
-
-
-
-
 }
