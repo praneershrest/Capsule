@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.IOException
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,5 +44,16 @@ object Util {
             ".jpg", /* suffix */
             storageDir /* directory */
         )
+    }
+
+    fun calendarToString(cal: Calendar) : String {
+        val sdf: DateFormat = SimpleDateFormat("EEE, MMM d, yyyy")
+        return sdf.format(cal.time)
+    }
+
+    fun millisToStringFormattedDate(millis: Long) : String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+        return calendarToString(calendar)
     }
 }

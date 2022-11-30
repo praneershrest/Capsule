@@ -24,7 +24,7 @@ class TipsFragment : Fragment() {
 
         headings = activity?.resources?.getStringArray(R.array.tips_headings)?.toList()!!
         //TODO: Fill in content and convert into a string array in xml file
-        childList = activity?.resources?.getStringArray(R.array.tips_headings)?.toList()!!
+        childList = (activity?.resources?.getTextArray(R.array.tips_content)?.toList() as List<String>?)!!
         expandableListView = v.findViewById(R.id.expandableListView)
         tipsExpandableListViewAdapter = TipsExpandableListViewAdapter(requireActivity(), headings, childList)
         expandableListView.setAdapter(tipsExpandableListViewAdapter)
