@@ -17,9 +17,8 @@ class ItemDetailsViewModel(private val repository: Repository): ViewModel() {
     val allClothingEntriesLiveData = _allClothingEntriesLiveData
 }
 
-// class modified from lecture code
 class ItemDetailsViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {
-    override fun<T: ViewModel> create(modelClass: Class<T>) : T{ //create() creates a new instance of the modelClass, which is CommentViewModel in this case.
+    override fun<T: ViewModel> create(modelClass: Class<T>) : T{ //create() creates a new instance of the modelClass
         if(modelClass.isAssignableFrom(ItemDetailsViewModel::class.java))
             return ItemDetailsViewModel(repository) as T
         throw IllegalArgumentException("Unknown ViewModel class")
