@@ -1,16 +1,26 @@
 package com.example.capsule.ui.outfitSuggestion
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
 import com.example.capsule.Util
+import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -18,9 +28,10 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentOutfitSuggestionsBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
-class OutfitSuggestionFragment: Fragment() {
+class OutfitSuggestionFragment: Fragment(), LocationListener {
 
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
@@ -43,6 +54,11 @@ class OutfitSuggestionFragment: Fragment() {
 
     private lateinit var calendar: Calendar
 
+    private lateinit var lastLocation: Location
+    private lateinit var weatherApi: WeatherApi
+    private lateinit var locationManager: LocationManager
+
+
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -54,9 +70,11 @@ class OutfitSuggestionFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentOutfitSuggestionsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        checkPermission()
+        calendar = Calendar.getInstance()
 
         suggestedTopImageView = root.findViewById(R.id.suggested_top_iv)
         suggestedBottomImageView = root.findViewById(R.id.suggested_bottom_iv)
@@ -65,14 +83,16 @@ class OutfitSuggestionFragment: Fragment() {
         logSuggestedOutfitButton = root.findViewById(R.id.log_suggested_outfit_btn)
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
 
-        val season = getSeason()
-        calendar = Calendar.getInstance()
-
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
         databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
-        factory = OutfitSuggestionViewModelFactory(databaseRepository, season)
+        weatherApi = WeatherApi()
+        initLocationManager()
+        return root
+    }
+
+    private fun initOutfitSuggestion(){
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
@@ -140,13 +160,45 @@ class OutfitSuggestionFragment: Fragment() {
         logManualOutfitButton.setOnClickListener {
             println("LOG MANUAL OUTFIT CLICKED")
         }
-
-        return root
     }
 
-    // TODO get season from api
-    private fun getSeason() : String {
-        return "Winter"
+
+    private fun initLocationManager() {
+        try {
+            locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val criteria = Criteria()
+            criteria.accuracy = Criteria.ACCURACY_FINE
+            val provider: String? = locationManager.getBestProvider(criteria, true)
+            if(provider != null) {
+                val location = locationManager.getLastKnownLocation(provider)
+                if (location != null) {
+                    onLocationChanged(location)
+                }else {
+                    locationManager.requestLocationUpdates(provider, 0, 0f, this)
+                }
+            }
+        } catch (e: SecurityException) {
+            println("DEBUG: location manager failed to initialise")
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        lastLocation = location
+        println("DEBUG ON LOCATION CHANGED CALLED $location")
+        runBlocking {
+            println("DEBUG IS THIS BEING CALLED")
+            factory = weatherApi.getWeatherTemp(lastLocation, databaseRepository)
+            initOutfitSuggestion()
+        }
+        locationManager.removeUpdates(this)
+    }
+
+    private fun checkPermission(){
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        }
     }
 
     override fun onDestroyView() {

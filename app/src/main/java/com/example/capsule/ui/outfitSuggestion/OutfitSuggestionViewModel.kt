@@ -7,6 +7,7 @@ import java.lang.IllegalArgumentException
 
 class OutfitSuggestionViewModel(private val repository: Repository, private val season: String) : ViewModel() {
 
+
     private val _suggestedTopLiveData = repository.suggestedClothingByCategoryForSeason("Tops", season).asLiveData()
     val suggestedTopLiveData = _suggestedTopLiveData
 
@@ -23,6 +24,8 @@ class OutfitSuggestionViewModel(private val repository: Repository, private val 
         repository.insertClothingHistory(clothingHistoryEntry)
     }
 }
+
+
 
 class OutfitSuggestionViewModelFactory (private val repository: Repository, private val season: String) : ViewModelProvider.Factory {
     override fun<T: ViewModel> create(modelClass: Class<T>) : T{ //create() creates a new instance of the modelClass
