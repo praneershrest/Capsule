@@ -16,6 +16,8 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.capsule.R
 import com.example.capsule.Util
 import com.example.capsule.database.ClothingDatabase
@@ -52,13 +54,23 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var purchaseLocationSpinner: Spinner
     private lateinit var imgFile: File
     private lateinit var imgUri: Uri
+    private lateinit var root: View
+    private lateinit var navController: NavController
     private var saved = false
+    private var renderPage = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
-            imgUriString = it.getString(IMG_URI_KEY).toString()
-            imgFile = it.getSerializable(IMG_FILENAME_KEY) as File
+            // TODO - Need to fix fragment transitions will not have use this eventually
+            if (it.getSerializable(IMG_FILENAME_KEY) != null){
+                imgUriString = it.getString(IMG_URI_KEY).toString()
+                imgFile = it.getSerializable(IMG_FILENAME_KEY) as File
+            }
+            else {
+                renderPage = false
+            }
         }
     }
 
@@ -76,11 +88,19 @@ class ItemDetailsFragment : Fragment() {
 
         // empty observer to allow using viewmodels to insert into database
         itemDetailsViewModel.allClothingEntriesLiveData.observe(requireActivity()){println("test " + it)}
+        root = inflater.inflate(R.layout.fragment_item_details, container, false)
 
-        return inflater.inflate(R.layout.fragment_item_details, container, false)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        navController = root.findNavController()
+        // TODO - Need to fix fragment transitions
+        if (!renderPage){
+            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
+            return
+        }
+
         imageView = view.findViewById(R.id.current_pic_view)
         imgUri = Uri.parse(imgUriString)
         val bitmap = Util.getBitmap(requireActivity(), imgUri)
@@ -97,6 +117,7 @@ class ItemDetailsFragment : Fragment() {
             onSaveEntry()
         }
         createAdaptors()
+
     }
 
     fun createAdaptors() {
@@ -133,6 +154,8 @@ class ItemDetailsFragment : Fragment() {
 
 
     override fun onDestroy() {
+        arguments?.clear()
+        arguments = null
         if (!saved){
             if (imgFile != null) {
                 imgFile.delete()
@@ -167,12 +190,7 @@ class ItemDetailsFragment : Fragment() {
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
             // TODO - possibly figure out the proper way to handle fragments but this works right now
-            requireActivity().supportFragmentManager.beginTransaction()
-                .remove(this)
-                .commit()
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.closetFragment, nextFrag, R.string.closet_fragment_key.toString())
-                .commit()
+            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
         }
     }
 }

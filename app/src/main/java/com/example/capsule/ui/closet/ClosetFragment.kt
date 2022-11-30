@@ -21,6 +21,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -316,9 +318,9 @@ class ClosetFragment : Fragment() {
         args.putString(R.string.img_uri_key.toString(), imgUri.toString())
         nextFrag.arguments = args
 
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.closetFragment, nextFrag, R.string.item_details_fragment_key.toString())
-            .commit()
+        var navController = root.findNavController()
+        navController.navigate(R.id.action_navigation_closet_to_itemDetailsFragment, args)
+
     }
 
     private fun onUploadPhoto() {

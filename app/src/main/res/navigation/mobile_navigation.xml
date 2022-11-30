@@ -15,17 +15,30 @@
         android:id="@+id/navigation_closet"
         android:name="com.example.capsule.ui.closet.ClosetFragment"
         android:label="@string/title_closet"
-        tools:layout="@layout/fragment_closet" />
+        tools:layout="@layout/fragment_closet" >
+        <action
+            android:id="@+id/action_navigation_closet_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_stats"
         android:name="com.example.capsule.ui.stats.StatsViewPagerFragment"
         android:label="@string/title_stats"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_stats">
+    </fragment>
 
     <fragment
         android:id="@id/navigation_tips"
         android:name="com.example.capsule.ui.tips.TipsFragment"
         android:label="@string/title_tips"
         tools:layout="@layout/fragment_tips"/>
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="com.example.capsule.ui.itemDetails.ItemDetailsFragment"
+        android:label="ItemDetailsFragment" >
+        <action
+            android:id="@+id/action_itemDetailsFragment_to_navigation_closet"
+            app:destination="@id/navigation_closet" />
+    </fragment>
 </navigation>

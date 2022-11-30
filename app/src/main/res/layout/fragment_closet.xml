@@ -48,10 +48,11 @@
                 android:id="@+id/clothingDetailsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Remove Item"/>
+                <!-- TODO Need to implement remove Button -->
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Remove Item"/>-->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabBtn"
                 android:layout_width="wrap_content"
