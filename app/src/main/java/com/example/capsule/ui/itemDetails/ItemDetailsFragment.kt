@@ -45,7 +45,6 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var databaseRepository: Repository
     private lateinit var factory: ItemDetailsViewModelFactory
     private lateinit var itemDetailsViewModel: ItemDetailsViewModel
-    private lateinit var closetFragmentResult: ActivityResultLauncher<Intent>
 
     private lateinit var categorySpinner: Spinner
     private lateinit var materialSpinner: Spinner

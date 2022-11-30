@@ -22,7 +22,7 @@ interface ClothingHistoryDatabaseDao {
     @Query("DELETE from clothing_history_table")
     fun deleteAllClothingHistory()
 
-    @Query("SELECT CH.clothing_id, C.name, C.img_uri, count(*) as frequency " +
+    @Query("SELECT CH.clothing_id, C.name, C.img_uri, C.category, C.material, C.season, C.price, C.purchase_location, count(*) as frequency " +
             "FROM clothing_history_table as CH " +
             "JOIN clothing_table as C ON CH.clothing_id = C.id " +
             "WHERE C.category=:category " +

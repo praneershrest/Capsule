@@ -11,12 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
+import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.NonNull
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,10 +26,16 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
 import com.example.capsule.Util
+import com.example.capsule.database.ClothingDatabase
+import com.example.capsule.database.ClothingDatabaseDao
+import com.example.capsule.database.ClothingHistoryDatabaseDao
+import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentClosetBinding
+import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
-import com.google.android.material.slider.Slider
+import com.example.capsule.ui.stats.ItemWearFrequency
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.selects.select
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,6 +45,7 @@ import java.lang.Math.abs
 class ClosetFragment : Fragment() {
 
     private var _binding: FragmentClosetBinding? = null
+    private lateinit var root: View
     private lateinit var noInventoryView: ViewStub
     private lateinit var cameraResult: ActivityResultLauncher<Intent>
     private lateinit var galleryResult: ActivityResultLauncher<Intent>
@@ -46,7 +53,22 @@ class ClosetFragment : Fragment() {
     private lateinit var imgFile: File
     private lateinit var tabLayout: TabLayout
     private lateinit var sliderItems: ArrayList<SliderItem>
+    private lateinit var clothingDescriptionItems: ArrayList<Pair<String, String>>
     private lateinit var viewPager2: ViewPager2
+    private lateinit var clothingDescriptionListView: ListView
+    private lateinit var allClothingEntries: List<Clothing>
+    private lateinit var allFrequencies: List<ItemWearFrequency>
+
+    private var selectedTab = 0
+
+    private lateinit var database: ClothingDatabase
+    private lateinit var clothingDatabaseDao: ClothingDatabaseDao
+    private lateinit var clothingHistoryDatabaseDao: ClothingHistoryDatabaseDao
+    private lateinit var databaseRepository: Repository
+    private lateinit var factory: ClosetViewModelFactory
+    private lateinit var clothesTitle: TextView
+    private lateinit var costPerWear: TextView
+    private lateinit var categoryList: List<String>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -57,63 +79,110 @@ class ClosetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val closetViewModel =
-            ViewModelProvider(this).get(ClosetViewModel::class.java)
         _binding = FragmentClosetBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        root = binding.root
         Util.checkPermissions(requireActivity())
 
-        sliderItems = ArrayList()
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
-        sliderItems.add(SliderItem(R.drawable.ic_launcher_background))
+        database = ClothingDatabase.getInstance(requireActivity())
+        clothingDatabaseDao = database.clothingDatabaseDao
+        clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
+        databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
+        factory = ClosetViewModelFactory(databaseRepository)
+
+        clothingDescriptionItems = ArrayList()
+        categoryList = resources.getStringArray(R.array.category_items).toList()
+
+        val closetViewModel =
+            ViewModelProvider(this, factory).get(ClosetViewModel::class.java)
+
+        closetViewModel.allClothingEntriesLiveData.observe(requireActivity()){
+            allClothingEntries = it
+        }
+
+        closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
+            if (categoryList[selectedTab] == "Tops"){
+                allFrequencies = it
+                //loadData(0)
+                // instantiateHorizontalScrollView()
+            }
+        }
+
+        closetViewModel.bottomsFrequenciesLiveData.observe(requireActivity()) {
+            if (categoryList[selectedTab] == "Bottoms"){
+                allFrequencies = it
+                // loadData(0)
+                // instantiateHorizontalScrollView()
+            }
+        }
+
+        closetViewModel.outerwearFrequenciesLiveData.observe(requireActivity()) {
+            if (categoryList[selectedTab] == "Outerwear"){
+                allFrequencies = it
+                // loadData(0)
+                // instantiateHorizontalScrollView()
+            }
+        }
+
+        closetViewModel.shoesFrequenciesLiveData.observe(requireActivity()) {
+            if (categoryList[selectedTab] == "Shoes"){
+                allFrequencies = it
+                // loadData(0)
+                // instantiateHorizontalScrollView()
+            }
+        }
+
+        clothesTitle = root.findViewById(R.id.clothes_title)
+        costPerWear = root.findViewById(R.id.price_per_wear)
+
         tabLayout = root.findViewById(R.id.tab)
+        for (category in categoryList) {
+            tabLayout.addTab(tabLayout.newTab().setText(category))
+        }
 
-        viewPager2 = root.findViewById(R.id.viewPager1)
-        viewPager2.adapter = SliderAdapter(sliderItems, viewPager2)
-        viewPager2.clipToPadding = false
-        viewPager2.clipChildren = false
-        viewPager2.offscreenPageLimit=3
-        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                selectedTab = tab!!.position
+                when (categoryList[selectedTab]) {
+                    "Tops" -> {
+                        allFrequencies = closetViewModel.topsFrequenciesLiveData.value!!
+                        loadData(0)
+                        instantiateHorizontalScrollView()
+                    }
+                    "Bottoms" -> {
+                        allFrequencies = closetViewModel.bottomsFrequenciesLiveData.value!!
+                        loadData(0)
+                        instantiateHorizontalScrollView()
+                    }
+                    "Outerwear" -> {
+                        allFrequencies = closetViewModel.outerwearFrequenciesLiveData.value!!
+                        loadData(0)
+                        instantiateHorizontalScrollView()
+                    }
+                    "Shoes" -> {
+                        allFrequencies = closetViewModel.shoesFrequenciesLiveData.value!!
+                        loadData(0)
+                        instantiateHorizontalScrollView()
+                    }
+                }
+            }
 
-        var compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer(40))
-        compositePageTransformer.addTransformer(ViewPager2.PageTransformer(){ page, position ->
-            val r = 1 - abs(position)
-            page.scaleY = 0.95f + r *  0.05f
-        })
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
 
-        viewPager2.setPageTransformer(compositePageTransformer)
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                println("lol" + position)
-                super.onPageSelected(position)
+            override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
 
-
-        val tabTitles = resources.getStringArray(R.array.category_items)
-
-        tabLayout.addTab(tabLayout.newTab().setText(tabTitles[0]))
-        tabLayout.addTab(tabLayout.newTab().setText(tabTitles[1]))
-        tabLayout.addTab(tabLayout.newTab().setText(tabTitles[2]))
-        tabLayout.addTab(tabLayout.newTab().setText(tabTitles[3]))
-
-
-
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
-        noInventoryView.inflate(); // inflate the layout
-        noInventoryView.visibility = View.INVISIBLE;
+        noInventoryView.inflate() // inflate the layout
+        noInventoryView.visibility = View.INVISIBLE
 
         // TODO - Change this to if there are things in database
         var pass = false
         if (pass) {
             var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
             mainScreen.visibility = View.INVISIBLE
-            noInventoryView.visibility = View.VISIBLE;
+            noInventoryView.visibility = View.VISIBLE
         }
 
         return root
@@ -140,8 +209,8 @@ class ClosetFragment : Fragment() {
                     try {
                         var out = FileOutputStream(imgFile)
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                        out.flush();
-                        out.close();
+                        out.flush()
+                        out.close()
 
                         startNextFragment()
                     } catch (e: IOException) {
@@ -162,8 +231,67 @@ class ClosetFragment : Fragment() {
         }
     }
 
+    private fun loadData(idx: Int){
+        println("idx here $idx")
+        clothingDescriptionItems.clear()
+        if (allFrequencies.isNotEmpty()) {
+            var itemWearFreq = allFrequencies[idx]
 
-    fun onTakePhoto() {
+            clothesTitle.text = itemWearFreq.name
+            costPerWear.text = computePricePerWear(itemWearFreq.price, itemWearFreq.frequency)
+
+            clothingDescriptionItems.add(Pair("Category", itemWearFreq.category))
+            clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
+            clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
+            clothingDescriptionItems.add(Pair("Price", itemWearFreq.price.toString()))
+            clothingDescriptionItems.add(Pair("Purchase Location", itemWearFreq.purchase_location))
+
+            clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
+            clothingDescriptionListView.adapter = ClothingListAdapter(requireActivity(), clothingDescriptionItems)
+        }
+    }
+
+    private fun computePricePerWear(price: Double, freq: Int) : String{
+        val costPerWear = (price / freq)
+        val formattedCostPerWearString = "$${String.format("%.2f", costPerWear)} / wear"
+        return formattedCostPerWearString
+    }
+
+
+    private fun instantiateHorizontalScrollView() {
+        sliderItems = ArrayList()
+
+        allFrequencies.forEach {
+            var imgUri = Uri.parse(it.img_uri)
+            var bitmap = Util.getBitmap(requireActivity(), imgUri)
+            sliderItems.add(SliderItem(bitmap))
+        }
+
+        viewPager2 = root.findViewById(R.id.viewPager1)
+        viewPager2.adapter = SliderAdapter(sliderItems, viewPager2)
+        viewPager2.clipToPadding = false
+        viewPager2.clipChildren = false
+        viewPager2.offscreenPageLimit=3
+        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+
+        var compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = 0.95f + r * 0.05f
+        }
+
+        viewPager2.setPageTransformer(compositePageTransformer)
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                println("position $position")
+                loadData(position)
+            }
+        })
+    }
+
+    private fun onTakePhoto() {
         imgFile = Util.createImageFile(requireActivity())
         imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
 
@@ -172,7 +300,7 @@ class ClosetFragment : Fragment() {
         cameraResult.launch(intent)
     }
 
-    fun startNextFragment() {
+    private fun startNextFragment() {
         noInventoryView.visibility = View.INVISIBLE
         val nextFrag = ItemDetailsFragment()
         val args = Bundle()
@@ -185,7 +313,7 @@ class ClosetFragment : Fragment() {
             .commit()
     }
 
-    fun onUploadPhoto() {
+    private fun onUploadPhoto() {
         imgFile = Util.createImageFile(requireActivity())
         imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

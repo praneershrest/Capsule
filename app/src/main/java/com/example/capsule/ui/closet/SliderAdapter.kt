@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
+import com.example.capsule.ui.stats.ItemWearFrequency
 
 class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
     private lateinit var viewPager2: ViewPager2
@@ -27,7 +28,7 @@ class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): Recycl
         }
 
         fun setImage(sliderItem: SliderItem){
-            imageView.setImageResource(sliderItem.getImage().toInt())
+            imageView.setImageBitmap(sliderItem.getImage())
         }
     }
 
@@ -43,4 +44,9 @@ class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): Recycl
     override fun getItemCount(): Int {
         return sliderItems.size
     }
+
+    fun replace(newList: List<SliderItem>){
+        sliderItems = newList
+    }
+
 }
