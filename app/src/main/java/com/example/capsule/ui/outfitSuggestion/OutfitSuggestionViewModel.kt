@@ -42,7 +42,7 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
         runBlocking {
             chosenSeason = weatherApi.getWeatherTemp(location)
             _season.value = chosenSeason
-            repository.suggestedClothingByCategoryForSeason("Tops", chosenSeason).takeWhile { it.season == chosenSeason }.take(1).collect {
+            repository.suggestedClothingByCategoryForSeason("Tops", chosenSeason).take(1).collect {
                 _suggestedTopLiveData.value = it
             }
             repository.suggestedClothingByCategoryForSeason("Bottoms", chosenSeason).take(1).collect {
@@ -57,7 +57,6 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
         }
     }
 }
-
 
 
 class OutfitSuggestionViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {
