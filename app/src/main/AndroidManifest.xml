@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Capsule"
         tools:targetApi="31">
         <activity
+            android:name=".ui.welcome.Welcome"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Splash"

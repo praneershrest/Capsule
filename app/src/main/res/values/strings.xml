@@ -61,5 +61,8 @@
     <string name="outerwear_category">Outerwear</string>
 
     <string name="capsule_logo">Capsule Logo</string>
+    <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
+    <string name="button_welcome_page">Upload you closet</string>
+    <string name="first_time_user">first_time_user</string>
 
 </resources>
