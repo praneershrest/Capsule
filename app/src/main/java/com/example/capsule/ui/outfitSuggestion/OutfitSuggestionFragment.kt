@@ -28,8 +28,7 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentOutfitSuggestionsBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
-import kotlinx.coroutines.runBlocking
-import java.util.Calendar
+import java.util.*
 
 class OutfitSuggestionFragment: Fragment(), LocationListener {
 
@@ -54,10 +53,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
     private lateinit var calendar: Calendar
 
-    private lateinit var lastLocation: Location
     private lateinit var weatherApi: WeatherApi
     private lateinit var locationManager: LocationManager
-
+    private lateinit var season:String
 
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
@@ -75,7 +73,6 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
         checkPermission()
         calendar = Calendar.getInstance()
-
         suggestedTopImageView = root.findViewById(R.id.suggested_top_iv)
         suggestedBottomImageView = root.findViewById(R.id.suggested_bottom_iv)
         suggestedOuterwearImageView = root.findViewById(R.id.suggested_outerwear_iv)
@@ -83,19 +80,22 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         logSuggestedOutfitButton = root.findViewById(R.id.log_suggested_outfit_btn)
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
 
-        database = ClothingDatabase.getInstance(requireActivity())
-        clothingDatabaseDao = database.clothingDatabaseDao
-        clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
-        databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
         weatherApi = WeatherApi()
         initLocationManager()
+        initOutfitSuggestion()
         return root
     }
 
     private fun initOutfitSuggestion(){
+        database = ClothingDatabase.getInstance(requireActivity())
+        clothingDatabaseDao = database.clothingDatabaseDao
+        clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
+        databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
+        factory = OutfitSuggestionViewModelFactory(databaseRepository)
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
+//            println("DEBUG TOP OBSERVER $it")
             if(it != null) {
                 suggestedTop = it
                 suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -103,6 +103,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
+//            println("DEBUG BOTTOM OBSERVER $it")
             if(it != null) {
                 suggestedBottom = it
                 suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -110,6 +111,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
+//            println("DEBUG OUTERWEAR OBSERVER $it")
             if(it != null) {
                 suggestedOuterwear = it
                 suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -117,10 +119,17 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
+//            println("DEBUG SHOES OBSERVER $it")
             if(it != null) {
                 suggestedShoes = it
                 suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
             }
+
+        }
+
+        outfitSuggestionViewModel.season.observe(requireActivity()){
+            season = it
+//            println("DEBUG in observer $season")
         }
 
         logSuggestedOutfitButton.setOnClickListener {
@@ -170,12 +179,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             criteria.accuracy = Criteria.ACCURACY_FINE
             val provider: String? = locationManager.getBestProvider(criteria, true)
             if(provider != null) {
-                val location = locationManager.getLastKnownLocation(provider)
-                if (location != null) {
-                    onLocationChanged(location)
-                }else {
-                    locationManager.requestLocationUpdates(provider, 0, 0f, this)
-                }
+                locationManager.requestLocationUpdates(provider, 5000, 0f, this)
             }
         } catch (e: SecurityException) {
             println("DEBUG: location manager failed to initialise")
@@ -183,14 +187,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        lastLocation = location
-        println("DEBUG ON LOCATION CHANGED CALLED $location")
-        runBlocking {
-            println("DEBUG IS THIS BEING CALLED")
-            factory = weatherApi.getWeatherTemp(lastLocation, databaseRepository)
-            initOutfitSuggestion()
-        }
-        locationManager.removeUpdates(this)
+        outfitSuggestionViewModel.updateSeason(location, weatherApi)
     }
 
     private fun checkPermission(){
