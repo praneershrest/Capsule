@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -21,14 +20,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao

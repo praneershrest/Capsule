@@ -42,9 +42,10 @@
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tab"
+            android:layout_marginBottom="20dp"
             app:tabTextColor="@color/fifth"
             app:tabTextAppearance="@style/AppTheme.FreqTabLayoutText"/>
 
@@ -67,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/clothes_title"
-                android:layout_marginTop="-80dp"
+                android:layout_marginTop="-60dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/fifth"
