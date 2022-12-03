@@ -73,8 +73,6 @@ class ClosetFragment : Fragment() {
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
 
-    private lateinit var itemWearFreq: List<ItemWearFrequency>
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -107,32 +105,40 @@ class ClosetFragment : Fragment() {
         closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops"){
                 allFrequencies = it
-                loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.bottomsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.outerwearFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.shoesFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
@@ -245,6 +251,7 @@ class ClosetFragment : Fragment() {
         clothesTitle = root.findViewById(R.id.clothes_title)
         costPerWear = root.findViewById(R.id.price_per_wear)
         clothingDescriptionItems.clear()
+
         if (allFrequencies.isNotEmpty()) {
             var itemWearFreq = allFrequencies[idx]
 
