@@ -8,7 +8,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capsule.R
 import com.example.capsule.model.Clothing
-import java.io.File
 
 // https://developer.android.com/develop/ui/views/layout/recyclerview
 // https://stackoverflow.com/questions/27194044/how-to-properly-highlight-selected-item-on-recyclerview
@@ -21,9 +20,6 @@ import java.io.File
 class HorizontalRecyclerViewAdapter(private val clothingCategory: String,
                                     private val clothing : List<Clothing>,
                                     private val clothingSelectedListener : OnClothingSelectedListener) : RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>(){
-    // TODO: change clothing into either List of ImagePaths or List of ClothingEntries
-    //  and change how ImageView is set
-
     // set default position to be the first position or in other words, no clothes selected
     private var selectedPos = 0
 
@@ -31,7 +27,6 @@ class HorizontalRecyclerViewAdapter(private val clothingCategory: String,
     /**
      * Interface to implement when you want to do something after a user selects a piece of clothing
      *
-     * TODO change function so that it passes Clothing.id or Clothing itself
      */
     interface OnClothingSelectedListener {
         fun onClothingSelected(clothingCategory : String, clothingId: Long)
@@ -58,7 +53,9 @@ class HorizontalRecyclerViewAdapter(private val clothingCategory: String,
             holder.imageView.setImageResource(R.drawable.ic_baseline_not_interested_24)
         }
         else {
-            holder.imageView.setImageResource(R.drawable.splash)
+            val uri : Uri = Uri.parse(clothing[position-1].img_uri)
+            holder.imageView.setImageURI(uri)
+            //holder.imageView.setImageResource(R.drawable.stars)
             clothingId = clothing[position-1].id
         }
 

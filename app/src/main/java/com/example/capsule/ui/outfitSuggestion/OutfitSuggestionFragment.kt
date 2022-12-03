@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
 import com.example.capsule.Util
 import com.example.capsule.database.ClothingDatabase
@@ -142,6 +143,7 @@ class OutfitSuggestionFragment: Fragment() {
         // TODO handle moving to OutfitFragment
         logManualOutfitButton.setOnClickListener {
             println("LOG MANUAL OUTFIT CLICKED")
+            findNavController().navigate(R.id.action_navigation_outfits_to_navigation_outfits_manual)
         }
 
         return root

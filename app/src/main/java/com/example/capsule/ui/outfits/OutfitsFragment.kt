@@ -17,6 +17,7 @@ import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
+import java.util.Calendar
 
 class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSelectedListener {
 
@@ -33,17 +34,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         private val TITLES : List<String> = listOf("Tops", "Bottoms", "Jackets", "Shoes")
     }
 
-    // TODO edit adapter to use List of clothing instead of adapter
     inner class OutfitsListViewAdapter(private var clothing : ArrayList<List<Clothing>>) : BaseAdapter() {
-
-        // just placeholder values A List<List<Clothing>> instead
-        // to get the actual images
-        private val stuff = listOf(
-            listOf(R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24, R.drawable.ic_outline_shopping_bag_24)
-            , listOf(R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp, R.drawable.ic_notifications_black_24dp)
-            , listOf(R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp, R.drawable.ic_home_black_24dp)
-            , listOf(R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground)
-        )
 
         override fun getCount(): Int {
             return clothingCategoryStrList.size
@@ -100,11 +91,14 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         }
     }
 
-    // TODO add function to add clothing history to database
     private fun initializeButton(v : View) {
         logOutfitButton = v.findViewById(R.id.manuallyLogOutfitButton)
         logOutfitButton.setOnClickListener {
             // put button function here to view model
+            val timeInMillis = Calendar.getInstance().timeInMillis
+            for (clothing in clothingHistoryList) {
+                clothing.date = timeInMillis
+            }
             outfitsViewModel.insertOutfit(clothingHistoryList)
         }
     }
@@ -133,7 +127,6 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         }
     }
 
-    // TODO edit function so that it modifies the ClothingHistory field
     override fun onClothingSelected(clothingCategory: String, clothingId: Long) {
         val index = clothingCategoryStrList.indexOf(clothingCategory)
         clothingHistoryList.get(index).clothingId = clothingId

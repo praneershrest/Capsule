@@ -8,12 +8,10 @@
 
     <ImageView
         android:id="@+id/clothingImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="2dp"
-        android:layout_margin="1dp"
-        android:scaleType="centerCrop"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="5dp"
+        android:scaleType="fitXY"
         android:background="@drawable/border_background"
-        app:layout_constraintDimensionRatio="1:1"
         tools:srcCompat="@tools:sample/avatars" />
 </LinearLayout>
