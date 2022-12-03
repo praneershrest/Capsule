@@ -104,32 +104,35 @@ class OutfitSuggestionFragment: Fragment() {
         }
 
         logSuggestedOutfitButton.setOnClickListener {
-            val formattedDate = Util.calendarToString(calendar)
-            if(!::suggestedTop.isInitialized) {
+            if(::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
-                    date = formattedDate
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(!::suggestedBottom.isInitialized) {
+            if(::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedBottom.id,
-                    date = formattedDate
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
             if(::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedOuterwear.id,
-                    date = formattedDate
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(!::suggestedShoes.isInitialized) {
+            if(::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedShoes.id,
-                    date = formattedDate
+                    date = calendar.timeInMillis,
+                    isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
             }

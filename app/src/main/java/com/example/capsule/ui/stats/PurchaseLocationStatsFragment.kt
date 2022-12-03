@@ -5,7 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
+import com.example.capsule.database.ClothingDatabase
+import com.example.capsule.database.ClothingDatabaseDao
+import com.example.capsule.database.ClothingHistoryDatabaseDao
+import com.example.capsule.database.Repository
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -13,6 +18,15 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 
 class PurchaseLocationStatsFragment: Fragment() {
+    private lateinit var statsViewModel: StatsViewModel
+    private lateinit var database: ClothingDatabase
+    private lateinit var clothingDatabaseDao: ClothingDatabaseDao
+    private lateinit var historyDatabaseDao: ClothingHistoryDatabaseDao
+    private lateinit var repository: Repository
+    private lateinit var factory: StatsViewModelFactory
+
+    private lateinit var purchaseLocationFrequencyList: List<PurchaseLocationFrequency>
+
     private lateinit var chart: PieChart
     private lateinit var entries: ArrayList<PieEntry>
     private lateinit var colours: ArrayList<Int>
@@ -25,6 +39,20 @@ class PurchaseLocationStatsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_purchase_location_stats, container, false)
+        database = ClothingDatabase.getInstance(requireActivity())
+        clothingDatabaseDao = database.clothingDatabaseDao
+        historyDatabaseDao = database.clothingHistoryDatabaseDao
+        repository = Repository(clothingDatabaseDao, historyDatabaseDao)
+        factory = StatsViewModelFactory(repository)
+
+        entries = ArrayList()
+        purchaseLocationFrequencyList = ArrayList()
+
+        statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
+        statsViewModel.purchaseLocationFrequencies.observe(requireActivity()) {
+            purchaseLocationFrequencyList = it
+            displayPieChart()
+        }
         chart = view.findViewById(R.id.purchase_loc_pie_chart)
         initPieChart()
         displayPieChart()
@@ -41,17 +69,10 @@ class PurchaseLocationStatsFragment: Fragment() {
     }
 
     private fun displayPieChart() {
-        // initialize data
-        // TODO: fetch data from db
-        var purchaseLocData: MutableMap<String, Int> = HashMap()
-        purchaseLocData["Brand new"] = 65
-        purchaseLocData["Thrifted"] = 25
-        purchaseLocData["Second-hand online"] = 10
-
         colours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
         entries = ArrayList()
-        for (material in purchaseLocData.keys) {
-            entries.add(PieEntry(purchaseLocData.get(material)!!.toFloat(), material))
+        for (location in purchaseLocationFrequencyList) {
+            entries.add(PieEntry(location.frequency.toFloat(), location.purchase_location))
         }
 
         pieDataSet = PieDataSet(entries, "Type")
@@ -62,6 +83,7 @@ class PurchaseLocationStatsFragment: Fragment() {
         pieData.setValueFormatter(PercentFormatter(chart))
 
         chart.data = pieData
+        chart.invalidate()
 
     }
 }

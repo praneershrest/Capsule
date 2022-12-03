@@ -13,5 +13,8 @@ class ClothingHistory (
     var clothingId : Long = 0L,
 
     @ColumnInfo(name="date")
-    val date : String = ""
+    val date : Long = 0L,
+
+    @ColumnInfo(name="is_suggested")
+    val isSuggested : Boolean = false
 )

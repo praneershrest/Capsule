@@ -2,8 +2,8 @@
 <resources>
     <string-array name="category_items">
         <item>Tops</item>
-        <item>Outerwear</item>
         <item>Bottoms</item>
+        <item>Outerwear</item>
         <item>Shoes</item>
     </string-array>
     <string-array name="material_items">
