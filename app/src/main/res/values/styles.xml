@@ -3,4 +3,9 @@
     <style name="AppTheme.FreqTabLayoutText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14dp</item>
     </style>
+    <style name="ItemDetailsTextLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/fifth</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
