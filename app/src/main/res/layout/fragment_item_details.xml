@@ -8,29 +8,29 @@
         android:layout_height="fill_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="@string/add_details"/>
-            <ImageView
-                android:id="@+id/current_pic_view"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_dashboard_black_24dp" />
-        </RelativeLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_details"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/fifth"
+            android:layout_marginBottom="10dp"/>
+        <ImageView
+            android:id="@+id/current_pic_view"
+            android:scaleType="centerCrop"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_dashboard_black_24dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name_title"/>
+            android:text="@string/name_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <EditText
             android:id="@+id/itemName"
@@ -42,37 +42,50 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/category_title"/>
+            android:text="@string/category_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <Spinner
             android:id="@+id/categorySpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="40dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/material_title"/>
+            android:text="@string/material_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <Spinner
             android:id="@+id/materialSpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="40dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/season_title"/>
+            android:text="@string/season_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <Spinner
             android:id="@+id/seasonSpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="40dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/price_title"/>
+            android:text="@string/price_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <EditText
             android:id="@+id/price"
@@ -84,16 +97,23 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/purchase_location_title"/>
+            android:text="@string/purchase_location_title"
+            style="@style/ItemDetailsTextLabel"/>
 
         <Spinner
             android:id="@+id/purchaseSpinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="40dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:layout_marginBottom="15dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:onClick="saveProfile"
             android:text="@string/save_btn_take_photo"
+            android:background="@drawable/rounded_button_fifth"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"

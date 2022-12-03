@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import com.example.capsule.R
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 
 class OutfitHistoryListAdapter(private val context: Context, private var list: List<RecentClothing>) : BaseAdapter() {
     private lateinit var dateTextView: TextView
