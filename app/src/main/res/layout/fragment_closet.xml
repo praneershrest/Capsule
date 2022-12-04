@@ -6,15 +6,46 @@
     android:layout_height="match_parent"
     android:id="@+id/closetFragment"
     tools:context=".ui.closet.ClosetFragment">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/mainClosetScreen"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.google.android.material.tabs.TabLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bottom_border">
+            <ImageView
+                android:padding="0dp"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/capsule_logo"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add_item_btn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/add_item_button_text"
+                android:background="@drawable/rounded_button_primary"
+                android:textColor="@color/fifth"
+                android:contentDescription="@string/closet_fragment_key"
+                android:layout_margin="8dp"
+                />
+        </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             app:tabTextColor="@color/fifth"
             app:tabTextAppearance="@style/AppTheme.FreqTabLayoutText"/>
 
@@ -23,11 +54,9 @@
             android:layout_below="@id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
             android:paddingLeft="100dp"
             android:paddingRight="100dp"/>
         <LinearLayout
-            android:layout_below="@id/viewPager1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -39,34 +68,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/clothes_title"
-                android:text="Oatmeal Cardigan"/>
+                android:layout_marginTop="-60dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/fifth"
+                android:text=""/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/price_per_wear"
-                android:text="$10.00 / wear"/>
-
+                android:textSize="16sp"
+                android:textColor="@color/fifth"
+                android:text=""/>
             <ListView
                 android:id="@+id/clothingDetailsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
                 <!-- TODO Need to implement remove Button -->
-<!--            <Button-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Remove Item"/>-->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/icon_plus"
-                android:contentDescription="@string/closet_fragment_key"
-                android:layout_margin="16dp"
-                />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
     <ViewStub
         android:id="@+id/noInventoryScreen"
         android:layout_width="match_parent"

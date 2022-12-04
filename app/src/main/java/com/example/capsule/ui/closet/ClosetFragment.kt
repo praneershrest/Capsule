@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -21,14 +20,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -73,8 +71,6 @@ class ClosetFragment : Fragment() {
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
 
-    private lateinit var itemWearFreq: List<ItemWearFrequency>
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -107,32 +103,40 @@ class ClosetFragment : Fragment() {
         closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops"){
                 allFrequencies = it
-                loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.bottomsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.outerwearFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
         closetViewModel.shoesFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes"){
                 allFrequencies = it
-                 loadData(0)
-                 instantiateHorizontalScrollView()
+                if (isAdded) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                }
             }
         }
 
@@ -188,8 +192,8 @@ class ClosetFragment : Fragment() {
             noInventoryView.alpha = 0.5f
         }
 
-        val fab: View = root.findViewById(R.id.fabBtn)
-        fab.setOnClickListener { view ->
+        val addItemBtn: View = root.findViewById(R.id.add_item_btn)
+        addItemBtn.setOnClickListener { view ->
             noInventoryView.visibility = View.VISIBLE
         }
 
@@ -244,7 +248,10 @@ class ClosetFragment : Fragment() {
     private fun loadData(idx: Int){
         clothesTitle = root.findViewById(R.id.clothes_title)
         costPerWear = root.findViewById(R.id.price_per_wear)
+        clothesTitle.text = ""
+        costPerWear.text = ""
         clothingDescriptionItems.clear()
+
         if (allFrequencies.isNotEmpty()) {
             var itemWearFreq = allFrequencies[idx]
 
@@ -254,7 +261,7 @@ class ClosetFragment : Fragment() {
             clothingDescriptionItems.add(Pair("Category", itemWearFreq.category))
             clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
             clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
-            clothingDescriptionItems.add(Pair("Price", itemWearFreq.price.toString()))
+            clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
             clothingDescriptionItems.add(Pair("Purchase Location", itemWearFreq.purchase_location))
 
             clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)

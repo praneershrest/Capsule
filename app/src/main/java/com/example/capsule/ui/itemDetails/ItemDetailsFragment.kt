@@ -1,10 +1,7 @@
 package com.example.capsule.ui.itemDetails
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +11,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
-import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.capsule.R
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -28,7 +24,6 @@ import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
 import java.io.File
 import java.lang.Double.parseDouble
-import java.text.NumberFormat
 
 
 private const val IMG_URI_KEY = R.string.img_uri_key.toString()

@@ -12,15 +12,15 @@
     <string name="img_filename_key">imgFileNameKey</string>
     <string name="img_uri_key">imgUriKey</string>
 
-    <string name="name_title">Item Name:</string>
-    <string name="name_placeholder">Enter a name for this </string>
-    <string name="category_title">Category:</string>
-    <string name="material_title">Material:</string>
-    <string name="season_title">Season:</string>
-    <string name="price_title">Price:</string>
-    <string name="price_placeholder">$ Your Price</string>
-    <string name="purchase_location_title">Purchase Location:</string>
-    <string name="add_details">Add Details</string>
+    <string name="name_title">Item name</string>
+    <string name="name_placeholder">Enter a name for this item</string>
+    <string name="category_title">Category</string>
+    <string name="material_title">Material</string>
+    <string name="season_title">Season</string>
+    <string name="price_title">Price</string>
+    <string name="price_placeholder">$ Enter price</string>
+    <string name="purchase_location_title">Purchase location</string>
+    <string name="add_details">Add details</string>
     <string name="save_btn_take_photo">Save Item</string>
 
     <string name="item_details_fragment_key">Item Details Fragment Key</string>
@@ -47,13 +47,13 @@
     <string name="suggested_outerwear">Suggested Outerwear</string>
     <string name="suggested_shoes">Suggested Shoes</string>
     
-    <string name="add_items_to_closet_title">Add new items to closet</string>
+    <string name="add_items_to_closet_title">Add new item to closet</string>
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
+    <string name="add_item_button_text">Add item</string>
 
     <string name="outfit_history_recent">Your recent outfits</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="suggested_outfit">Suggested Outfit</string>
     <string name="tops_category">Tops</string>
     <string name="bottoms_category">Bottoms</string>

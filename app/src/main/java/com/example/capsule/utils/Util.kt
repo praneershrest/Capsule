@@ -1,4 +1,4 @@
-package com.example.capsule
+package com.example.capsule.utils
 
 import android.Manifest
 import android.app.Activity
@@ -28,10 +28,9 @@ object Util {
     }
 
     fun getBitmap(context: Context, imgUri: Uri): Bitmap {
-        var bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
+        val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
         val matrix = Matrix()
-        var ret = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        return ret
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     @Throws(IOException::class)
@@ -44,6 +43,35 @@ object Util {
             ".jpg", /* suffix */
             storageDir /* directory */
         )
+    }
+
+    object Season{
+        const val SPRING = "Spring"
+        const val SUMMER = "Summer"
+        const val FALL = "Fall"
+        const val WINTER = "Winter"
+    }
+
+    fun determineSeason(temp: Double) : String{
+        val month = Calendar.getInstance().get(Calendar.MONTH)+1
+        if(temp < 5 ){
+            return Season.WINTER
+        }
+        else if (temp > 5 && temp < 20 && month > 3 && month < 7){
+            return Season.SPRING
+        }
+        else if(temp > 20){
+            return Season.SUMMER
+        }
+        else if (temp > 5 && temp < 20 && month > 8 && month < 12){
+            return Season.FALL
+        }
+        else if (temp > 5 && temp < 20){
+            return Season.FALL
+        }
+        else{
+            return Season.SPRING
+        }
     }
 
     fun calendarToString(cal: Calendar) : String {
