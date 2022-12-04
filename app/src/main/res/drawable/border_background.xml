@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    https://stackoverflow.com/questions/3263611/border-for-an-image-view-in-android-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/white" android:state_pressed="true"/>
+    <item android:drawable="@color/graph_1_teal" android:state_selected="true"/>
+    <item android:drawable="@color/white" android:state_focused="true"/>
+</selector>

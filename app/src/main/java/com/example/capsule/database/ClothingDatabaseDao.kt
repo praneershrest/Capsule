@@ -23,6 +23,9 @@ interface ClothingDatabaseDao {
     @Query("SELECT purchase_location FROM clothing_table")
     fun getAllPurchaseLocations() : Flow<List<String>>
 
+    @Query("SELECT * FROM clothing_table WHERE category = :category")
+    fun getAllClothingInCategory(category: String) : Flow<List<Clothing>>
+
     @Query("SELECT A.id, A.name, A.category, A.price, A.material, A.season, A.purchase_location, A.img_uri FROM " +
             "(SELECT C.*, count(*) as frequency " +
             "FROM clothing_table as C " +

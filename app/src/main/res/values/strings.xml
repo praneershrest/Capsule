@@ -65,4 +65,6 @@
     <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
     <string name="button_welcome_page">Upload your closet</string>
 
+    <string name="log_your_own_outfit">Log your own outfit</string>
+
 </resources>
