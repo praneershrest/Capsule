@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
@@ -32,6 +34,10 @@ class MaterialStatsFragment: Fragment() {
     private lateinit var pieData: PieData
     private lateinit var materialFrequencyList: List<MaterialFrequency>
 
+    private lateinit var emptyStateIcon: ImageView
+    private lateinit var emptyStateHeader: TextView
+    private lateinit var emptyStateDescription: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +49,10 @@ class MaterialStatsFragment: Fragment() {
         historyDatabaseDao = database.clothingHistoryDatabaseDao
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
+
+        emptyStateIcon = view.findViewById(R.id.material_empty_icon)
+        emptyStateHeader = view.findViewById(R.id.material_stats_empty_state)
+        emptyStateDescription = view.findViewById(R.id.material_stats_empty_description)
 
         entries = ArrayList()
         materialFrequencyList = ArrayList()
@@ -81,21 +91,33 @@ class MaterialStatsFragment: Fragment() {
     }
 
     private fun displayPieChart() {
-        colours = resources.getIntArray(R.array.material_graph_colours).toList() as ArrayList<Int>
-        entries = ArrayList()
-        for (material in materialFrequencyList) {
-            entries.add(PieEntry(material.frequency.toFloat(), material.material))
+        if (materialFrequencyList.isNotEmpty()) {
+            emptyStateIcon.visibility = View.GONE
+            emptyStateHeader.visibility = View.GONE
+            emptyStateDescription.visibility = View.GONE
+            chart.visibility = View.VISIBLE
+
+            colours =
+                resources.getIntArray(R.array.material_graph_colours).toList() as ArrayList<Int>
+            entries = ArrayList()
+            for (material in materialFrequencyList) {
+                entries.add(PieEntry(material.frequency.toFloat(), material.material))
+            }
+            pieDataSet = PieDataSet(entries, "Type")
+            pieDataSet.valueTextSize = 12f
+            pieDataSet.colors = colours
+            pieData = PieData(pieDataSet)
+            pieData.setDrawValues(true)
+            pieData.setValueFormatter(PercentFormatter(chart))
+
+            chart.data = pieData
+            chart.invalidate()
+        } else {
+            chart.visibility = View.GONE
+            emptyStateIcon.visibility = View.VISIBLE
+            emptyStateHeader.visibility = View.VISIBLE
+            emptyStateDescription.visibility = View.VISIBLE
         }
-
-        pieDataSet = PieDataSet(entries, "Type")
-        pieDataSet.valueTextSize = 12f
-        pieDataSet.colors = colours
-        pieData = PieData(pieDataSet)
-        pieData.setDrawValues(true)
-        pieData.setValueFormatter(PercentFormatter(chart))
-
-        chart.data = pieData
-        chart.invalidate()
     }
 
 }

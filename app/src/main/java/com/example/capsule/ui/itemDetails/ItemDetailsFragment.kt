@@ -1,5 +1,7 @@
 package com.example.capsule.ui.itemDetails
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -22,6 +25,7 @@ import com.example.capsule.database.ClothingHistoryDatabaseDao
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.File
 import java.lang.Double.parseDouble
 
@@ -30,6 +34,8 @@ private const val IMG_URI_KEY = R.string.img_uri_key.toString()
 private const val IMG_FILENAME_KEY = R.string.img_filename_key.toString()
 
 class ItemDetailsFragment : Fragment() {
+    private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var imgUriString: String
     private lateinit var imageView: ImageView
 
@@ -57,6 +63,7 @@ class ItemDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         arguments?.let {
             // TODO - Need to fix fragment transitions will not have use this eventually
             if (it.getSerializable(IMG_FILENAME_KEY) != null){
@@ -107,34 +114,40 @@ class ItemDetailsFragment : Fragment() {
         materialSpinner = view.findViewById(R.id.materialSpinner)
         seasonSpinner = view.findViewById(R.id.seasonSpinner)
         purchaseLocationSpinner = view.findViewById(R.id.purchaseSpinner)
-        var onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
+        val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
-            onSaveEntry()
+            if (formIsValid()) {
+                onSaveEntry()
+            } else {
+                if (requireActivity().applicationContext != null) {
+                    Toast.makeText(requireActivity().applicationContext, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         createAdaptors()
 
     }
 
-    fun createAdaptors() {
-        var categoryAdapter = ArrayAdapter.createFromResource(
+    private fun createAdaptors() {
+        val categoryAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.category_items,
             android.R.layout.simple_spinner_item
         )
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var materialAdapter = ArrayAdapter.createFromResource(
+        val materialAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.material_items,
             android.R.layout.simple_spinner_item
         )
         materialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var seasonAdapter = ArrayAdapter.createFromResource(
+        val seasonAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.season_items,
             android.R.layout.simple_spinner_item
         )
         seasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var purchaseLocationAdapter = ArrayAdapter.createFromResource(
+        val purchaseLocationAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
             R.array.purchase_items,
             android.R.layout.simple_spinner_item
@@ -160,6 +173,13 @@ class ItemDetailsFragment : Fragment() {
         super.onDestroy()
     }
 
+    private fun formIsValid(): Boolean {
+        if (nameEditText.text.isNotEmpty() && priceEditText.text.isNotEmpty()){
+            return true
+        }
+        return false
+    }
+
     private fun onSaveEntry(){
         saved = true
 
@@ -169,11 +189,11 @@ class ItemDetailsFragment : Fragment() {
         val season = seasonSpinner.selectedItem.toString()
         var price = "0.00"
         if (priceEditText.text.toString().isNotEmpty()) {
-
-            price = String.format("%.2f", parseDouble(priceEditText.text.toString()))
+            val priceInput = priceEditText.text.toString()
+            price = priceInput.subSequence(1,priceInput.length).toString()
         }
-        var purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
-        var clothingEntry = Clothing(
+        val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
+        val clothingEntry = Clothing(
             name = itemName,
             category = category,
             material = material,
@@ -183,6 +203,15 @@ class ItemDetailsFragment : Fragment() {
             img_uri = imgUriString
         )
         itemDetailsViewModel.insert(clothingEntry)
+
+        if(sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
+            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+            with(sharedPreferences.edit()) {
+                putBoolean(getString(R.string.first_time_user), false)
+                apply()
+            }
+        }
+
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
             // TODO - possibly figure out the proper way to handle fragments but this works right now

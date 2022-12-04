@@ -8,7 +8,7 @@ import androidx.room.ForeignKey.CASCADE
         entity = Clothing::class,
         parentColumns = ["id"],
         childColumns = ["clothing_id"],
-        onDelete = CASCADE, //<<<<<
+        onDelete = CASCADE,
     )
 ])
 class ClothingHistory (
@@ -16,10 +16,10 @@ class ClothingHistory (
     val id : Long = 0L,
 
     @ColumnInfo(name="clothing_id")
-    val clothingId : Long,
+    var clothingId : Long = 0L,
 
     @ColumnInfo(name="date")
-    val date : Long = 0L,
+    var date : Long = 0L,
 
     @ColumnInfo(name="is_suggested")
     val isSuggested : Boolean = false

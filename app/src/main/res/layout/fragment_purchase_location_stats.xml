@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/stats_purchase_loc_title"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         android:textSize="24dp"
         android:textStyle="bold"
         android:textColor="@color/fifth" />
@@ -18,5 +19,34 @@
         android:layout_gravity="center"
         android:layout_width="350dp"
         android:layout_height="350dp" />
+    <ImageView
+        android:id="@+id/purchase_loc_empty_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wardrobe"
+        android:layout_gravity="center"
+        android:alpha="0.5"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"/>
+    <TextView
+        android:id="@+id/purchase_loc_empty_state_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stats_empty_state"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        style="@style/ItemDetailsTextLabel"
+        android:layout_marginTop="50dp"/>
+    <TextView
+        android:id="@+id/purchase_loc_empty_state_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stats_empty_description"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/fifth"
+        android:visibility="gone"
+        android:padding="10dp"/>
 
 </LinearLayout>

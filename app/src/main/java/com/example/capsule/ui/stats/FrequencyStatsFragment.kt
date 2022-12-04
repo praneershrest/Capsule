@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ListView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
@@ -22,6 +24,10 @@ class FrequencyStatsFragment: Fragment() {
     private lateinit var historyDatabaseDao: ClothingHistoryDatabaseDao
     private lateinit var repository: Repository
     private lateinit var factory: StatsViewModelFactory
+
+    private lateinit var emptyStateIcon: ImageView
+    private lateinit var emptyStateHeader: TextView
+    private lateinit var emptyStateDescription: TextView
 
     private lateinit var categoryList: List<String>
     private lateinit var freqTabLayout: TabLayout
@@ -44,6 +50,10 @@ class FrequencyStatsFragment: Fragment() {
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
 
+        emptyStateIcon = view.findViewById(R.id.freq_empty_icon)
+        emptyStateHeader = view.findViewById(R.id.freq_stats_empty_state)
+        emptyStateDescription = view.findViewById(R.id.freq_stats_empty_description)
+
         freqListView = view.findViewById(R.id.freq_listview)
         frequencyList = ArrayList()
         adapter = FrequencyListAdapter(requireActivity(), frequencyList)
@@ -60,44 +70,80 @@ class FrequencyStatsFragment: Fragment() {
         statsViewModel.topsFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops") {
                 frequencyList = it
-                adapter.replace(it)
-                freqListView.adapter = adapter
+                removeEmptyState()
+                if (frequencyList.isNotEmpty()) {
+                    adapter.replace(it)
+                    freqListView.adapter = adapter                } else {
+                    displayEmptyState(R.drawable.tshirt)
+                }
             }
         }
         statsViewModel.bottomsFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms") {
                 frequencyList = it
-                adapter.replace(it)
-                freqListView.adapter = adapter
+                removeEmptyState()
+                if (frequencyList.isNotEmpty()) {
+                    adapter.replace(it)
+                    freqListView.adapter = adapter
+                } else {
+                    displayEmptyState(R.drawable.trousers)
+                }
             }
         }
         statsViewModel.outerwearFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear") {
                 frequencyList = it
-                adapter.replace(it)
-                freqListView.adapter = adapter
+                removeEmptyState()
+                if (frequencyList.isNotEmpty()) {
+                    adapter.replace(it)
+                    freqListView.adapter = adapter
+                } else {
+                    displayEmptyState(R.drawable.coat)
+                }
             }
         }
         statsViewModel.shoesFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes") {
                 frequencyList = it
-                adapter.replace(it)
-                freqListView.adapter = adapter
+                removeEmptyState()
+                if (frequencyList.isNotEmpty()) {
+                    adapter.replace(it)
+                    freqListView.adapter = adapter
+                } else {
+                    displayEmptyState(R.drawable.sandal)
+                }
             }
         }
 
         // Add TabListener to update list when different category selected
         freqTabLayout.addOnTabSelectedListener(object: OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                var categoryImg = R.drawable.tshirt
                 selectedTab = tab!!.position
                 when (categoryList[selectedTab]) {
-                    "Tops" -> frequencyList = statsViewModel.topsFrequencies.value!!
-                    "Bottoms" -> frequencyList = statsViewModel.bottomsFrequencies.value!!
-                    "Outerwear" -> frequencyList = statsViewModel.outerwearFrequencies.value!!
-                    "Shoes" -> frequencyList = statsViewModel.shoesFrequencies.value!!
+                    "Tops" -> {
+                        frequencyList = statsViewModel.topsFrequencies.value!!
+                    }
+                    "Bottoms" -> {
+                        frequencyList = statsViewModel.bottomsFrequencies.value!!
+                        categoryImg = R.drawable.trousers
+                    }
+                    "Outerwear" -> {
+                        frequencyList = statsViewModel.outerwearFrequencies.value!!
+                        categoryImg = R.drawable.coat
+                    }
+                    "Shoes" -> {
+                        frequencyList = statsViewModel.shoesFrequencies.value!!
+                        categoryImg = R.drawable.sandal
+                    }
                 }
-                adapter.replace(frequencyList)
-                adapter.notifyDataSetChanged()
+                removeEmptyState()
+                if (frequencyList.isNotEmpty()) {
+                    adapter.replace(frequencyList)
+                    adapter.notifyDataSetChanged()
+                } else {
+                    displayEmptyState(categoryImg)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -108,6 +154,21 @@ class FrequencyStatsFragment: Fragment() {
         })
 
         return view
+    }
+
+    private fun displayEmptyState(image: Int) {
+        freqListView.visibility = View.GONE
+        emptyStateIcon.setImageResource(image)
+        emptyStateIcon.visibility = View.VISIBLE
+        emptyStateHeader.visibility = View.VISIBLE
+        emptyStateDescription.visibility = View.VISIBLE
+    }
+
+    private fun removeEmptyState() {
+        emptyStateIcon.visibility = View.GONE
+        emptyStateHeader.visibility = View.GONE
+        emptyStateDescription.visibility = View.GONE
+        freqListView.visibility = View.VISIBLE
     }
 
 }

@@ -37,6 +37,8 @@ class Repository(private val clothingDatabaseDao : ClothingDatabaseDao,
         return clothingDatabaseDao.getSuggestedClothingByCategoryForSeason(category, season)
     }
 
+    fun getAllClothingInCategory(category : String) = clothingDatabaseDao.getAllClothingInCategory(category)
+
     fun getAllClothingBetweenDates(startDate: Long, endDate: Long) : Flow<List<RecentClothing>> {
         return clothingHistoryDatabaseDao.getAllClothingBetweenDates(startDate, endDate)
     }
