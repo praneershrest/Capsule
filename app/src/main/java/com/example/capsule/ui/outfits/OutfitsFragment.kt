@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -84,7 +81,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         clothingCategoryStrList = resources.getStringArray(R.array.category_items)
         clothingHistoryList = ArrayList()
         for (i in 1..clothingCategoryStrList.size) {
-            clothingHistoryList.add(ClothingHistory())
+            clothingHistoryList.add(ClothingHistory(clothingId = -1L))
         }
     }
 
@@ -93,8 +90,17 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         logOutfitButton.setOnClickListener {
             // put button function here to view model
             val timeInMillis = Calendar.getInstance().timeInMillis
+            var flag = false
+
+            // set time while also checking if each item is selected none
             for (clothing in clothingHistoryList) {
+                flag = flag || (clothing.clothingId != -1L)
                 clothing.date = timeInMillis
+            }
+
+            if (!flag) {
+                Toast.makeText(requireActivity(), R.string.invalid_manual_outfit_log, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
             findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)

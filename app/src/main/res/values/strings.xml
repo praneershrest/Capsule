@@ -74,4 +74,7 @@
 
     <string name="log_your_own_outfit">Log your own outfit</string>
 
+    <string name="invalid_manual_outfit_log">Cannot have all clothes selected to nothing!</string>
+    <string name="log_outfit">Log Outfit</string>
+
 </resources>
