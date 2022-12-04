@@ -3,6 +3,8 @@ package com.example.capsule.ui.itemDetails
 import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -141,6 +143,7 @@ class ItemDetailsFragment : Fragment() {
             dialog.dismiss()
         }
         val window: Window? = dialog.window
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
