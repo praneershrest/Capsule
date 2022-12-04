@@ -61,4 +61,6 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
+    implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 }
