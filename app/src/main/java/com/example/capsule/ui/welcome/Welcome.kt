@@ -14,7 +14,6 @@ class Welcome : AppCompatActivity() {
     }
 
     fun onUploadClosetClicked(view: View) {
-        println("capsule-> onUploadClosetClicked")
         intent.putExtra(getString(R.string.first_time_user), false)
         setResult(Activity.RESULT_FIRST_USER, intent)
         finish()
