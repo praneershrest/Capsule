@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.databinding.FragmentOutfitsBinding
 
-class OutfitsFragment : Fragment() {
+
+class OutfitsFragment : Fragment(){
 
     private var _binding: FragmentOutfitsBinding? = null
+    private lateinit var outfitsViewModel: OutfitsViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,8 +24,7 @@ class OutfitsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val outfitsViewModel =
-            ViewModelProvider(this).get(OutfitsViewModel::class.java)
+        outfitsViewModel = ViewModelProvider(this)[OutfitsViewModel::class.java]
 
         _binding = FragmentOutfitsBinding.inflate(inflater, container, false)
         val root: View = binding.root

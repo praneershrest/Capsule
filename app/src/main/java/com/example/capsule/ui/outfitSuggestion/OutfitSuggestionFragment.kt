@@ -1,16 +1,26 @@
 package com.example.capsule.ui.outfitSuggestion
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
 import com.example.capsule.utils.Util
+import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -18,9 +28,9 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentOutfitSuggestionsBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
-import java.util.Calendar
+import java.util.*
 
-class OutfitSuggestionFragment: Fragment() {
+class OutfitSuggestionFragment: Fragment(), LocationListener {
 
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
@@ -43,6 +53,10 @@ class OutfitSuggestionFragment: Fragment() {
 
     private lateinit var calendar: Calendar
 
+    private lateinit var weatherApi: WeatherApi
+    private lateinit var locationManager: LocationManager
+    private lateinit var season:String
+
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -54,10 +68,11 @@ class OutfitSuggestionFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentOutfitSuggestionsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        checkPermission()
+        calendar = Calendar.getInstance()
         suggestedTopImageView = root.findViewById(R.id.suggested_top_iv)
         suggestedBottomImageView = root.findViewById(R.id.suggested_bottom_iv)
         suggestedOuterwearImageView = root.findViewById(R.id.suggested_outerwear_iv)
@@ -65,17 +80,22 @@ class OutfitSuggestionFragment: Fragment() {
         logSuggestedOutfitButton = root.findViewById(R.id.log_suggested_outfit_btn)
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
 
-        val season = getSeason()
-        calendar = Calendar.getInstance()
+        weatherApi = WeatherApi()
+        initLocationManager()
+        initOutfitSuggestion()
+        return root
+    }
 
+    private fun initOutfitSuggestion(){
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
         databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
-        factory = OutfitSuggestionViewModelFactory(databaseRepository, season)
+        factory = OutfitSuggestionViewModelFactory(databaseRepository)
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
+            println("capsule-> TOP OBSERVER $it")
             if(it != null) {
                 suggestedTop = it
                 suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -83,6 +103,7 @@ class OutfitSuggestionFragment: Fragment() {
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
+            println("capsule-> BOTTOM OBSERVER $it")
             if(it != null) {
                 suggestedBottom = it
                 suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -90,6 +111,7 @@ class OutfitSuggestionFragment: Fragment() {
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
+            println("capsule-> OUTERWEAR OBSERVER $it")
             if(it != null) {
                 suggestedOuterwear = it
                 suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -97,10 +119,17 @@ class OutfitSuggestionFragment: Fragment() {
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
+            println("capsule-> SHOES OBSERVER $it")
             if(it != null) {
                 suggestedShoes = it
                 suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
             }
+
+        }
+
+        outfitSuggestionViewModel.season.observe(requireActivity()){
+            season = it
+//            println("DEBUG in observer $season")
         }
 
         logSuggestedOutfitButton.setOnClickListener {
@@ -143,13 +172,33 @@ class OutfitSuggestionFragment: Fragment() {
         logManualOutfitButton.setOnClickListener {
             println("LOG MANUAL OUTFIT CLICKED")
         }
-
-        return root
     }
 
-    // TODO get season from api
-    private fun getSeason() : String {
-        return "Winter"
+
+    private fun initLocationManager() {
+        try {
+            locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val criteria = Criteria()
+            criteria.accuracy = Criteria.ACCURACY_FINE
+            val provider: String? = locationManager.getBestProvider(criteria, true)
+            if(provider != null) {
+                locationManager.requestLocationUpdates(provider, 5000, 0f, this)
+            }
+        } catch (e: SecurityException) {
+            println("DEBUG: location manager failed to initialise")
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        outfitSuggestionViewModel.updateSeason(location, weatherApi)
+    }
+
+    private fun checkPermission(){
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        }
     }
 
     override fun onDestroyView() {

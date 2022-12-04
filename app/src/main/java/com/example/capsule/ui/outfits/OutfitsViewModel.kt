@@ -10,4 +10,7 @@ class OutfitsViewModel : ViewModel() {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
+
+
+
 }
