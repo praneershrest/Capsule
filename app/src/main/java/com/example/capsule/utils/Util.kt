@@ -56,7 +56,7 @@ object Util {
         const val THUNDER = "Thunderstorm"
         const val DRIZZLE = "Drizzle"
         const val RAIN = "Rain"
-        const val HAZE = "Atmosphere"
+        const val SNOW = "Snow"
         const val SUNNY = "Clear"
         const val CLOUDY = "Clouds"
     }

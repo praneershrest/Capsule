@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
 import com.example.capsule.utils.Util
+import com.example.capsule.utils.Util.Weather
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
@@ -220,25 +221,26 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     private fun getWeatherIcon(string: String) {
-        when(string){
-            Util.Weather.THUNDER -> {
+        if (string == Weather.THUNDER){
                 weatherImageView.setImageResource(R.drawable.thunder_icon)
             }
-            Util.Weather.CLOUDY -> {
+        else if(string == Weather.CLOUDY) {
                 weatherImageView.setImageResource(R.drawable.cloudy_icon)
             }
-            Util.Weather.DRIZZLE -> {
+        else if(string == Weather.DRIZZLE) {
                 weatherImageView.setImageResource(R.drawable.drizzle_icon)
             }
-            Util.Weather.HAZE -> {
-                weatherImageView.setImageResource(R.drawable.fog_icon)
-            }
-            Util.Weather.SUNNY -> {
+        else if(string == Weather.SUNNY) {
                 weatherImageView.setImageResource(R.drawable.sunny_icon)
             }
-            Util.Weather.RAIN -> {
+        else if(string == Weather.RAIN) {
                 weatherImageView.setImageResource(R.drawable.rain_icon)
             }
+        else if(string == Weather.SNOW){
+            weatherImageView.setImageResource(R.drawable.snow_icon)
+        }
+        else{
+            weatherImageView.setImageResource(R.drawable.fog_icon)
         }
     }
 
