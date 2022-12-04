@@ -106,6 +106,7 @@ class ClosetFragment : Fragment() {
 
         clothingDescriptionItems = ArrayList()
         categoryList = resources.getStringArray(R.array.category_items).toList()
+        removeBtn = root.findViewById(R.id.remove_item_btn)
 
         val closetViewModel =
             ViewModelProvider(this, factory).get(ClosetViewModel::class.java)
@@ -121,8 +122,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.tshirt)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -134,8 +137,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.trousers)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -147,8 +152,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.coat)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -160,8 +168,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.sandal)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -197,8 +208,11 @@ class ClosetFragment : Fragment() {
                 if (allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
+
                 } else {
                     displayEmptyState(categoryImg)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
 
@@ -279,7 +293,6 @@ class ClosetFragment : Fragment() {
     }
 
     private fun loadData(idx: Int){
-        removeBtn = root.findViewById(R.id.remove_item_btn)
         clothesTitle = root.findViewById(R.id.clothes_title)
         costPerWear = root.findViewById(R.id.price_per_wear)
         clothesTitle.text = ""
@@ -300,10 +313,6 @@ class ClosetFragment : Fragment() {
 
             clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
             clothingDescriptionListView.adapter = ClothingListAdapter(requireActivity(), clothingDescriptionItems)
-            removeBtn.visibility = View.VISIBLE
-        }
-        else {
-            removeBtn.visibility = View.INVISIBLE
         }
     }
 
@@ -322,7 +331,7 @@ class ClosetFragment : Fragment() {
             sliderItems.add(SliderItem(bitmap))
         }
 
-        viewPager2 = root.findViewById(R.id.viewPager1)
+        viewPager2 = root.findViewById(R.id.closet_viewpager)
         viewPager2.adapter = SliderAdapter(sliderItems, viewPager2)
         viewPager2.clipToPadding = false
         viewPager2.clipChildren = false
