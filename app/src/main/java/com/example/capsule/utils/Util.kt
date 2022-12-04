@@ -52,7 +52,16 @@ object Util {
         const val WINTER = "Winter"
     }
 
-    fun determineSeason(temp: Double) : String{
+    object Weather{
+        const val THUNDER = "Thunderstorm"
+        const val DRIZZLE = "Drizzle"
+        const val RAIN = "Rain"
+        const val SNOW = "Snow"
+        const val SUNNY = "Clear"
+        const val CLOUDY = "Clouds"
+    }
+
+    fun determineSeason(temp: Int) : String{
         val month = Calendar.getInstance().get(Calendar.MONTH)+1
         if(temp < 5 ){
             return Season.WINTER
