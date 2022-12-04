@@ -57,6 +57,11 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var locationManager: LocationManager
     private lateinit var season:String
 
+    private var topFlag = false
+    private var bottomFlag = false
+    private var outerWearFlag = false
+    private var shoesFlag = false
+
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -95,34 +100,42 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
-            println("capsule-> TOP OBSERVER $it")
             if(it != null) {
+                topFlag = true
                 suggestedTop = it
                 suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            } else {
+                topFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
-            println("capsule-> BOTTOM OBSERVER $it")
             if(it != null) {
+                bottomFlag = true
                 suggestedBottom = it
                 suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            } else {
+                bottomFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
-            println("capsule-> OUTERWEAR OBSERVER $it")
             if(it != null) {
+                outerWearFlag = true
                 suggestedOuterwear = it
                 suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            } else {
+                outerWearFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
-            println("capsule-> SHOES OBSERVER $it")
             if(it != null) {
+                shoesFlag = true
                 suggestedShoes = it
                 suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+            } else {
+                shoesFlag = false
             }
 
         }
@@ -133,7 +146,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         logSuggestedOutfitButton.setOnClickListener {
-            if(::suggestedTop.isInitialized) {
+            if(topFlag && ::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
                     date = calendar.timeInMillis,
@@ -141,7 +154,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(::suggestedBottom.isInitialized) {
+            if(bottomFlag && ::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedBottom.id,
                     date = calendar.timeInMillis,
@@ -149,7 +162,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(::suggestedOuterwear.isInitialized) {
+            if(outerWearFlag && ::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedOuterwear.id,
                     date = calendar.timeInMillis,
@@ -157,7 +170,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                 )
                 outfitSuggestionViewModel.insert(entry)
             }
-            if(::suggestedShoes.isInitialized) {
+            if(shoesFlag && ::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedShoes.id,
                     date = calendar.timeInMillis,

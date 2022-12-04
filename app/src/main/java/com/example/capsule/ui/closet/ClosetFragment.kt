@@ -71,6 +71,7 @@ class ClosetFragment : Fragment() {
     private lateinit var clothesTitle: TextView
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
+    private lateinit var removeBtn: Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -180,6 +181,8 @@ class ClosetFragment : Fragment() {
             }
         })
 
+        removeBtn = root.findViewById(R.id.remove_item_btn)
+
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
         noInventoryView.inflate() // inflate the layout
         noInventoryView.visibility = View.INVISIBLE
@@ -272,6 +275,10 @@ class ClosetFragment : Fragment() {
 
             clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
             clothingDescriptionListView.adapter = ClothingListAdapter(requireActivity(), clothingDescriptionItems)
+            removeBtn.visibility = View.VISIBLE
+        }
+        else {
+            removeBtn.visibility = View.INVISIBLE
         }
     }
 
