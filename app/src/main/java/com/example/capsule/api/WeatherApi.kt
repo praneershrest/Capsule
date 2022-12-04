@@ -1,7 +1,7 @@
 package com.example.capsule.api
 
 import android.location.Location
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class WeatherApi{
                 result = URL(url).readText()
             }
             catch (e : Exception){
-                println("DEBUG cannot get result $e")
+                println("capsule-> cannot get result $e")
             }
         }
         job.join()

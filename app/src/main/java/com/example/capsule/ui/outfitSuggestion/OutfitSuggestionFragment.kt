@@ -19,7 +19,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
-import com.example.capsule.Util
+import com.example.capsule.utils.Util
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
@@ -95,7 +95,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
-//            println("DEBUG TOP OBSERVER $it")
+            println("capsule-> TOP OBSERVER $it")
             if(it != null) {
                 suggestedTop = it
                 suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -103,7 +103,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
-//            println("DEBUG BOTTOM OBSERVER $it")
+            println("capsule-> BOTTOM OBSERVER $it")
             if(it != null) {
                 suggestedBottom = it
                 suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -111,7 +111,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
-//            println("DEBUG OUTERWEAR OBSERVER $it")
+            println("capsule-> OUTERWEAR OBSERVER $it")
             if(it != null) {
                 suggestedOuterwear = it
                 suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
@@ -119,7 +119,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
-//            println("DEBUG SHOES OBSERVER $it")
+            println("capsule-> SHOES OBSERVER $it")
             if(it != null) {
                 suggestedShoes = it
                 suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))

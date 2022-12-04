@@ -41,6 +41,7 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
         var chosenSeason: String
         runBlocking {
             chosenSeason = weatherApi.getWeatherTemp(location)
+            println("capsule-> in updateSeason chosenSeason is: $chosenSeason")
             _season.value = chosenSeason
             repository.suggestedClothingByCategoryForSeason("Tops", chosenSeason).take(1).collect {
                 _suggestedTopLiveData.value = it
