@@ -87,9 +87,9 @@
             android:text="@string/price_title"
             style="@style/ItemDetailsTextLabel"/>
 
-        <EditText
+        <com.blackcat.currencyedittext.CurrencyEditText
             android:id="@+id/price"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/price_placeholder"
             android:inputType="numberDecimal" />

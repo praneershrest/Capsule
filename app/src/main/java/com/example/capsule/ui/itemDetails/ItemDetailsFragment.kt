@@ -189,7 +189,8 @@ class ItemDetailsFragment : Fragment() {
         val season = seasonSpinner.selectedItem.toString()
         var price = "0.00"
         if (priceEditText.text.toString().isNotEmpty()) {
-            price = String.format("%.2f", parseDouble(priceEditText.text.toString()))
+            val priceInput = priceEditText.text.toString()
+            price = priceInput.subSequence(1,priceInput.length).toString()
         }
         val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
         val clothingEntry = Clothing(
