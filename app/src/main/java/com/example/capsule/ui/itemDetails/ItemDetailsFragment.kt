@@ -1,33 +1,26 @@
 package com.example.capsule.ui.itemDetails
 
+import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
+import com.example.capsule.utils.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.File
-import java.lang.Double.parseDouble
 
 
 private const val IMG_URI_KEY = R.string.img_uri_key.toString()
@@ -97,7 +90,6 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = root.findNavController()
-        // TODO - Need to fix fragment transitions
         if (!renderPage){
             navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
             return
@@ -117,15 +109,44 @@ class ItemDetailsFragment : Fragment() {
         val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
             if (formIsValid()) {
-                onSaveEntry()
+                createDialog()
             } else {
                 if (requireActivity().applicationContext != null) {
-                    Toast.makeText(requireActivity().applicationContext, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_fill_all_fields), Toast.LENGTH_SHORT).show()
                 }
             }
         }
         createAdaptors()
 
+    }
+
+    private fun createDialog(){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
+        var textView: TextView = customLayout.findViewById(R.id.dialogText)
+        var submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
+        var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
+        submitBtn.text = getString(R.string.yes_btn_msg)
+        cancelBtn.text = getString(R.string.cancel_btn_msg)
+        textView.text = getString(R.string.confirm_upload)
+        builder.setView(customLayout)
+
+        val dialog: AlertDialog = builder.create()
+        submitBtn.setOnClickListener{
+            dialog.dismiss()
+            Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_saved), Toast.LENGTH_SHORT).show()
+            onSaveEntry()
+        }
+        cancelBtn.setOnClickListener{
+            dialog.dismiss()
+        }
+        val window: Window? = dialog.window
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        dialog.show()
     }
 
     private fun createAdaptors() {
