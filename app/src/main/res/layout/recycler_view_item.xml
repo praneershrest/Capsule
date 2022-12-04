@@ -10,7 +10,9 @@
         android:id="@+id/clothingImageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:padding="5dp"
+        android:padding="3dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
         android:scaleType="fitXY"
         android:background="@drawable/border_background"
         tools:srcCompat="@tools:sample/avatars" />

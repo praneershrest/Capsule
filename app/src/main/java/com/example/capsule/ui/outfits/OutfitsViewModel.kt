@@ -12,10 +12,10 @@ class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
     private val allClothingTops : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Tops").asLiveData()
     private val allClothingOuterwear : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Outerwear").asLiveData()
-    private val allClothingPants : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Pants").asLiveData()
+    private val allClothingPants : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Bottoms").asLiveData()
     private val allClothingShoes : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Shoes").asLiveData()
 
-    val allClothingHistoryCategoryList = listOf(allClothingTops, allClothingOuterwear, allClothingPants, allClothingShoes)
+    val allClothingHistoryCategoryList = listOf(allClothingTops, allClothingPants, allClothingOuterwear, allClothingShoes)
 
     fun insertOutfit(clothingHistory: List<ClothingHistory>) {
         for (ch in clothingHistory) {
