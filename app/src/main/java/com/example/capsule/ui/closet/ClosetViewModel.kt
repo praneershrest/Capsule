@@ -19,8 +19,8 @@ class ClosetViewModel(private val repository: Repository) : ViewModel() {
     val shoesFrequenciesLiveData = _shoesFrequenciesLiveData
 
 
-    fun remove(exerciseEntryId: Long) {
-        repository.deleteClothing(exerciseEntryId)
+    fun remove(clothingId: Long) {
+        repository.deleteClothing(clothingId)
     }
 }
 

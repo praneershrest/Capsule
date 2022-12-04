@@ -32,7 +32,7 @@ interface ClothingHistoryDatabaseDao {
             "ORDER BY frequency DESC")
     fun getItemFrequenciesForCategory(category : String): Flow<List<ItemWearFrequency>>
 
-    @Query("SELECT CH.clothing_id, C.name, C.img_uri, C.category, C.material, C.season, C.price, C.purchase_location, count(*) as frequency " +
+    @Query("SELECT CH.clothing_id, C.id, C.name, C.img_uri, C.category, C.material, C.season, C.price, C.purchase_location, count(*) as frequency " +
             "FROM clothing_table as C " +
             "LEFT JOIN clothing_history_table as CH ON C.id = CH.clothing_id " +
             "WHERE C.category=:category " +

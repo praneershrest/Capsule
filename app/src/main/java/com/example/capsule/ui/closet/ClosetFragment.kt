@@ -181,8 +181,6 @@ class ClosetFragment : Fragment() {
             }
         })
 
-        removeBtn = root.findViewById(R.id.remove_item_btn)
-
         noInventoryView = root.findViewById(R.id.noInventoryScreen)
         noInventoryView.inflate() // inflate the layout
         noInventoryView.visibility = View.INVISIBLE
@@ -203,7 +201,7 @@ class ClosetFragment : Fragment() {
 
         val removeItemBtn: View = root.findViewById(R.id.remove_item_btn)
         removeItemBtn.setOnClickListener { view ->
-            closetViewModel.remove(allFrequencies[currScrollPos].clothing_id)
+            closetViewModel.remove(allFrequencies[currScrollPos].id)
         }
 
         return root
@@ -255,6 +253,7 @@ class ClosetFragment : Fragment() {
     }
 
     private fun loadData(idx: Int){
+        removeBtn = root.findViewById(R.id.remove_item_btn)
         clothesTitle = root.findViewById(R.id.clothes_title)
         costPerWear = root.findViewById(R.id.price_per_wear)
         clothesTitle.text = ""

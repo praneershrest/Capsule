@@ -61,28 +61,28 @@ class FrequencyStatsFragment: Fragment() {
             if (categoryList[selectedTab] == "Tops") {
                 frequencyList = it
                 adapter.replace(it)
-                adapter.notifyDataSetChanged()
+                freqListView.adapter = adapter
             }
         }
         statsViewModel.bottomsFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms") {
                 frequencyList = it
                 adapter.replace(it)
-                adapter.notifyDataSetChanged()
+                freqListView.adapter = adapter
             }
         }
         statsViewModel.outerwearFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear") {
                 frequencyList = it
                 adapter.replace(it)
-                adapter.notifyDataSetChanged()
+                freqListView.adapter = adapter
             }
         }
         statsViewModel.shoesFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes") {
                 frequencyList = it
                 adapter.replace(it)
-                adapter.notifyDataSetChanged()
+                freqListView.adapter = adapter
             }
         }
 
