@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -115,7 +116,13 @@ class ItemDetailsFragment : Fragment() {
         purchaseLocationSpinner = view.findViewById(R.id.purchaseSpinner)
         val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
-            onSaveEntry()
+            if (formIsValid()) {
+                onSaveEntry()
+            } else {
+                if (requireActivity().applicationContext != null) {
+                    Toast.makeText(requireActivity().applicationContext, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         createAdaptors()
 
@@ -166,6 +173,13 @@ class ItemDetailsFragment : Fragment() {
         super.onDestroy()
     }
 
+    private fun formIsValid(): Boolean {
+        if (nameEditText.text.isNotEmpty() && priceEditText.text.isNotEmpty()){
+            return true
+        }
+        return false
+    }
+
     private fun onSaveEntry(){
         saved = true
 
@@ -175,7 +189,6 @@ class ItemDetailsFragment : Fragment() {
         val season = seasonSpinner.selectedItem.toString()
         var price = "0.00"
         if (priceEditText.text.toString().isNotEmpty()) {
-
             price = String.format("%.2f", parseDouble(priceEditText.text.toString()))
         }
         val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
