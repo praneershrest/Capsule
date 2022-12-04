@@ -2,6 +2,7 @@ package com.example.capsule.ui.closet
 
 import androidx.lifecycle.*
 import com.example.capsule.database.Repository
+import com.example.capsule.model.Clothing
 import java.lang.IllegalArgumentException
 
 class ClosetViewModel(private val repository: Repository) : ViewModel() {
@@ -16,6 +17,11 @@ class ClosetViewModel(private val repository: Repository) : ViewModel() {
     val bottomsFrequenciesLiveData = _bottomsFrequenciesLiveData
     val outerwearFrequenciesLiveData = _outerwearFrequenciesLiveData
     val shoesFrequenciesLiveData = _shoesFrequenciesLiveData
+
+
+    fun remove(exerciseEntryId: Long) {
+        repository.deleteClothing(exerciseEntryId)
+    }
 }
 
 class ClosetViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {

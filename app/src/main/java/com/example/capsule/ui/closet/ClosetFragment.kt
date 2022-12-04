@@ -61,6 +61,7 @@ class ClosetFragment : Fragment() {
     private lateinit var allFrequencies: List<ClosetItemData>
 
     private var selectedTab = 0
+    private var currScrollPos = 0
 
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
@@ -197,6 +198,11 @@ class ClosetFragment : Fragment() {
             noInventoryView.visibility = View.VISIBLE
         }
 
+        val removeItemBtn: View = root.findViewById(R.id.remove_item_btn)
+        removeItemBtn.setOnClickListener { view ->
+            closetViewModel.remove(allFrequencies[currScrollPos].clothing_id)
+        }
+
         return root
     }
 
@@ -303,6 +309,7 @@ class ClosetFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                currScrollPos = position
                 loadData(position)
             }
         })
