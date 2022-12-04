@@ -73,12 +73,14 @@
     <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
     <string name="button_welcome_page">Upload your closet</string>
 
-    <string name="confirm_upload">Confirm Upload?</string>
+    <string name="confirm_upload_prompt">Confirm Upload?</string>
     <string name="yes_btn_msg">Yes!</string>
     <string name="cancel_btn_msg">Cancel</string>
+    <string name="remove_item_prompt">Remove Item?</string>
 
     <string name="log_your_own_outfit">Log your own outfit</string>
     <string name="toast_msg_saved">Clothing Item Saved!</string>
+    <string name="toast_msg_removed">Clothing Item Removed!</string>
     <string name="toast_msg_fill_all_fields">"Please fill in all fields."</string>
 
 </resources>

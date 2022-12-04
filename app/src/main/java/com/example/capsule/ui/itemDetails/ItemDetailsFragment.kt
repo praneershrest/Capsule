@@ -128,7 +128,7 @@ class ItemDetailsFragment : Fragment() {
         var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
         submitBtn.text = getString(R.string.yes_btn_msg)
         cancelBtn.text = getString(R.string.cancel_btn_msg)
-        textView.text = getString(R.string.confirm_upload)
+        textView.text = getString(R.string.confirm_upload_prompt)
         builder.setView(customLayout)
 
         val dialog: AlertDialog = builder.create()
