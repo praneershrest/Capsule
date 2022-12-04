@@ -46,7 +46,7 @@
     <string name="suggested_bottom">Suggested Bottom</string>
     <string name="suggested_outerwear">Suggested Outerwear</string>
     <string name="suggested_shoes">Suggested Shoes</string>
-    
+
     <string name="add_items_to_closet_title">Add new item to closet</string>
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
@@ -61,6 +61,9 @@
     <string name="outerwear_category">Outerwear</string>
 
     <string name="capsule_logo">Capsule Logo</string>
+    <string name="first_time_user">first_time_user</string>
+    <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
+    <string name="button_welcome_page">Upload your closet</string>
 
     <string name="log_your_own_outfit">Log your own outfit</string>
 
