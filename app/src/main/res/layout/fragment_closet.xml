@@ -48,9 +48,38 @@
             android:layout_marginBottom="20dp"
             app:tabTextColor="@color/fifth"
             app:tabTextAppearance="@style/AppTheme.FreqTabLayoutText"/>
+        <ImageView
+            android:id="@+id/closet_empty_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wardrobe"
+            android:layout_gravity="center"
+            android:alpha="0.3"
+            android:visibility="gone"
+            android:layout_marginTop="100dp"/>
+        <TextView
+            android:id="@+id/closet_empty_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closet_empty_state"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            style="@style/ItemDetailsTextLabel"
+            android:layout_marginTop="50dp"/>
+        <TextView
+            android:id="@+id/closet_empty_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closet_empty_description"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:textColor="@color/fifth"
+            android:visibility="gone"
+            android:padding="10dp"/>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager1"
+            android:id="@+id/closet_viewpager"
             android:layout_below="@id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/clothes_title"
-                android:layout_marginTop="-60dp"
+                android:layout_marginTop="-40dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/fifth"
@@ -90,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:text = "@string/remove_item_button_text"/>
         </LinearLayout>
-
     </LinearLayout>
     <ViewStub
         android:id="@+id/noInventoryScreen"

@@ -65,6 +65,8 @@
     <string name="stats_empty_description">Add items to view closet stats.</string>
     <string name="freq_stats_empty_state">You don\'t have any items in this category yet!</string>
     <string name="freq_stats_empty_description">Add items to view stats for this category.</string>
+    <string name="closet_empty_state">You don\'t have any items in this category yet.</string>
+    <string name="closet_empty_description">Start adding items to build your closet!</string>
 
     <string name="capsule_logo">Capsule Logo</string>
     <string name="first_time_user">first_time_user</string>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/outfit_suggestion_title"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="14dp"/>
 
@@ -26,7 +26,6 @@
             android:id="@+id/weather_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/icon_rain"
             android:contentDescription="@string/weather_icon"/>
 
         <Space
@@ -37,7 +36,6 @@
             android:id="@+id/temperature_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10°C"
             android:textSize="16sp"
             android:textColor="@color/fourth" />
 

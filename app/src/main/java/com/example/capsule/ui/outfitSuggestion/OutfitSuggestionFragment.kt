@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
 import com.example.capsule.utils.Util
+import com.example.capsule.utils.Util.Weather
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
@@ -57,6 +59,8 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var weatherApi: WeatherApi
     private lateinit var locationManager: LocationManager
     private lateinit var season:String
+    private lateinit var weatherImageView: ImageView
+    private lateinit var tempTextView: TextView
 
     private var topFlag = false
     private var bottomFlag = false
@@ -85,6 +89,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         suggestedShoesImageView = root.findViewById(R.id.suggested_shoes_iv)
         logSuggestedOutfitButton = root.findViewById(R.id.log_suggested_outfit_btn)
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
+        weatherImageView = root.findViewById(R.id.weather_iv)
+        tempTextView = root.findViewById(R.id.temperature_tv)
+
 
         weatherApi = WeatherApi()
         initLocationManager()
@@ -145,6 +152,16 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             season = it
 //            println("DEBUG in observer $season")
         }
+
+        outfitSuggestionViewModel.weather.observe(requireActivity()){
+            getWeatherIcon(it)
+        }
+
+        outfitSuggestionViewModel.temp.observe(requireActivity()){
+            val tempText = it.toString() + "ºC"
+            tempTextView.text = tempText
+        }
+
 
         logSuggestedOutfitButton.setOnClickListener {
             if(topFlag && ::suggestedTop.isInitialized) {
@@ -213,6 +230,30 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        }
+    }
+
+    private fun getWeatherIcon(string: String) {
+        if (string == Weather.THUNDER){
+                weatherImageView.setImageResource(R.drawable.thunder_icon)
+            }
+        else if(string == Weather.CLOUDY) {
+                weatherImageView.setImageResource(R.drawable.cloudy_icon)
+            }
+        else if(string == Weather.DRIZZLE) {
+                weatherImageView.setImageResource(R.drawable.drizzle_icon)
+            }
+        else if(string == Weather.SUNNY) {
+                weatherImageView.setImageResource(R.drawable.sunny_icon)
+            }
+        else if(string == Weather.RAIN) {
+                weatherImageView.setImageResource(R.drawable.rain_icon)
+            }
+        else if(string == Weather.SNOW){
+            weatherImageView.setImageResource(R.drawable.snow_icon)
+        }
+        else{
+            weatherImageView.setImageResource(R.drawable.fog_icon)
         }
     }
 

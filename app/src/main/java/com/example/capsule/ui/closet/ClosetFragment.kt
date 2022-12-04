@@ -12,10 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,6 +62,10 @@ class ClosetFragment : Fragment() {
     private var selectedTab = 0
     private var currScrollPos = 0
 
+    private lateinit var emptyStateIcon: ImageView
+    private lateinit var emptyStateHeader: TextView
+    private lateinit var emptyStateDescription: TextView
+
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
     private lateinit var clothingHistoryDatabaseDao: ClothingHistoryDatabaseDao
@@ -95,6 +96,14 @@ class ClosetFragment : Fragment() {
         databaseRepository = Repository(clothingDatabaseDao, clothingHistoryDatabaseDao)
         factory = ClosetViewModelFactory(databaseRepository)
 
+        viewPager2 = root.findViewById(R.id.closet_viewpager)
+        clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
+        clothesTitle = root.findViewById(R.id.clothes_title)
+        costPerWear = root.findViewById(R.id.price_per_wear)
+        emptyStateIcon = root.findViewById(R.id.closet_empty_icon)
+        emptyStateHeader = root.findViewById(R.id.closet_empty_state)
+        emptyStateDescription = root.findViewById(R.id.closet_empty_description)
+
         clothingDescriptionItems = ArrayList()
         categoryList = resources.getStringArray(R.array.category_items).toList()
 
@@ -108,9 +117,12 @@ class ClosetFragment : Fragment() {
         closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops"){
                 allFrequencies = it
-                if (isAdded) {
+                removeEmptyState()
+                if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                }  else {
+                    displayEmptyState(R.drawable.tshirt)
                 }
             }
         }
@@ -118,9 +130,12 @@ class ClosetFragment : Fragment() {
         closetViewModel.bottomsFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Bottoms"){
                 allFrequencies = it
-                if (isAdded) {
+                removeEmptyState()
+                if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                }  else {
+                    displayEmptyState(R.drawable.trousers)
                 }
             }
         }
@@ -128,9 +143,12 @@ class ClosetFragment : Fragment() {
         closetViewModel.outerwearFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Outerwear"){
                 allFrequencies = it
-                if (isAdded) {
+                removeEmptyState()
+                if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                }  else {
+                    displayEmptyState(R.drawable.coat)
                 }
             }
         }
@@ -138,9 +156,12 @@ class ClosetFragment : Fragment() {
         closetViewModel.shoesFrequenciesLiveData.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Shoes"){
                 allFrequencies = it
-                if (isAdded) {
+                removeEmptyState()
+                if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                }  else {
+                    displayEmptyState(R.drawable.sandal)
                 }
             }
         }
@@ -152,28 +173,32 @@ class ClosetFragment : Fragment() {
 
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                var categoryImg = R.drawable.tshirt
                 selectedTab = tab!!.position
                 when (categoryList[selectedTab]) {
                     "Tops" -> {
                         allFrequencies = closetViewModel.topsFrequenciesLiveData.value!!
-                        loadData(0)
-                        instantiateHorizontalScrollView()
                     }
                     "Bottoms" -> {
                         allFrequencies = closetViewModel.bottomsFrequenciesLiveData.value!!
-                        loadData(0)
-                        instantiateHorizontalScrollView()
+                        categoryImg = R.drawable.trousers
                     }
                     "Outerwear" -> {
                         allFrequencies = closetViewModel.outerwearFrequenciesLiveData.value!!
-                        loadData(0)
-                        instantiateHorizontalScrollView()
+                        categoryImg = R.drawable.coat
                     }
                     "Shoes" -> {
                         allFrequencies = closetViewModel.shoesFrequenciesLiveData.value!!
-                        loadData(0)
-                        instantiateHorizontalScrollView()
+                        categoryImg = R.drawable.sandal
+
                     }
+                }
+                removeEmptyState()
+                if (allFrequencies.isNotEmpty()) {
+                    loadData(0)
+                    instantiateHorizontalScrollView()
+                } else {
+                    displayEmptyState(categoryImg)
                 }
             }
 
@@ -348,6 +373,27 @@ class ClosetFragment : Fragment() {
         imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryResult.launch(intent)
+    }
+
+    private fun displayEmptyState(image: Int) {
+        viewPager2.visibility = View.GONE
+        clothingDescriptionListView.visibility = View.GONE
+        clothesTitle.visibility = View.GONE
+        costPerWear.visibility = View.GONE
+        emptyStateIcon.setImageResource(image)
+        emptyStateIcon.visibility = View.VISIBLE
+        emptyStateHeader.visibility = View.VISIBLE
+        emptyStateDescription.visibility = View.VISIBLE
+    }
+
+    private fun removeEmptyState() {
+        emptyStateIcon.visibility = View.GONE
+        emptyStateHeader.visibility = View.GONE
+        emptyStateDescription.visibility = View.GONE
+        viewPager2.visibility = View.VISIBLE
+        clothingDescriptionListView.visibility = View.VISIBLE
+        clothesTitle.visibility = View.VISIBLE
+        costPerWear.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {
