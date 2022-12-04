@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -134,6 +135,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
         logSuggestedOutfitButton.setOnClickListener {
+            var clothingInserted = false
             if(::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
@@ -141,6 +143,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
@@ -149,6 +152,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
@@ -157,6 +161,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
@@ -165,13 +170,19 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            // TODO: change Fragment to OutfitHistory
+
+            if(clothingInserted) {
+                findNavController().navigate(R.id.action_navigation_outfits_to_navigation_outfits_history)
+                Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireActivity(), R.string.empty_outfit_log, Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // TODO handle moving to OutfitFragment
         logManualOutfitButton.setOnClickListener {
-            println("LOG MANUAL OUTFIT CLICKED")
             findNavController().navigate(R.id.action_navigation_outfits_to_navigation_outfits_manual)
         }
     }

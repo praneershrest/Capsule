@@ -71,5 +71,7 @@
     <string name="button_welcome_page">Upload your closet</string>
 
     <string name="log_your_own_outfit">Log your own outfit</string>
+    <string name="outfit_logged">Outfit logged!</string>
+    <string name="empty_outfit_log">Can\'t log an outfit with no clothing!</string>
 
 </resources>

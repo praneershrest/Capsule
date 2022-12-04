@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -98,6 +95,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
             findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)
+            Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
         }
     }
 

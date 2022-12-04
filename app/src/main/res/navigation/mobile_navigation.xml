@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_outfits_to_navigation_outfits_manual"
             app:destination="@id/navigation_outfits_manual" />
+        <action
+            android:id="@+id/action_navigation_outfits_to_navigation_outfits_history"
+            app:destination="@id/navigation_outfits_history" />
     </fragment>
 
     <fragment
