@@ -10,6 +10,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capsule.R
@@ -29,10 +30,6 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
     private lateinit var clothingHistoryList : ArrayList<ClothingHistory>
     private lateinit var outfitsListViewAdapter : OutfitsListViewAdapter
     private lateinit var outfitsViewModel: OutfitsViewModel
-
-    companion object {
-        private val TITLES : List<String> = listOf("Tops", "Bottoms", "Jackets", "Shoes")
-    }
 
     inner class OutfitsListViewAdapter(private var clothing : ArrayList<List<Clothing>>) : BaseAdapter() {
 
@@ -100,6 +97,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
                 clothing.date = timeInMillis
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
+            findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)
         }
     }
 
