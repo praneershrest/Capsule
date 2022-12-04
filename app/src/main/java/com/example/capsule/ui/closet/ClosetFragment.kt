@@ -1,7 +1,9 @@
 package com.example.capsule.ui.closet
 
 import android.app.Activity
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -11,8 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -34,16 +36,16 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
-import com.example.capsule.ui.stats.ItemWearFrequency
 import com.google.android.material.tabs.TabLayout
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Math.abs
 
 
 // TODO - Improve styling of the fragment
 class ClosetFragment : Fragment() {
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var _binding: FragmentClosetBinding? = null
     private lateinit var root: View
@@ -84,6 +86,7 @@ class ClosetFragment : Fragment() {
         root = binding.root
         Util.checkPermissions(requireActivity())
 
+        sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
@@ -183,10 +186,8 @@ class ClosetFragment : Fragment() {
         noInventoryView.inflate() // inflate the layout
         noInventoryView.visibility = View.INVISIBLE
 
-        // TODO - Change this to if there are things in database
-        var pass = false
-        if (pass) {
-            var mainScreen = root.findViewById<RelativeLayout>(R.id.mainClosetScreen)
+        if (sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
+            val mainScreen = root.findViewById<LinearLayout>(R.id.mainClosetScreen)
             mainScreen.visibility = View.INVISIBLE
             noInventoryView.visibility = View.VISIBLE
             noInventoryView.alpha = 0.5f
@@ -215,11 +216,11 @@ class ClosetFragment : Fragment() {
             if(result.resultCode == Activity.RESULT_OK){
                 val intent = result.data
                 if (intent != null) {
-                    var galleryUri = intent.data!!
+                    val galleryUri = intent.data!!
                     val bitmap = Util.getBitmap(requireActivity(), galleryUri)
                     // Referenced from https://stackoverflow.com/questions/18080474/download-an-image-file-and-replace-existing-image-file
                     try {
-                        var out = FileOutputStream(imgFile)
+                        val out = FileOutputStream(imgFile)
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                         out.flush()
                         out.close()
@@ -232,13 +233,13 @@ class ClosetFragment : Fragment() {
             }
         }
 
-        var takePhotoBtn: Button = view.findViewById(R.id.take_photo_btn)
+        val takePhotoBtn: Button = view.findViewById(R.id.take_photo_btn)
         takePhotoBtn.setOnClickListener {
             noInventoryView.visibility = View.INVISIBLE
             onTakePhoto()
         }
 
-        var uploadPhotoBtn: Button = view.findViewById(R.id.upload_photo_btn)
+        val uploadPhotoBtn: Button = view.findViewById(R.id.upload_photo_btn)
         uploadPhotoBtn.setOnClickListener {
             noInventoryView.visibility = View.INVISIBLE
             onUploadPhoto()
@@ -253,7 +254,7 @@ class ClosetFragment : Fragment() {
         clothingDescriptionItems.clear()
 
         if (allFrequencies.isNotEmpty()) {
-            var itemWearFreq = allFrequencies[idx]
+            val itemWearFreq = allFrequencies[idx]
 
             clothesTitle.text = itemWearFreq.name
             costPerWear.text = computePricePerWear(itemWearFreq.price, itemWearFreq.frequency)
@@ -269,10 +270,9 @@ class ClosetFragment : Fragment() {
         }
     }
 
-    private fun computePricePerWear(price: Double, freq: Int) : String{
+    private fun computePricePerWear(price: Double, freq: Int): String {
         val costPerWear = (price / freq)
-        val formattedCostPerWearString = "$${String.format("%.2f", costPerWear)} / wear"
-        return formattedCostPerWearString
+        return "$${String.format("%.2f", costPerWear)} / wear"
     }
 
 
@@ -280,8 +280,8 @@ class ClosetFragment : Fragment() {
         sliderItems = ArrayList()
 
         allFrequencies.forEach {
-            var imgUri = Uri.parse(it.img_uri)
-            var bitmap = Util.getBitmap(requireActivity(), imgUri)
+            val imgUri = Uri.parse(it.img_uri)
+            val bitmap = Util.getBitmap(requireActivity(), imgUri)
             sliderItems.add(SliderItem(bitmap))
         }
 
@@ -292,10 +292,10 @@ class ClosetFragment : Fragment() {
         viewPager2.offscreenPageLimit=3
         viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
-        var compositePageTransformer = CompositePageTransformer()
+        val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer(40))
         compositePageTransformer.addTransformer { page, position ->
-            val r = 1 - abs(position)
+            val r = 1 - kotlin.math.abs(position)
             page.scaleY = 0.95f + r * 0.05f
         }
 
@@ -325,7 +325,7 @@ class ClosetFragment : Fragment() {
         args.putString(R.string.img_uri_key.toString(), imgUri.toString())
         nextFrag.arguments = args
 
-        var navController = root.findNavController()
+        val navController = root.findNavController()
         navController.navigate(R.id.action_navigation_closet_to_itemDetailsFragment, args)
 
     }
