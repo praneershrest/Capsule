@@ -5,31 +5,37 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_outfits">
 
-    <fragment
-        android:id="@+id/navigation_outfits"
-        android:name="com.example.capsule.ui.outfitSuggestion.OutfitSuggestionFragment"
-        android:label="@string/title_outfits"
-        tools:layout="@layout/fragment_outfit_suggestions" >
-        <action
-            android:id="@+id/action_navigation_outfits_to_navigation_outfits_manual"
-            app:destination="@id/navigation_outfits_manual" />
-    </fragment>
+    <navigation android:id="@+id/navigation_outfits" app:startDestination="@id/navigation_outfits_suggestion">
+        <fragment
+            android:id="@+id/navigation_outfits_suggestion"
+            android:name="com.example.capsule.ui.outfitSuggestion.OutfitSuggestionFragment"
+            android:label="@string/title_outfits"
+            tools:layout="@layout/fragment_outfit_suggestions" >
+            <action
+                android:id="@+id/action_navigation_outfits_to_navigation_outfits_manual"
+                app:destination="@id/navigation_outfits_manual" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/navigation_outfits_manual"
-        android:name="com.example.capsule.ui.outfits.OutfitsFragment"
-        android:label="Outfits"
-        tools:layout="@layout/fragment_outfits">
-        <action
-            android:id="@+id/action_navigation_outfits_manual_to_navigation_outfits_history"
-            app:destination="@id/navigation_outfits_history" />
-    </fragment>
+        <fragment
+            android:id="@+id/navigation_outfits_manual"
+            android:name="com.example.capsule.ui.outfits.OutfitsFragment"
+            android:label="Outfits"
+            tools:layout="@layout/fragment_outfits">
+            <action
+                android:id="@+id/action_navigation_outfits_manual_to_navigation_outfits_history"
+                app:popUpTo="@id/navigation_outfits_suggestion"
+                app:popUpToInclusive="true"
+                app:destination="@id/navigation_outfits_history" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/navigation_outfits_history"
-        android:name="com.example.capsule.ui.outfitHistory.OutfitHistory"
-        android:label="Outfits"
-        tools:layout="@layout/fragment_outfit_history"/>
+        <fragment
+            android:id="@+id/navigation_outfits_history"
+            android:name="com.example.capsule.ui.outfitHistory.OutfitHistory"
+            android:label="Outfits"
+            tools:layout="@layout/fragment_outfit_history"/>
+
+
+    </navigation>
 
     <fragment
         android:id="@+id/navigation_closet"
