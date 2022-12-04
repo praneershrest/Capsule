@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.capsule.R
 import com.example.capsule.model.Clothing
 
@@ -17,7 +19,8 @@ import com.example.capsule.model.Clothing
  * @property clothing List of clothing entries
  * @property clothingSelectedListener
  */
-class HorizontalRecyclerViewAdapter(private val clothingCategory: String,
+class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
+                                    private val clothingCategory: String,
                                     private val clothing : List<Clothing>,
                                     private val clothingSelectedListener : OnClothingSelectedListener) : RecyclerView.Adapter<HorizontalRecyclerViewAdapter.ViewHolder>(){
     // set default position to be the first position or in other words, no clothes selected
@@ -54,8 +57,7 @@ class HorizontalRecyclerViewAdapter(private val clothingCategory: String,
         }
         else {
             val uri : Uri = Uri.parse(clothing[position-1].img_uri)
-            holder.imageView.setImageURI(uri)
-            //holder.imageView.setImageResource(R.drawable.stars)
+            Glide.with(fragment).load(uri).into(holder.imageView)
             clothingId = clothing[position-1].id
         }
 
