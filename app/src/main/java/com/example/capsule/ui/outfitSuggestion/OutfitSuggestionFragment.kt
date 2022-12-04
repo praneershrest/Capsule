@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -57,6 +58,8 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var weatherApi: WeatherApi
     private lateinit var locationManager: LocationManager
     private lateinit var season:String
+    private lateinit var weatherImageView: ImageView
+    private lateinit var tempTextView: TextView
 
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
@@ -80,6 +83,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         suggestedShoesImageView = root.findViewById(R.id.suggested_shoes_iv)
         logSuggestedOutfitButton = root.findViewById(R.id.log_suggested_outfit_btn)
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
+        weatherImageView = root.findViewById(R.id.weather_iv)
+        tempTextView = root.findViewById(R.id.temperature_tv)
+
 
         weatherApi = WeatherApi()
         initLocationManager()
@@ -132,6 +138,16 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             season = it
 //            println("DEBUG in observer $season")
         }
+
+        outfitSuggestionViewModel.weather.observe(requireActivity()){
+            getWeatherIcon(it)
+        }
+
+        outfitSuggestionViewModel.temp.observe(requireActivity()){
+            val tempText = it.toString() + "ºC"
+            tempTextView.text = tempText
+        }
+
 
         logSuggestedOutfitButton.setOnClickListener {
             if(::suggestedTop.isInitialized) {
@@ -200,6 +216,29 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        }
+    }
+
+    private fun getWeatherIcon(string: String) {
+        when(string){
+            Util.Weather.THUNDER -> {
+                weatherImageView.setImageResource(R.drawable.thunder_icon)
+            }
+            Util.Weather.CLOUDY -> {
+                weatherImageView.setImageResource(R.drawable.cloudy_icon)
+            }
+            Util.Weather.DRIZZLE -> {
+                weatherImageView.setImageResource(R.drawable.drizzle_icon)
+            }
+            Util.Weather.HAZE -> {
+                weatherImageView.setImageResource(R.drawable.fog_icon)
+            }
+            Util.Weather.SUNNY -> {
+                weatherImageView.setImageResource(R.drawable.sunny_icon)
+            }
+            Util.Weather.RAIN -> {
+                weatherImageView.setImageResource(R.drawable.rain_icon)
+            }
         }
     }
 

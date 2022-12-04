@@ -5,17 +5,20 @@ import com.example.capsule.utils.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
+import kotlin.math.roundToInt
 
 
 class WeatherApi{
-    private var temp = 0.0
+    private var temp = 0
 
     private lateinit var result: String
     private lateinit var season: String
+    private lateinit var weather: String
 
-    suspend fun getWeatherTemp(location: Location) : String {
+    suspend fun getWeatherTemp(location: Location) : ArrayList<String>{
         val lat = location.latitude
         val long = location.longitude
         val url =
@@ -25,7 +28,11 @@ class WeatherApi{
                 setSeason()
         }
         job.join()
-        return season
+        val list = ArrayList<String>()
+        list.add(season)
+        list.add(weather)
+        list.add(temp.toString())
+        return list
     }
 
     private suspend fun parseJson(url: String){
@@ -40,12 +47,15 @@ class WeatherApi{
         job.join()
         val json = JSONObject(result)
         val main  = json.get("main") as JSONObject
-        temp = main.getDouble("temp")
+        temp = (main.getDouble("temp") - 273.15).roundToInt()
+        val weatherArray = json.get("weather") as JSONArray
+        val weatherJson = weatherArray.getJSONObject(0)
+        weather = weatherJson.getString("main")
     }
 
 
     private fun setSeason(){
-        season = Util.determineSeason(temp - 273.15)
+        season = Util.determineSeason(temp)
     }
 
 }

@@ -10,7 +10,6 @@ import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.runBlocking
 
 class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(){
@@ -20,6 +19,18 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
     get(){
         return _season
     }
+
+    private val _weather = MutableLiveData<String>()
+    val weather : LiveData<String>
+        get(){
+            return _weather
+        }
+
+    private val _temp = MutableLiveData<String>()
+    val temp : LiveData<String>
+        get(){
+            return _temp
+        }
 
     private val _suggestedTopLiveData = MutableLiveData<Clothing>()
     val suggestedTopLiveData = _suggestedTopLiveData
@@ -39,10 +50,18 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
 
     fun updateSeason(location: Location, weatherApi: WeatherApi){
         var chosenSeason: String
+        var chosenWeather: String
+        var chosenTemp: String
         runBlocking {
-            chosenSeason = weatherApi.getWeatherTemp(location)
-            println("capsule-> in updateSeason chosenSeason is: $chosenSeason")
+            val list = weatherApi.getWeatherTemp(location)
+            chosenSeason = list[0]
+            chosenWeather = list[1]
+            chosenTemp = list[2]
+            _weather.value = chosenWeather
             _season.value = chosenSeason
+            _temp.value = chosenTemp
+            println("capsule-> in updateSeason chosenSeason is: $chosenSeason and chosenWeather is: $chosenWeather")
+            println("capsule-> in updateSeason chosenTemp is: $chosenTemp")
             repository.suggestedClothingByCategoryForSeason("Tops", chosenSeason).take(1).collect {
                 _suggestedTopLiveData.value = it
             }
