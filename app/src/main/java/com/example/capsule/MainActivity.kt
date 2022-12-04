@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         if(sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
-            navView.visibility = View.INVISIBLE
+            navView.visibility = View.GONE
             resultLauncher.launch(Intent(this, Welcome::class.java))
         }
     }
