@@ -58,6 +58,7 @@ class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
         else {
             val uri : Uri = Uri.parse(clothing[position-1].img_uri)
             Glide.with(fragment).load(uri).into(holder.imageView)
+            holder.imageView.setImageURI(uri)
             clothingId = clothing[position-1].id
         }
 

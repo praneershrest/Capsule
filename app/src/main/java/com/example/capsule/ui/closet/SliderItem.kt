@@ -1,15 +1,15 @@
 package com.example.capsule.ui.closet
 
-import android.graphics.Bitmap
+import android.net.Uri
 
-class SliderItem(newImage: Bitmap) {
-    private var image: Bitmap
+class SliderItem(newImage: Uri) {
+    private var image: Uri
 
     init {
         image = newImage
     }
 
-    fun getImage(): Bitmap {
+    fun getImage(): Uri {
         return image
     }
 

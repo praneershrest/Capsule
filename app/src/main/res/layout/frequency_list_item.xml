@@ -10,9 +10,10 @@
         android:id="@+id/freq_item_rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textStyle="bold"
-        android:textColor="@color/third"/>
+        android:textColor="@color/third"
+        android:padding="5dp"/>
     <ImageView
         android:id="@+id/freq_item_image"
         android:scaleType="centerCrop"
@@ -22,9 +23,10 @@
         android:id="@+id/freq_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textStyle="bold"
-        android:textColor="@color/third"/>
+        android:textColor="@color/third"
+        android:layout_marginLeft="8dp"/>
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"

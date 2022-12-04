@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -326,9 +327,8 @@ class ClosetFragment : Fragment() {
         sliderItems = ArrayList()
 
         allFrequencies.forEach {
-            val imgUri = Uri.parse(it.img_uri)
-            val bitmap = Util.getBitmap(requireActivity(), imgUri)
-            sliderItems.add(SliderItem(bitmap))
+            val imgUri = it.img_uri.toUri()
+            sliderItems.add(SliderItem(imgUri))
         }
 
         viewPager2 = root.findViewById(R.id.closet_viewpager)
