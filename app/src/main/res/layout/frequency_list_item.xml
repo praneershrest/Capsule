@@ -15,6 +15,7 @@
         android:textColor="@color/third"/>
     <ImageView
         android:id="@+id/freq_item_image"
+        android:scaleType="centerCrop"
         android:layout_width="80dp"
         android:layout_height="80dp" />
     <TextView
