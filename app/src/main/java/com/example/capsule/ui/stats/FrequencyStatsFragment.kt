@@ -73,8 +73,7 @@ class FrequencyStatsFragment: Fragment() {
                 removeEmptyState()
                 if (frequencyList.isNotEmpty()) {
                     adapter.replace(it)
-                    adapter.notifyDataSetChanged()
-                } else {
+                    freqListView.adapter = adapter                } else {
                     displayEmptyState(R.drawable.tshirt)
                 }
             }
@@ -85,7 +84,7 @@ class FrequencyStatsFragment: Fragment() {
                 removeEmptyState()
                 if (frequencyList.isNotEmpty()) {
                     adapter.replace(it)
-                    adapter.notifyDataSetChanged()
+                    freqListView.adapter = adapter
                 } else {
                     displayEmptyState(R.drawable.trousers)
                 }
@@ -97,7 +96,7 @@ class FrequencyStatsFragment: Fragment() {
                 removeEmptyState()
                 if (frequencyList.isNotEmpty()) {
                     adapter.replace(it)
-                    adapter.notifyDataSetChanged()
+                    freqListView.adapter = adapter
                 } else {
                     displayEmptyState(R.drawable.coat)
                 }
@@ -109,7 +108,7 @@ class FrequencyStatsFragment: Fragment() {
                 removeEmptyState()
                 if (frequencyList.isNotEmpty()) {
                     adapter.replace(it)
-                    adapter.notifyDataSetChanged()
+                    freqListView.adapter = adapter
                 } else {
                     displayEmptyState(R.drawable.sandal)
                 }

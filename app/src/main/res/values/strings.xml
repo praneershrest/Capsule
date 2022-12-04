@@ -51,6 +51,7 @@
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
     <string name="add_item_button_text">Add item</string>
+    <string name="remove_item_button_text">Remove item</string>
 
     <string name="outfit_history_recent">Your recent outfits</string>
 

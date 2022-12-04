@@ -51,7 +51,6 @@ class ClosetFragment : Fragment() {
     private lateinit var galleryResult: ActivityResultLauncher<Intent>
     private lateinit var imgUri: Uri
     private lateinit var imgFile: File
-
     private lateinit var tabLayout: TabLayout
     private lateinit var sliderItems: ArrayList<SliderItem>
     private lateinit var clothingDescriptionItems: ArrayList<Pair<String, String>>
@@ -61,6 +60,7 @@ class ClosetFragment : Fragment() {
     private lateinit var allFrequencies: List<ClosetItemData>
 
     private var selectedTab = 0
+    private var currScrollPos = 0
 
     private lateinit var emptyStateIcon: ImageView
     private lateinit var emptyStateHeader: TextView
@@ -74,6 +74,7 @@ class ClosetFragment : Fragment() {
     private lateinit var clothesTitle: TextView
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
+    private lateinit var removeBtn: Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -105,6 +106,7 @@ class ClosetFragment : Fragment() {
 
         clothingDescriptionItems = ArrayList()
         categoryList = resources.getStringArray(R.array.category_items).toList()
+        removeBtn = root.findViewById(R.id.remove_item_btn)
 
         val closetViewModel =
             ViewModelProvider(this, factory).get(ClosetViewModel::class.java)
@@ -120,8 +122,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.tshirt)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -133,8 +137,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.trousers)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -146,8 +152,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.coat)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -159,8 +168,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.sandal)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -196,8 +208,11 @@ class ClosetFragment : Fragment() {
                 if (allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
+
                 } else {
                     displayEmptyState(categoryImg)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
 
@@ -222,6 +237,11 @@ class ClosetFragment : Fragment() {
         val addItemBtn: View = root.findViewById(R.id.add_item_btn)
         addItemBtn.setOnClickListener { view ->
             noInventoryView.visibility = View.VISIBLE
+        }
+
+        val removeItemBtn: View = root.findViewById(R.id.remove_item_btn)
+        removeItemBtn.setOnClickListener { view ->
+            closetViewModel.remove(allFrequencies[currScrollPos].id)
         }
 
         return root
@@ -273,6 +293,8 @@ class ClosetFragment : Fragment() {
     }
 
     private fun loadData(idx: Int){
+        clothesTitle = root.findViewById(R.id.clothes_title)
+        costPerWear = root.findViewById(R.id.price_per_wear)
         clothesTitle.text = ""
         costPerWear.text = ""
         clothingDescriptionItems.clear()
@@ -289,6 +311,7 @@ class ClosetFragment : Fragment() {
             clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
             clothingDescriptionItems.add(Pair("Purchase Location", itemWearFreq.purchase_location))
 
+            clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
             clothingDescriptionListView.adapter = ClothingListAdapter(requireActivity(), clothingDescriptionItems)
         }
     }
@@ -308,6 +331,7 @@ class ClosetFragment : Fragment() {
             sliderItems.add(SliderItem(bitmap))
         }
 
+        viewPager2 = root.findViewById(R.id.closet_viewpager)
         viewPager2.adapter = SliderAdapter(sliderItems, viewPager2)
         viewPager2.clipToPadding = false
         viewPager2.clipChildren = false
@@ -325,6 +349,7 @@ class ClosetFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                currScrollPos = position
                 loadData(position)
             }
         })
