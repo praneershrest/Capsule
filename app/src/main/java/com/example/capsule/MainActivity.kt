@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_outfits
             ),
             CbnMenuItem(
-                R.drawable.ic_dashboard_black_24dp,
+                R.drawable.ic_closet_24,
                 R.drawable.avd_closet,
                 R.id.navigation_closet
             ),
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_stats
             ),
             CbnMenuItem(
-                R.drawable.ic_outline_shopping_bag_24,
+                R.drawable.ic_tips_24px,
                 R.drawable.avd_tips,
                 R.id.navigation_tips
             )
