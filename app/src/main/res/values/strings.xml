@@ -75,4 +75,7 @@
 
     <string name="log_your_own_outfit">Log your own outfit</string>
 
+    <string name="invalid_manual_outfit_log">Please select at least 1 item of clothing</string>
+    <string name="log_outfit">Log Outfit</string>
+
 </resources>
