@@ -78,4 +78,7 @@
     <string name="outfit_logged">Outfit logged!</string>
     <string name="empty_outfit_log">Can\'t log an outfit with no clothing!</string>
 
+    <string name="invalid_manual_outfit_log">Please select at least 1 item of clothing</string>
+    <string name="log_outfit">Log Outfit</string>
+
 </resources>

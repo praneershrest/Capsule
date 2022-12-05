@@ -54,7 +54,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             textView.text = clothingCategoryStrList[p0]
 
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HorizontalRecyclerViewAdapter(clothingCategoryStrList[p0], clothing[p0], this@OutfitsFragment)
+            recyclerView.adapter = HorizontalRecyclerViewAdapter(this@OutfitsFragment, clothingCategoryStrList[p0], clothing[p0], this@OutfitsFragment)
 
             return v
         }
@@ -93,8 +93,17 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         logOutfitButton.setOnClickListener {
             // put button function here to view model
             val timeInMillis = Calendar.getInstance().timeInMillis
+            var flag = false
+
+            // set time while also checking if each item is selected none
             for (clothing in clothingHistoryList) {
+                flag = flag || (clothing.clothingId != -1L)
                 clothing.date = timeInMillis
+            }
+
+            if (!flag) {
+                Toast.makeText(requireActivity(), R.string.invalid_manual_outfit_log, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
             findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)
