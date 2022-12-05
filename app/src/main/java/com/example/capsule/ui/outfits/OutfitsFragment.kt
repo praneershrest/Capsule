@@ -54,7 +54,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             textView.text = clothingCategoryStrList[p0]
 
             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HorizontalRecyclerViewAdapter(clothingCategoryStrList[p0], clothing[p0], this@OutfitsFragment)
+            recyclerView.adapter = HorizontalRecyclerViewAdapter(this@OutfitsFragment, clothingCategoryStrList[p0], clothing[p0], this@OutfitsFragment)
 
             return v
         }
