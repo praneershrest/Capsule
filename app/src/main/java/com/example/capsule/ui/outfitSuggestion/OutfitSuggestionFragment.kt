@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.utils.Util.Weather
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
@@ -166,7 +165,6 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
         outfitSuggestionViewModel.season.observe(requireActivity()){
             season = it
-//            println("DEBUG in observer $season")
         }
 
         outfitSuggestionViewModel.weather.observe(requireActivity()){
