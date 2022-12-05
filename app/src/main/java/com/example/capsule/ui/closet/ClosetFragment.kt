@@ -240,8 +240,7 @@ class ClosetFragment : Fragment() {
             noInventoryView.visibility = View.VISIBLE
         }
 
-        val removeItemBtn: View = root.findViewById(R.id.remove_item_btn)
-        removeItemBtn.setOnClickListener { view ->
+        removeBtn.setOnClickListener { view ->
             closetViewModel.remove(allFrequencies[currScrollPos].id)
         }
 
@@ -306,7 +305,6 @@ class ClosetFragment : Fragment() {
             clothesTitle.text = itemWearFreq.name
             costPerWear.text = computePricePerWear(itemWearFreq.price, itemWearFreq.frequency)
 
-            clothingDescriptionItems.add(Pair("Category", itemWearFreq.category))
             clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
             clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
             clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
