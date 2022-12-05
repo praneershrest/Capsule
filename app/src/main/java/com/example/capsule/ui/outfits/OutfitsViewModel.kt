@@ -19,7 +19,7 @@ class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
     fun insertOutfit(clothingHistory: List<ClothingHistory>) {
         for (ch in clothingHistory) {
-            if (ch.id != -1L) {
+            if (ch.clothingId != -1L) {
                 repository.insertClothingHistory(ch)
             }
         }
