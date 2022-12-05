@@ -35,9 +35,7 @@ import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
 import com.google.android.material.tabs.TabLayout
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 // TODO - Improve styling of the fragment
@@ -263,11 +261,13 @@ class ClosetFragment : Fragment() {
                 val intent = result.data
                 if (intent != null) {
                     val galleryUri = intent.data!!
-                    val bitmap = Util.getBitmap(requireActivity(), galleryUri)
-                    // Referenced from https://stackoverflow.com/questions/18080474/download-an-image-file-and-replace-existing-image-file
                     try {
+                        val inputStream = requireActivity().contentResolver.openInputStream(galleryUri)
                         val out = FileOutputStream(imgFile)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                        if (inputStream != null) {
+                            copyStream(inputStream, out)
+                            inputStream.close()
+                        }
                         out.flush()
                         out.close()
 
@@ -289,6 +289,15 @@ class ClosetFragment : Fragment() {
         uploadPhotoBtn.setOnClickListener {
             noInventoryView.visibility = View.INVISIBLE
             onUploadPhoto()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun copyStream(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        while (input.read(buffer).also { bytesRead = it } != -1) {
+            output.write(buffer, 0, bytesRead)
         }
     }
 
