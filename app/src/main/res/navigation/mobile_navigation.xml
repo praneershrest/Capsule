@@ -12,8 +12,13 @@
             android:label="@string/title_outfits"
             tools:layout="@layout/fragment_outfit_suggestions" >
             <action
-                android:id="@+id/action_navigation_outfits_to_navigation_outfits_manual"
+                android:id="@+id/action_navigation_outfits_suggestion_to_navigation_outfits_manual"
                 app:destination="@id/navigation_outfits_manual" />
+            <action
+                android:id="@+id/action_navigation_outfits_suggestion_to_navigation_outfits_history"
+                app:popUpTo="@id/navigation_outfits_suggestion"
+                app:popUpToInclusive="true"
+                app:destination="@id/navigation_outfits_history" />
         </fragment>
 
         <fragment

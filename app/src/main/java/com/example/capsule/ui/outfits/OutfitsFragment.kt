@@ -1,13 +1,12 @@
 package com.example.capsule.ui.outfits
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,6 +25,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
 
     private lateinit var listView : ListView
     private lateinit var logOutfitButton : Button
+    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var clothingHistoryList : ArrayList<ClothingHistory>
     private lateinit var outfitsListViewAdapter : OutfitsListViewAdapter
@@ -70,7 +70,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         savedInstanceState: Bundle?
     ): View {
         val v = inflater.inflate(R.layout.fragment_outfits, null)
-
+        sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
         initializeLists()
         initializeListView(v)
@@ -84,7 +84,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         clothingCategoryStrList = resources.getStringArray(R.array.category_items)
         clothingHistoryList = ArrayList()
         for (i in 1..clothingCategoryStrList.size) {
-            clothingHistoryList.add(ClothingHistory())
+            clothingHistoryList.add(ClothingHistory(clothingId = -1L))
         }
     }
 
@@ -98,6 +98,11 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
             findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)
+            with(sharedPreferences.edit()) {
+                putLong(getString(R.string.has_inserted_for_day_key), timeInMillis)
+                apply()
+            }
+            Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
         }
     }
 
