@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -21,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.utils.Util.Weather
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
@@ -99,6 +99,21 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val currentDay = Calendar.getInstance()
+        val lastSubmissionDay = Calendar.getInstance()
+
+        lastSubmissionDay.timeInMillis = sharedPreferences.getLong(getString(R.string.has_inserted_for_day_key), 0L)
+
+        if (currentDay.get(Calendar.DAY_OF_YEAR) == lastSubmissionDay.get(Calendar.DAY_OF_YEAR) ||
+            currentDay.get(Calendar.YEAR) == lastSubmissionDay.get(Calendar.YEAR)) {
+            findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_history)
+        }
+
+    }
+
     private fun initOutfitSuggestion(){
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
@@ -150,7 +165,6 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
         outfitSuggestionViewModel.season.observe(requireActivity()){
             season = it
-//            println("DEBUG in observer $season")
         }
 
         outfitSuggestionViewModel.weather.observe(requireActivity()){
@@ -164,6 +178,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
 
         logSuggestedOutfitButton.setOnClickListener {
+            var clothingInserted = false
             if(topFlag && ::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
@@ -171,6 +186,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(bottomFlag && ::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
@@ -179,6 +195,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(outerWearFlag && ::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
@@ -187,6 +204,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
             if(shoesFlag && ::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
@@ -195,14 +213,24 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            // TODO: change Fragment to OutfitHistory
+            if (clothingInserted) {
+                findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_history)
+                with(requireActivity().getPreferences(Context.MODE_PRIVATE).edit()) {
+                    putLong(getString(R.string.has_inserted_for_day_key), calendar.timeInMillis)
+                    apply()
+                }
+                Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireActivity(), R.string.empty_outfit_log, Toast.LENGTH_SHORT).show()
+            }
         }
 
         // TODO handle moving to OutfitFragment
         logManualOutfitButton.setOnClickListener {
-            println("LOG MANUAL OUTFIT CLICKED")
-            findNavController().navigate(R.id.action_navigation_outfits_to_navigation_outfits_manual)
+            findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_manual)
         }
     }
 

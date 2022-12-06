@@ -1,5 +1,7 @@
 package com.example.capsule.ui.outfits
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
 
     private lateinit var listView : ListView
     private lateinit var logOutfitButton : Button
+    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var clothingHistoryList : ArrayList<ClothingHistory>
     private lateinit var outfitsListViewAdapter : OutfitsListViewAdapter
@@ -67,7 +70,7 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
         savedInstanceState: Bundle?
     ): View {
         val v = inflater.inflate(R.layout.fragment_outfits, null)
-
+        sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
         initializeLists()
         initializeListView(v)
@@ -104,6 +107,11 @@ class OutfitsFragment : Fragment(), HorizontalRecyclerViewAdapter.OnClothingSele
             }
             outfitsViewModel.insertOutfit(clothingHistoryList)
             findNavController().navigate(R.id.action_navigation_outfits_manual_to_navigation_outfits_history)
+            with(sharedPreferences.edit()) {
+                putLong(getString(R.string.has_inserted_for_day_key), timeInMillis)
+                apply()
+            }
+            Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
         }
     }
 
