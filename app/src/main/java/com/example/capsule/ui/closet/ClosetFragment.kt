@@ -410,12 +410,6 @@ class ClosetFragment : Fragment() {
     }
 
     private fun onTakePhoto() {
-//        imgFile = Util.createImageFile(requireActivity())
-//        imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
-
-//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri)
-
         val intent = Intent(requireActivity(), CameraActivity::class.java)
         cameraResult.launch(intent)
     }

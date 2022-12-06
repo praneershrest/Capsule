@@ -88,20 +88,13 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
     }
 
     private fun takePhoto() {
-        // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
         currImageFile = File(getExternalFilesDir(null), System.currentTimeMillis().toString() + ".jpg")
 
-
-//        Environment.DIRECTORY_PICTURES + File.pathSeparator +
-        // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions
             .Builder(currImageFile)
             .build()
-
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(this),this)
@@ -126,7 +119,6 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
-            // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             // Preview
@@ -139,14 +131,11 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .build()
 
-            // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-                // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
 
-                // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture)
 
