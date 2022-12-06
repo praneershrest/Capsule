@@ -49,7 +49,9 @@
         tools:layout="@layout/fragment_closet" >
         <action
             android:id="@+id/action_navigation_closet_to_itemDetailsFragment"
-            app:destination="@id/itemDetailsFragment" />
+            app:destination="@id/itemDetailsFragment"
+            app:popUpTo="@id/action_navigation_closet_to_itemDetailsFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
