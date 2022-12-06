@@ -74,8 +74,16 @@
     <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
     <string name="button_welcome_page">Upload your closet</string>
 
+    <string name="confirm_upload_prompt">Add item to closet?</string>
+    <string name="yes_btn_msg">Yes</string>
+    <string name="cancel_btn_msg">Cancel</string>
+    <string name="remove_item_prompt">Remove item from closet?</string>
+
     <string name="manual_outfit_header">Log today\'s outfit</string>
     <string name="log_your_own_outfit">Log your own outfit</string>
+    <string name="toast_msg_saved">Item added to closet!</string>
+    <string name="toast_msg_removed">Item removed from closet</string>
+    <string name="toast_msg_fill_all_fields">"Please fill in all fields."</string>
     <string name="outfit_logged">Outfit logged!</string>
     <string name="empty_outfit_log">Can\'t log an outfit with no clothing!</string>
 

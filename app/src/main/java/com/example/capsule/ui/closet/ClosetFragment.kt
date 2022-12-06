@@ -1,17 +1,18 @@
 package com.example.capsule.ui.closet
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewStub
+import android.view.*
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -19,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +28,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -34,6 +35,7 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
+import com.example.capsule.utils.Util
 import com.google.android.material.tabs.TabLayout
 import java.io.*
 
@@ -239,7 +241,7 @@ class ClosetFragment : Fragment() {
         }
 
         removeBtn.setOnClickListener { view ->
-            closetViewModel.remove(allFrequencies[currScrollPos].id)
+            createDialog(closetViewModel)
         }
 
         return root
@@ -290,6 +292,40 @@ class ClosetFragment : Fragment() {
             noInventoryView.visibility = View.INVISIBLE
             onUploadPhoto()
         }
+    }
+
+    private fun deleteItem(closetViewModelLocal : ClosetViewModel) {
+        closetViewModelLocal.remove(allFrequencies[currScrollPos].id)
+    }
+
+    private fun createDialog(closetViewModelLocal : ClosetViewModel){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
+        var textView: TextView = customLayout.findViewById(R.id.dialogText)
+        var submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
+        var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
+        submitBtn.text = getString(R.string.yes_btn_msg)
+        cancelBtn.text = getString(R.string.cancel_btn_msg)
+        textView.text = getString(R.string.remove_item_prompt)
+        builder.setView(customLayout)
+
+        val dialog: AlertDialog = builder.create()
+        submitBtn.setOnClickListener{
+            dialog.dismiss()
+            Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_removed), Toast.LENGTH_SHORT).show()
+            deleteItem(closetViewModelLocal)
+        }
+        cancelBtn.setOnClickListener{
+            dialog.dismiss()
+        }
+        val window: Window? = dialog.window
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        dialog.show()
     }
 
     @Throws(IOException::class)
