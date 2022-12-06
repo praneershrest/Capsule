@@ -213,7 +213,7 @@ class ItemDetailsFragment : Fragment() {
         var price = "0.00"
         if (priceEditText.text.toString().isNotEmpty()) {
             val priceInput = priceEditText.text.toString()
-            price = priceInput.subSequence(1,priceInput.length).toString()
+            price = priceInput.subSequence(1,priceInput.length).toString().replace(",","")
         }
         val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
         val clothingEntry = Clothing(
