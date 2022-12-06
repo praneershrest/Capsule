@@ -71,6 +71,7 @@
         </activity>
         <activity
             android:name=".camera.SaveActivity"
+            android:screenOrientation="portrait"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -78,6 +79,7 @@
         </activity>
         <activity
             android:name=".camera.CameraActivity"
+            android:screenOrientation="portrait"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
