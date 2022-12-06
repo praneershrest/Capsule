@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             CbnMenuItem(
                 R.drawable.ic_home_black_24dp,
                 R.drawable.avd_outfit,
-                R.id.navigation_outfits
+                R.id.navigation_outfits_suggestion
             ),
             CbnMenuItem(
                 R.drawable.ic_closet_24,
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_outfits, R.id.navigation_closet, R.id.navigation_stats, R.id.navigation_tips
+                R.id.navigation_outfits_suggestion, R.id.navigation_closet, R.id.navigation_stats, R.id.navigation_tips
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_FIRST_USER) {
-            println("capsule-> FIRSTUSER TRACE")
             binding.navView.onMenuItemClick(1)
         }
     }
