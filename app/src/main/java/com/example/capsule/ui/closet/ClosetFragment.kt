@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -34,9 +35,7 @@ import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
 import com.google.android.material.tabs.TabLayout
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 // TODO - Improve styling of the fragment
@@ -239,8 +238,7 @@ class ClosetFragment : Fragment() {
             noInventoryView.visibility = View.VISIBLE
         }
 
-        val removeItemBtn: View = root.findViewById(R.id.remove_item_btn)
-        removeItemBtn.setOnClickListener { view ->
+        removeBtn.setOnClickListener { view ->
             closetViewModel.remove(allFrequencies[currScrollPos].id)
         }
 
@@ -263,11 +261,13 @@ class ClosetFragment : Fragment() {
                 val intent = result.data
                 if (intent != null) {
                     val galleryUri = intent.data!!
-                    val bitmap = Util.getBitmap(requireActivity(), galleryUri)
-                    // Referenced from https://stackoverflow.com/questions/18080474/download-an-image-file-and-replace-existing-image-file
                     try {
+                        val inputStream = requireActivity().contentResolver.openInputStream(galleryUri)
                         val out = FileOutputStream(imgFile)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                        if (inputStream != null) {
+                            copyStream(inputStream, out)
+                            inputStream.close()
+                        }
                         out.flush()
                         out.close()
 
@@ -292,6 +292,15 @@ class ClosetFragment : Fragment() {
         }
     }
 
+    @Throws(IOException::class)
+    private fun copyStream(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        while (input.read(buffer).also { bytesRead = it } != -1) {
+            output.write(buffer, 0, bytesRead)
+        }
+    }
+
     private fun loadData(idx: Int){
         clothesTitle = root.findViewById(R.id.clothes_title)
         costPerWear = root.findViewById(R.id.price_per_wear)
@@ -305,7 +314,6 @@ class ClosetFragment : Fragment() {
             clothesTitle.text = itemWearFreq.name
             costPerWear.text = computePricePerWear(itemWearFreq.price, itemWearFreq.frequency)
 
-            clothingDescriptionItems.add(Pair("Category", itemWearFreq.category))
             clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
             clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
             clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
@@ -326,9 +334,8 @@ class ClosetFragment : Fragment() {
         sliderItems = ArrayList()
 
         allFrequencies.forEach {
-            val imgUri = Uri.parse(it.img_uri)
-            val bitmap = Util.getBitmap(requireActivity(), imgUri)
-            sliderItems.add(SliderItem(bitmap))
+            val imgUri = it.img_uri.toUri()
+            sliderItems.add(SliderItem(imgUri))
         }
 
         viewPager2 = root.findViewById(R.id.closet_viewpager)

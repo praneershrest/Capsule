@@ -7,11 +7,10 @@
     <TextView
         android:id="@+id/outfitRowTitleTextView"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:textColor="@color/fifth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:text="TextView" />
 
     <androidx.recyclerview.widget.RecyclerView

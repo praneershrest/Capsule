@@ -22,13 +22,13 @@ class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): Recycl
 
 
     class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private lateinit var imageView: ImageView
+        private var imageView: ImageView
         init {
             imageView = itemView.findViewById(R.id.imageContainer)
         }
 
         fun setImage(sliderItem: SliderItem){
-            imageView.setImageBitmap(sliderItem.getImage())
+            imageView.setImageURI(sliderItem.getImage())
         }
     }
 
