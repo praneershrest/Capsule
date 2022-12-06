@@ -58,12 +58,13 @@ class PurchaseLocationStatsFragment: Fragment() {
         entries = ArrayList()
         purchaseLocationFrequencyList = ArrayList()
 
+        chart = view.findViewById(R.id.purchase_loc_pie_chart)
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.purchaseLocationFrequencies.observe(requireActivity()) {
             purchaseLocationFrequencyList = it
             displayPieChart()
         }
-        chart = view.findViewById(R.id.purchase_loc_pie_chart)
+
         initPieChart()
         displayPieChart()
         return view
