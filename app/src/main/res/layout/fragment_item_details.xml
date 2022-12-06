@@ -37,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name_placeholder"
-            android:inputType=
-                "textCapSentences|textAutoCorrect" />
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:maxLength="25"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/price_placeholder"
+            android:maxLength="19"
             android:inputType="numberDecimal" />
 
         <TextView
