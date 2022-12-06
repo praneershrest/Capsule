@@ -88,7 +88,7 @@ class ClosetFragment : Fragment() {
     ): View {
         _binding = FragmentClosetBinding.inflate(inflater, container, false)
         root = binding.root
-        Util.checkPermissions(requireActivity())
+//        Util.checkPermissions(requireActivity())
 
         sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         database = ClothingDatabase.getInstance(requireActivity())
