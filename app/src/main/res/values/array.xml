@@ -8,12 +8,14 @@
     </string-array>
     <string-array name="material_items">
         <item>Cotton</item>
+        <item>Tencel</item>
         <item>Leather</item>
-        <item>Polyester</item>
+        <item>Linen</item>
         <item>Wool</item>
+        <item>Rubber</item>
         <item>Nylon</item>
         <item>Acrylic</item>
-        <item>Rubber</item>
+        <item>Polyester</item>
     </string-array>
     <string-array name="season_items">
         <item>Spring</item>
@@ -22,9 +24,9 @@
         <item>Winter</item>
     </string-array>
     <string-array name="purchase_items">
-        <item>Brand new</item>
         <item>Thrifted</item>
         <item>Second-hand online</item>
+        <item>Brand new</item>
     </string-array>
     <string-array name="tips_headings">
         <item>What is fast fashion?</item>
@@ -122,17 +124,22 @@
             and can also be dangerous to wear. [Source: FutureLearn]\n
         </item>
         <item>
-            Thrift stores, second-hand platforms, sustainable brands.
+            You should try to shop second-hand first! Try thrifting or looking on
+            second-hand platforms such as Depop or Poshmark. Otherwise,
+            you should shop from sustainable brands that care about the environment,
+            pay their workers fairly, and are transparent across their entire supply chain.
         </item>
     </string-array>
     <integer-array name="material_graph_colours">
-        <item>@color/third</item>
+        <item>@color/graph_0_blue</item>
         <item>@color/graph_1_teal</item>
         <item>@color/graph_2_light_teal</item>
         <item>@color/graph_3_green</item>
         <item>@color/graph_4_lime</item>
         <item>@color/graph_5_ochre</item>
         <item>@color/graph_6_orange</item>
+        <item>@color/graph_7_salmon</item>
+        <item>@color/graph_8_red</item>
     </integer-array>
     <integer-array name="purchase_loc_graph_colours">
         <item>@color/second</item>

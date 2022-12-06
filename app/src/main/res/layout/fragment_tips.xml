@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:text="@string/title_tips_fragment"
         android:textSize="24sp"
+        android:textColor="@color/fifth"
+        android:textStyle="bold"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:textAlignment="center" />

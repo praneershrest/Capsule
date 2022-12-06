@@ -28,6 +28,8 @@ class MaterialStatsFragment: Fragment() {
     private lateinit var factory: StatsViewModelFactory
 
     private lateinit var chart: PieChart
+    private lateinit var allMaterials: ArrayList<String>
+    private lateinit var allColours: ArrayList<Int>
     private lateinit var entries: ArrayList<PieEntry>
     private lateinit var colours: ArrayList<Int>
     private lateinit var pieDataSet: PieDataSet
@@ -54,6 +56,8 @@ class MaterialStatsFragment: Fragment() {
         emptyStateHeader = view.findViewById(R.id.material_stats_empty_state)
         emptyStateDescription = view.findViewById(R.id.material_stats_empty_description)
 
+        allColours = resources.getIntArray(R.array.material_graph_colours).toList() as ArrayList<Int>
+        allMaterials = resources.getStringArray(R.array.material_items).toList() as ArrayList<String>
         entries = ArrayList()
         materialFrequencyList = ArrayList()
         chart = view.findViewById(R.id.material_pie_chart)
@@ -97,11 +101,19 @@ class MaterialStatsFragment: Fragment() {
             emptyStateDescription.visibility = View.GONE
             chart.visibility = View.VISIBLE
 
-            colours =
-                resources.getIntArray(R.array.material_graph_colours).toList() as ArrayList<Int>
+            colours = ArrayList()
             entries = ArrayList()
             for (material in materialFrequencyList) {
-                entries.add(PieEntry(material.frequency.toFloat(), material.material))
+
+                var materialIndex = allMaterials.indexOf(material.material)
+                var materialColor = allColours[materialIndex]
+                if (materialIndex <= 4) {
+                    entries.add(0,PieEntry(material.frequency.toFloat(), material.material))
+                    colours.add(0,materialColor)
+                } else {
+                    entries.add(PieEntry(material.frequency.toFloat(), material.material))
+                    colours.add(materialColor)
+                }
             }
             pieDataSet = PieDataSet(entries, "Type")
             pieDataSet.valueTextSize = 12f

@@ -30,6 +30,8 @@ class PurchaseLocationStatsFragment: Fragment() {
     private lateinit var purchaseLocationFrequencyList: List<PurchaseLocationFrequency>
 
     private lateinit var chart: PieChart
+    private lateinit var allLocations: ArrayList<String>
+    private lateinit var allColours: ArrayList<Int>
     private lateinit var entries: ArrayList<PieEntry>
     private lateinit var colours: ArrayList<Int>
     private lateinit var pieDataSet: PieDataSet
@@ -55,6 +57,8 @@ class PurchaseLocationStatsFragment: Fragment() {
         emptyStateHeader = view.findViewById(R.id.purchase_loc_empty_state_header)
         emptyStateDescription = view.findViewById(R.id.purchase_loc_empty_state_description)
 
+        allColours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
+        allLocations = resources.getStringArray(R.array.purchase_items).toList() as ArrayList<String>
         entries = ArrayList()
         purchaseLocationFrequencyList = ArrayList()
 
@@ -86,10 +90,12 @@ class PurchaseLocationStatsFragment: Fragment() {
             emptyStateDescription.visibility = View.GONE
             chart.visibility = View.VISIBLE
 
-            colours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
+            colours = ArrayList()
             entries = ArrayList()
             for (location in purchaseLocationFrequencyList) {
                 entries.add(PieEntry(location.frequency.toFloat(), location.purchase_location))
+                var locationColour = allColours[allLocations.indexOf(location.purchase_location)]
+                colours.add(locationColour)
             }
 
             pieDataSet = PieDataSet(entries, "Type")

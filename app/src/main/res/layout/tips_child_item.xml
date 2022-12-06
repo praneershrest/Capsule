@@ -11,6 +11,8 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:textSize="18dp"
+        android:textColor="@color/fourth"
+        android:lineSpacingExtra="5dp"
         />
 
 </LinearLayout>
