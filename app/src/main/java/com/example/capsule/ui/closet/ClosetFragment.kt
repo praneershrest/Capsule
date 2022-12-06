@@ -76,6 +76,8 @@ class ClosetFragment : Fragment() {
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
     private lateinit var removeBtn: Button
+    private lateinit var topsListInitalize: List<ClosetItemData>
+    private var firstRun = false
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -108,6 +110,7 @@ class ClosetFragment : Fragment() {
         clothingDescriptionItems = ArrayList()
         categoryList = resources.getStringArray(R.array.category_items).toList()
         removeBtn = root.findViewById(R.id.remove_item_btn)
+        selectedTab = 0
 
         val closetViewModel =
             ViewModelProvider(this, factory).get(ClosetViewModel::class.java)
@@ -117,6 +120,7 @@ class ClosetFragment : Fragment() {
         }
 
         closetViewModel.topsFrequenciesLiveData.observe(requireActivity()) {
+            topsListInitalize = it
             if (categoryList[selectedTab] == "Tops"){
                 allFrequencies = it
                 removeEmptyState()
@@ -395,6 +399,10 @@ class ClosetFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                if (firstRun) {
+                    allFrequencies = topsListInitalize
+                    firstRun = true
+                }
                 currScrollPos = position
                 loadData(position)
             }
