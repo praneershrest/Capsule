@@ -101,4 +101,7 @@
     <string name="camera_save">Save</string>
     <string name="camera_cancel">Cancel</string>
 
+    <string name="camera_save">Save</string>
+    <string name="camera_cancel">Cancel</string>
+
 </resources>

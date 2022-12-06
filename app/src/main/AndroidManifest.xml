@@ -38,6 +38,20 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".camera.SaveActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".camera.CameraActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.welcome.Welcome"
             android:exported="false">
             <meta-data
