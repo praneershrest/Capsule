@@ -111,7 +111,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             if(it != null) {
                 topFlag = true
                 suggestedTop = it
-                suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedTopImageView.setImageURI(it.img_uri.toUri())
             } else {
                 topFlag = false
             }
@@ -121,7 +121,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             if(it != null) {
                 bottomFlag = true
                 suggestedBottom = it
-                suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedBottomImageView.setImageURI(it.img_uri.toUri())
             } else {
                 bottomFlag = false
             }
@@ -131,7 +131,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             if(it != null) {
                 outerWearFlag = true
                 suggestedOuterwear = it
-                suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedOuterwearImageView.setImageURI(it.img_uri.toUri())
             } else {
                 outerWearFlag = false
             }
@@ -141,7 +141,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             if(it != null) {
                 shoesFlag = true
                 suggestedShoes = it
-                suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedShoesImageView.setImageURI(it.img_uri.toUri())
             } else {
                 shoesFlag = false
             }

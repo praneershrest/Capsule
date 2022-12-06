@@ -24,11 +24,11 @@ interface ClothingHistoryDatabaseDao {
     @Query("DELETE from clothing_history_table")
     fun deleteAllClothingHistory()
 
-    @Query("SELECT CH.clothing_id, C.name, C.img_uri, count(CH.clothing_id) as frequency " +
+    @Query("SELECT C.id, C.name, C.img_uri, count(CH.clothing_id) as frequency " +
             "FROM clothing_table C " +
-            "LEFT OUTER JOIN clothing_history_table CH ON C.id = CH.clothing_id " +
+            "LEFT JOIN clothing_history_table CH ON C.id = CH.clothing_id " +
             "WHERE C.category=:category " +
-            "GROUP BY CH.clothing_id " +
+            "GROUP BY C.id " +
             "ORDER BY frequency DESC")
     fun getItemFrequenciesForCategory(category : String): Flow<List<ItemWearFrequency>>
 

@@ -105,8 +105,7 @@ class ItemDetailsFragment : Fragment() {
 
         imageView = view.findViewById(R.id.current_pic_view)
         imgUri = Uri.parse(imgUriString)
-        val bitmap = Util.getBitmap(requireActivity(), imgUri)
-        imageView.setImageBitmap(bitmap)
+        imageView.setImageURI(imgUri)
 
         nameEditText = view.findViewById(R.id.itemName)
         priceEditText = view.findViewById(R.id.price)
