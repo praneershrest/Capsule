@@ -295,7 +295,10 @@ class ClosetFragment : Fragment() {
     }
 
     private fun deleteItem(closetViewModelLocal : ClosetViewModel) {
+        var imgToDeleteUri = Uri.parse(allFrequencies[currScrollPos].img_uri)
+        val contentResolver: ContentResolver = requireActivity().contentResolver
         closetViewModelLocal.remove(allFrequencies[currScrollPos].id)
+        contentResolver.delete(imgToDeleteUri, null, null)
     }
 
     private fun createDialog(closetViewModelLocal : ClosetViewModel){
