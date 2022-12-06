@@ -93,7 +93,7 @@ class ItemDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = root.findNavController()
         if (!renderPage){
-            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
+            navController.popBackStack()
             return
         }
 
@@ -237,8 +237,7 @@ class ItemDetailsFragment : Fragment() {
 
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
-            // TODO - possibly figure out the proper way to handle fragments but this works right now
-            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
+            navController.popBackStack()
         }
     }
 }
