@@ -1,31 +1,28 @@
 package com.example.capsule.ui.itemDetails
 
+import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.capsule.MainActivity.Companion.menuItems
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
 import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
+import com.example.capsule.utils.Util
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView
 import java.io.File
 
@@ -97,16 +94,14 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = root.findNavController()
-        // TODO - Need to fix fragment transitions
         if (!renderPage){
-            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
+            navController.popBackStack()
             return
         }
 
         imageView = view.findViewById(R.id.current_pic_view)
         imgUri = Uri.parse(imgUriString)
-        val bitmap = Util.getBitmap(requireActivity(), imgUri)
-        imageView.setImageBitmap(bitmap)
+        imageView.setImageURI(imgUri)
 
         nameEditText = view.findViewById(R.id.itemName)
         priceEditText = view.findViewById(R.id.price)
@@ -117,15 +112,45 @@ class ItemDetailsFragment : Fragment() {
         val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
             if (formIsValid()) {
-                onSaveEntry()
+                createDialog()
             } else {
                 if (requireActivity().applicationContext != null) {
-                    Toast.makeText(requireActivity().applicationContext, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_fill_all_fields), Toast.LENGTH_SHORT).show()
                 }
             }
         }
         createAdaptors()
 
+    }
+
+    private fun createDialog(){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
+        var textView: TextView = customLayout.findViewById(R.id.dialogText)
+        var submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
+        var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
+        submitBtn.text = getString(R.string.yes_btn_msg)
+        cancelBtn.text = getString(R.string.cancel_btn_msg)
+        textView.text = getString(R.string.confirm_upload_prompt)
+        builder.setView(customLayout)
+
+        val dialog: AlertDialog = builder.create()
+        submitBtn.setOnClickListener{
+            dialog.dismiss()
+            Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_saved), Toast.LENGTH_SHORT).show()
+            onSaveEntry()
+        }
+        cancelBtn.setOnClickListener{
+            dialog.dismiss()
+        }
+        val window: Window? = dialog.window
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        dialog.show()
     }
 
     private fun createAdaptors() {
@@ -165,10 +190,9 @@ class ItemDetailsFragment : Fragment() {
         arguments?.clear()
         arguments = null
         if (!saved){
-            // TODO - Need to figure out to delete existing file items
-//            if (imgFile != null) {
-//                imgFile.delete()
-//            }
+            if (imgFile != null) {
+                imgFile.delete()
+            }
         }
         super.onDestroy()
     }
@@ -190,7 +214,7 @@ class ItemDetailsFragment : Fragment() {
         var price = "0.00"
         if (priceEditText.text.toString().isNotEmpty()) {
             val priceInput = priceEditText.text.toString()
-            price = priceInput.subSequence(1,priceInput.length).toString()
+            price = priceInput.subSequence(1,priceInput.length).toString().replace(",","")
         }
         val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
         val clothingEntry = Clothing(
@@ -217,8 +241,7 @@ class ItemDetailsFragment : Fragment() {
 
         val nextFrag: Fragment? = ClosetFragment()
         if (nextFrag != null) {
-            // TODO - possibly figure out the proper way to handle fragments but this works right now
-            navController.navigate(R.id.action_itemDetailsFragment_to_navigation_closet)
+            navController.popBackStack()
         }
     }
 }

@@ -1,10 +1,16 @@
 package com.example.capsule.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 
-@Entity(tableName = "clothing_history_table")
+@Entity(tableName = "clothing_history_table", foreignKeys = [
+    ForeignKey(
+        entity = Clothing::class,
+        parentColumns = ["id"],
+        childColumns = ["clothing_id"],
+        onDelete = CASCADE,
+    )
+])
 class ClothingHistory (
     @PrimaryKey(autoGenerate = true)
     val id : Long = 0L,

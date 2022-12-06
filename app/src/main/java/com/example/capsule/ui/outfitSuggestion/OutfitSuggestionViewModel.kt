@@ -60,8 +60,6 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
             _weather.value = chosenWeather
             _season.value = chosenSeason
             _temp.value = chosenTemp
-            println("capsule-> in updateSeason chosenSeason is: $chosenSeason and chosenWeather is: $chosenWeather")
-            println("capsule-> in updateSeason chosenTemp is: $chosenTemp")
             repository.suggestedClothingByCategoryForSeason("Tops", chosenSeason).take(1).collect {
                 _suggestedTopLiveData.value = it
             }

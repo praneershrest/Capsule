@@ -1,23 +1,26 @@
 package com.example.capsule.ui.closet
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewStub
+import android.view.*
 import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +28,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -33,10 +35,9 @@ import com.example.capsule.database.Repository
 import com.example.capsule.databinding.FragmentClosetBinding
 import com.example.capsule.model.Clothing
 import com.example.capsule.ui.itemDetails.ItemDetailsFragment
+import com.example.capsule.utils.Util
 import com.google.android.material.tabs.TabLayout
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 // TODO - Improve styling of the fragment
@@ -51,7 +52,6 @@ class ClosetFragment : Fragment() {
     private lateinit var galleryResult: ActivityResultLauncher<Intent>
     private lateinit var imgUri: Uri
     private lateinit var imgFile: File
-
     private lateinit var tabLayout: TabLayout
     private lateinit var sliderItems: ArrayList<SliderItem>
     private lateinit var clothingDescriptionItems: ArrayList<Pair<String, String>>
@@ -61,6 +61,7 @@ class ClosetFragment : Fragment() {
     private lateinit var allFrequencies: List<ClosetItemData>
 
     private var selectedTab = 0
+    private var currScrollPos = 0
 
     private lateinit var emptyStateIcon: ImageView
     private lateinit var emptyStateHeader: TextView
@@ -74,6 +75,7 @@ class ClosetFragment : Fragment() {
     private lateinit var clothesTitle: TextView
     private lateinit var costPerWear: TextView
     private lateinit var categoryList: List<String>
+    private lateinit var removeBtn: Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -105,6 +107,7 @@ class ClosetFragment : Fragment() {
 
         clothingDescriptionItems = ArrayList()
         categoryList = resources.getStringArray(R.array.category_items).toList()
+        removeBtn = root.findViewById(R.id.remove_item_btn)
 
         val closetViewModel =
             ViewModelProvider(this, factory).get(ClosetViewModel::class.java)
@@ -120,8 +123,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.tshirt)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -133,8 +138,10 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.trousers)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
         }
@@ -146,8 +153,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.coat)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -159,8 +169,11 @@ class ClosetFragment : Fragment() {
                 if (isAdded && allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
                 }  else {
                     displayEmptyState(R.drawable.sandal)
+                    removeBtn.visibility = View.INVISIBLE
+
                 }
             }
         }
@@ -196,8 +209,11 @@ class ClosetFragment : Fragment() {
                 if (allFrequencies.isNotEmpty()) {
                     loadData(0)
                     instantiateHorizontalScrollView()
+                    removeBtn.visibility = View.VISIBLE
+
                 } else {
                     displayEmptyState(categoryImg)
+                    removeBtn.visibility = View.INVISIBLE
                 }
             }
 
@@ -224,6 +240,10 @@ class ClosetFragment : Fragment() {
             noInventoryView.visibility = View.VISIBLE
         }
 
+        removeBtn.setOnClickListener { view ->
+            createDialog(closetViewModel)
+        }
+
         return root
     }
 
@@ -243,11 +263,13 @@ class ClosetFragment : Fragment() {
                 val intent = result.data
                 if (intent != null) {
                     val galleryUri = intent.data!!
-                    val bitmap = Util.getBitmap(requireActivity(), galleryUri)
-                    // Referenced from https://stackoverflow.com/questions/18080474/download-an-image-file-and-replace-existing-image-file
                     try {
+                        val inputStream = requireActivity().contentResolver.openInputStream(galleryUri)
                         val out = FileOutputStream(imgFile)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                        if (inputStream != null) {
+                            copyStream(inputStream, out)
+                            inputStream.close()
+                        }
                         out.flush()
                         out.close()
 
@@ -272,7 +294,55 @@ class ClosetFragment : Fragment() {
         }
     }
 
+    private fun deleteItem(closetViewModelLocal : ClosetViewModel) {
+        var imgToDeleteUri = Uri.parse(allFrequencies[currScrollPos].img_uri)
+        val contentResolver: ContentResolver = requireActivity().contentResolver
+        closetViewModelLocal.remove(allFrequencies[currScrollPos].id)
+        contentResolver.delete(imgToDeleteUri, null, null)
+    }
+
+    private fun createDialog(closetViewModelLocal : ClosetViewModel){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
+        var textView: TextView = customLayout.findViewById(R.id.dialogText)
+        var submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
+        var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
+        submitBtn.text = getString(R.string.yes_btn_msg)
+        cancelBtn.text = getString(R.string.cancel_btn_msg)
+        textView.text = getString(R.string.remove_item_prompt)
+        builder.setView(customLayout)
+
+        val dialog: AlertDialog = builder.create()
+        submitBtn.setOnClickListener{
+            dialog.dismiss()
+            Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_removed), Toast.LENGTH_SHORT).show()
+            deleteItem(closetViewModelLocal)
+        }
+        cancelBtn.setOnClickListener{
+            dialog.dismiss()
+        }
+        val window: Window? = dialog.window
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        dialog.show()
+    }
+
+    @Throws(IOException::class)
+    private fun copyStream(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        while (input.read(buffer).also { bytesRead = it } != -1) {
+            output.write(buffer, 0, bytesRead)
+        }
+    }
+
     private fun loadData(idx: Int){
+        clothesTitle = root.findViewById(R.id.clothes_title)
+        costPerWear = root.findViewById(R.id.price_per_wear)
         clothesTitle.text = ""
         costPerWear.text = ""
         clothingDescriptionItems.clear()
@@ -283,19 +353,19 @@ class ClosetFragment : Fragment() {
             clothesTitle.text = itemWearFreq.name
             costPerWear.text = computePricePerWear(itemWearFreq.price, itemWearFreq.frequency)
 
-            clothingDescriptionItems.add(Pair("Category", itemWearFreq.category))
             clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
             clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
-            clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
+            clothingDescriptionItems.add(Pair("Price", "$${String.format("%,.2f", itemWearFreq.price)}"))
             clothingDescriptionItems.add(Pair("Purchase Location", itemWearFreq.purchase_location))
 
+            clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
             clothingDescriptionListView.adapter = ClothingListAdapter(requireActivity(), clothingDescriptionItems)
         }
     }
 
     private fun computePricePerWear(price: Double, freq: Int): String {
         val costPerWear = (price / freq)
-        return "$${String.format("%.2f", costPerWear)} / wear"
+        return "$${String.format("%,.2f", costPerWear)} / wear"
     }
 
 
@@ -303,11 +373,11 @@ class ClosetFragment : Fragment() {
         sliderItems = ArrayList()
 
         allFrequencies.forEach {
-            val imgUri = Uri.parse(it.img_uri)
-            val bitmap = Util.getBitmap(requireActivity(), imgUri)
-            sliderItems.add(SliderItem(bitmap))
+            val imgUri = it.img_uri.toUri()
+            sliderItems.add(SliderItem(imgUri))
         }
 
+        viewPager2 = root.findViewById(R.id.closet_viewpager)
         viewPager2.adapter = SliderAdapter(sliderItems, viewPager2)
         viewPager2.clipToPadding = false
         viewPager2.clipChildren = false
@@ -325,6 +395,7 @@ class ClosetFragment : Fragment() {
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                currScrollPos = position
                 loadData(position)
             }
         })

@@ -13,7 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -21,7 +23,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.capsule.R
-import com.example.capsule.utils.Util
 import com.example.capsule.utils.Util.Weather
 import com.example.capsule.api.WeatherApi
 import com.example.capsule.database.ClothingDatabase
@@ -53,6 +54,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var suggestedShoesImageView: ImageView
     private lateinit var logSuggestedOutfitButton: Button
     private lateinit var logManualOutfitButton: Button
+    private lateinit var progressBar : ProgressBar
 
     private lateinit var calendar: Calendar
 
@@ -61,6 +63,11 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var season:String
     private lateinit var weatherImageView: ImageView
     private lateinit var tempTextView: TextView
+
+    private var topFlag = false
+    private var bottomFlag = false
+    private var outerWearFlag = false
+    private var shoesFlag = false
 
     private var _binding: FragmentOutfitSuggestionsBinding? = null
 
@@ -86,12 +93,30 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
         weatherImageView = root.findViewById(R.id.weather_iv)
         tempTextView = root.findViewById(R.id.temperature_tv)
+        progressBar = root.findViewById(R.id.progress_bar)
 
+        tempTextView.text = getString(R.string.creating_outfit)
+        weatherImageView.visibility = View.GONE
 
         weatherApi = WeatherApi()
         initLocationManager()
         initOutfitSuggestion()
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val currentDay = Calendar.getInstance()
+        val lastSubmissionDay = Calendar.getInstance()
+
+        lastSubmissionDay.timeInMillis = sharedPreferences.getLong(getString(R.string.has_inserted_for_day_key), 0L)
+
+        if (currentDay.get(Calendar.DAY_OF_YEAR) == lastSubmissionDay.get(Calendar.DAY_OF_YEAR) ||
+            currentDay.get(Calendar.YEAR) == lastSubmissionDay.get(Calendar.YEAR)) {
+            findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_history)
+        }
+
     }
 
     private fun initOutfitSuggestion(){
@@ -103,41 +128,48 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         outfitSuggestionViewModel = ViewModelProvider(this, factory)[OutfitSuggestionViewModel::class.java]
 
         outfitSuggestionViewModel.suggestedTopLiveData.observe(requireActivity()) {
-            println("capsule-> TOP OBSERVER $it")
             if(it != null) {
+                topFlag = true
                 suggestedTop = it
-                suggestedTopImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedTopImageView.setImageURI(it.img_uri.toUri())
+            } else {
+                topFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
-            println("capsule-> BOTTOM OBSERVER $it")
             if(it != null) {
+                bottomFlag = true
                 suggestedBottom = it
-                suggestedBottomImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedBottomImageView.setImageURI(it.img_uri.toUri())
+            } else {
+                bottomFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
-            println("capsule-> OUTERWEAR OBSERVER $it")
             if(it != null) {
+                outerWearFlag = true
                 suggestedOuterwear = it
-                suggestedOuterwearImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedOuterwearImageView.setImageURI(it.img_uri.toUri())
+            } else {
+                outerWearFlag = false
             }
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
-            println("capsule-> SHOES OBSERVER $it")
             if(it != null) {
+                shoesFlag = true
                 suggestedShoes = it
-                suggestedShoesImageView.setImageBitmap(Util.getBitmap(requireActivity(), it.img_uri.toUri()))
+                suggestedShoesImageView.setImageURI(it.img_uri.toUri())
+            } else {
+                shoesFlag = false
             }
 
         }
 
         outfitSuggestionViewModel.season.observe(requireActivity()){
             season = it
-//            println("DEBUG in observer $season")
         }
 
         outfitSuggestionViewModel.weather.observe(requireActivity()){
@@ -147,49 +179,64 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         outfitSuggestionViewModel.temp.observe(requireActivity()){
             val tempText = it.toString() + "ºC"
             tempTextView.text = tempText
+            progressBar.visibility = View.GONE
         }
 
 
         logSuggestedOutfitButton.setOnClickListener {
-            if(::suggestedTop.isInitialized) {
+            var clothingInserted = false
+            if(topFlag && ::suggestedTop.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedTop.id,
                     date = calendar.timeInMillis,
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            if(::suggestedBottom.isInitialized) {
+            if(bottomFlag && ::suggestedBottom.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedBottom.id,
                     date = calendar.timeInMillis,
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            if(::suggestedOuterwear.isInitialized) {
+            if(outerWearFlag && ::suggestedOuterwear.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedOuterwear.id,
                     date = calendar.timeInMillis,
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            if(::suggestedShoes.isInitialized) {
+            if(shoesFlag && ::suggestedShoes.isInitialized) {
                 val entry = ClothingHistory(
                     clothingId = suggestedShoes.id,
                     date = calendar.timeInMillis,
                     isSuggested = true
                 )
                 outfitSuggestionViewModel.insert(entry)
+                clothingInserted = true
             }
-            // TODO: change Fragment to OutfitHistory
+            if (clothingInserted) {
+                findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_history)
+                with(requireActivity().getPreferences(Context.MODE_PRIVATE).edit()) {
+                    putLong(getString(R.string.has_inserted_for_day_key), calendar.timeInMillis)
+                    apply()
+                }
+                Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireActivity(), R.string.empty_outfit_log, Toast.LENGTH_SHORT).show()
+            }
         }
 
         // TODO handle moving to OutfitFragment
         logManualOutfitButton.setOnClickListener {
-            println("LOG MANUAL OUTFIT CLICKED")
-            findNavController().navigate(R.id.action_navigation_outfits_to_navigation_outfits_manual)
+            findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_manual)
         }
     }
 
@@ -221,6 +268,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     private fun getWeatherIcon(string: String) {
+        weatherImageView.visibility = View.VISIBLE
         if (string == Weather.THUNDER){
                 weatherImageView.setImageResource(R.drawable.thunder_icon)
             }

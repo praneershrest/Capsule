@@ -2,6 +2,7 @@ package com.example.capsule.ui.closet
 
 data class ClosetItemData(
     val clothing_id: Long,
+    val id: Long,
     val name: String,
     val frequency: Int,
     val img_uri: String,
