@@ -19,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -299,9 +298,15 @@ class ClosetFragment : Fragment() {
 
     private fun deleteItem(closetViewModelLocal : ClosetViewModel) {
         val imgToDeleteUri = Uri.parse(allFrequencies[currScrollPos].img_uri)
-        val contentResolver: ContentResolver = requireActivity().contentResolver
         closetViewModelLocal.remove(allFrequencies[currScrollPos].id)
-        contentResolver.delete(imgToDeleteUri, null, null)
+        val file = File(imgToDeleteUri.path!!)
+        if (file.exists()){
+            file.delete()
+        }
+        else {
+            val contentResolver: ContentResolver = requireActivity().contentResolver
+            contentResolver.delete(imgToDeleteUri, null, null)
+        }
     }
 
     private fun createDialog(closetViewModelLocal : ClosetViewModel){
