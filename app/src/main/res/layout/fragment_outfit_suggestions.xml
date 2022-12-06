@@ -22,6 +22,12 @@
         android:layout_marginBottom="25dp">
 
 <!--    TODO Icon needs to change depending on weather -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"/>
+
         <ImageView
             android:id="@+id/weather_iv"
             android:layout_width="32dp"

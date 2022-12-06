@@ -81,5 +81,6 @@
 
     <string name="invalid_manual_outfit_log">Please select at least 1 item of clothing</string>
     <string name="log_outfit">Log Outfit</string>
+    <string name="creating_outfit">Creating Outfit</string>
 
 </resources>

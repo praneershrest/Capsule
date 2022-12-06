@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -53,6 +54,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var suggestedShoesImageView: ImageView
     private lateinit var logSuggestedOutfitButton: Button
     private lateinit var logManualOutfitButton: Button
+    private lateinit var progressBar : ProgressBar
 
     private lateinit var calendar: Calendar
 
@@ -91,7 +93,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         logManualOutfitButton = root.findViewById(R.id.log_manual_outfit_btn)
         weatherImageView = root.findViewById(R.id.weather_iv)
         tempTextView = root.findViewById(R.id.temperature_tv)
+        progressBar = root.findViewById(R.id.progress_bar)
 
+        tempTextView.text = getString(R.string.creating_outfit)
 
         weatherApi = WeatherApi()
         initLocationManager()
@@ -174,6 +178,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         outfitSuggestionViewModel.temp.observe(requireActivity()){
             val tempText = it.toString() + "ºC"
             tempTextView.text = tempText
+            progressBar.visibility = View.GONE
         }
 
 
@@ -250,6 +255,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
+        progressBar.visibility = View.VISIBLE
         outfitSuggestionViewModel.updateSeason(location, weatherApi)
     }
 
