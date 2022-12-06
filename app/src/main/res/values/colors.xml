@@ -12,10 +12,13 @@
     <color name="grey">#C1C1C1</color>
     <color name="red">#E47474</color>
 
-    <color name="graph_1_teal">#418f83</color>
-    <color name="graph_2_light_teal">#459a73</color>
-    <color name="graph_3_green">#60a159</color>
-    <color name="graph_4_lime">#88a538</color>
-    <color name="graph_5_ochre">#b7a412</color>
-    <color name="graph_6_orange">#ec9a00</color>
+    <color name="graph_0_blue">#8BB59D</color>
+    <color name="graph_1_teal">#7BAB96</color>
+    <color name="graph_2_light_teal">#6BA18E</color>
+    <color name="graph_3_green">#5B9687</color>
+    <color name="graph_4_lime">#4B8C7F</color>
+    <color name="graph_5_ochre">#E4A874</color>
+    <color name="graph_6_orange">#E19771</color>
+    <color name="graph_7_salmon">#DD866D</color>
+    <color name="graph_8_red">#DA756A</color>
 </resources>

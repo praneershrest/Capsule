@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.example.capsule.R
 
@@ -42,6 +43,9 @@ class FrequencyListAdapter (
         rankTextView.text = (position+1).toString()
         nameTextView.text = item.name
         freqTextView.text = "${item.frequency} ×"
+        if (item.frequency == 0) {
+            freqTextView.setTextColor(ContextCompat.getColor(context,R.color.red))
+        }
         itemImgView.setImageURI(item.img_uri.toUri())
 
         return view
