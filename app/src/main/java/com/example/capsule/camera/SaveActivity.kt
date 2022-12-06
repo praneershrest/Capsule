@@ -12,19 +12,20 @@ class SaveActivity : AppCompatActivity() {
     private lateinit var newPictureURI: Uri
     private lateinit var imageView: ImageView
     private lateinit var saveButton: Button
-    private lateinit var cancelButton: Button
+    private lateinit var retakeButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save)
         imageView = findViewById(R.id.image_preview)
         saveButton = findViewById(R.id.picture_save_button)
-        cancelButton = findViewById(R.id.picture_cancel_button)
+        retakeButton = findViewById(R.id.picture_retake_button)
         newPictureURI = intent.getParcelableExtra("uri")!!
         imageView.setImageURI(newPictureURI)
+        supportActionBar?.hide()
 
         saveButton.setOnClickListener{save()}
-        cancelButton.setOnClickListener{cancel()}
+        retakeButton.setOnClickListener{cancel()}
 
     }
 

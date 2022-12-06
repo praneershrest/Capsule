@@ -16,21 +16,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/image_capture_button"-->
+<!--        android:layout_width="110dp"-->
+<!--        android:layout_height="110dp"-->
+<!--        android:layout_marginStart="148dp"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:layout_marginEnd="148dp"-->
+<!--        android:layout_marginBottom="50dp"-->
+<!--        android:elevation="2dp"-->
+<!--        android:text="@string/take_photo"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/viewFinder"-->
+<!--        app:layout_constraintVertical_bias="0.346" />-->
+
+    <ImageButton
         android:id="@+id/image_capture_button"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="50dp"
-        android:elevation="2dp"
-        android:text="@string/take_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="156dp"
+        android:layout_marginBottom="70dp"
+        android:background="@color/white"
+        android:scaleType="fitXY"
+        android:src="@drawable/camera_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewFinder"
-        app:layout_constraintVertical_bias="0.346" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFinder" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_centerline"

@@ -92,7 +92,7 @@
     <string name="log_outfit">Log Outfit</string>
     <string name="creating_outfit">Creating outfit</string>
 
-    <string name="camera_save">Save</string>
-    <string name="camera_cancel">Cancel</string>
+    <string name="camera_save">Save Photo</string>
+    <string name="camera_retake">Retake Photo</string>
 
 </resources>
