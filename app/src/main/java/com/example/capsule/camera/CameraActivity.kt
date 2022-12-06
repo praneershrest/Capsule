@@ -75,8 +75,7 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
 
     private fun deleteCurrImage(){
         currImageFile.delete()
-        println("DEBUG capsule -> CAPSULE IN DELETE")
-        Toast.makeText(baseContext, "DELETED!", Toast.LENGTH_SHORT).show()
+//        println("DEBUG capsule -> CAPSULE IN DELETE")
     }
 
     private fun save(){
@@ -84,7 +83,7 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         intent.putExtra("uri", currImageUri)
         intent.putExtra("file", currImageFile)
         setResult(RESULT_OK, intent)
-        println("DEBUG capsule -> calling finish")
+//        println("DEBUG capsule -> calling finish")
         finish()
     }
 
@@ -118,7 +117,6 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         val intent = Intent(this, SaveActivity::class.java)
         intent.putExtra("uri", output.savedUri)
         saveActivityResult.launch(intent)
-        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         currImageUri = output.savedUri!!
         Log.d(TAG, msg)
     }
