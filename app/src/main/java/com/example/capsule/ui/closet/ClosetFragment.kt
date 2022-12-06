@@ -352,7 +352,7 @@ class ClosetFragment : Fragment() {
 
             clothingDescriptionItems.add(Pair("Material", itemWearFreq.material))
             clothingDescriptionItems.add(Pair("Season", itemWearFreq.season))
-            clothingDescriptionItems.add(Pair("Price", "$${String.format("%.2f", itemWearFreq.price)}"))
+            clothingDescriptionItems.add(Pair("Price", "$${String.format("%,.2f", itemWearFreq.price)}"))
             clothingDescriptionItems.add(Pair("Purchase Location", itemWearFreq.purchase_location))
 
             clothingDescriptionListView = root.findViewById(R.id.clothingDetailsList)
@@ -362,7 +362,7 @@ class ClosetFragment : Fragment() {
 
     private fun computePricePerWear(price: Double, freq: Int): String {
         val costPerWear = (price / freq)
-        return "$${String.format("%.2f", costPerWear)} / wear"
+        return "$${String.format("%,.2f", costPerWear)} / wear"
     }
 
 
