@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.capsule.MainActivity.Companion.menuItems
 import com.example.capsule.R
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
@@ -22,6 +23,7 @@ import com.example.capsule.model.Clothing
 import com.example.capsule.ui.closet.ClosetFragment
 import com.example.capsule.utils.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView
 import java.io.File
 
 
@@ -227,7 +229,10 @@ class ItemDetailsFragment : Fragment() {
         itemDetailsViewModel.insert(clothingEntry)
 
         if(sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
-            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view).visibility = View.VISIBLE
+            val navView = requireActivity().findViewById<CurvedBottomNavigationView>(R.id.nav_view)
+            navView.visibility = View.VISIBLE
+            navView.setMenuItems(menuItems,1)
+
             with(sharedPreferences.edit()) {
                 putBoolean(getString(R.string.first_time_user), false)
                 apply()
