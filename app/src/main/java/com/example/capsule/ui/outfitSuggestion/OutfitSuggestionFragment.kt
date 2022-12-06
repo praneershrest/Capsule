@@ -221,7 +221,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
                     putLong(getString(R.string.has_inserted_for_day_key), calendar.timeInMillis)
                     apply()
                 }
-                Toast.makeText(requireActivity(), R.string.empty_outfit_log, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.outfit_logged, Toast.LENGTH_SHORT).show()
             }
             else {
                 Toast.makeText(requireActivity(), R.string.empty_outfit_log, Toast.LENGTH_SHORT).show()
