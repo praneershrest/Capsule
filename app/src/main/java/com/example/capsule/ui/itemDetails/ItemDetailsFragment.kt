@@ -190,7 +190,7 @@ class ItemDetailsFragment : Fragment() {
         arguments?.clear()
         arguments = null
         if (!saved){
-            if (imgFile != null) {
+            if (::imgFile.isInitialized && imgFile != null) {
                 imgFile.delete()
             }
         }
