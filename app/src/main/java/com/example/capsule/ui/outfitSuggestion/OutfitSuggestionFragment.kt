@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -56,6 +57,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var logManualOutfitButton: Button
     private lateinit var progressBar : ProgressBar
 
+    private lateinit var outfitSuggestionTopLayout: LinearLayout
+    private lateinit var outfitSuggestionBottomLayout: LinearLayout
+    private lateinit var emptyStateLinearLayout: LinearLayout
+
     private lateinit var calendar: Calendar
 
     private lateinit var weatherApi: WeatherApi
@@ -94,6 +99,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         weatherImageView = root.findViewById(R.id.weather_iv)
         tempTextView = root.findViewById(R.id.temperature_tv)
         progressBar = root.findViewById(R.id.progress_bar)
+
+        outfitSuggestionTopLayout = root.findViewById(R.id.outfit_suggestion_top_layout)
+        outfitSuggestionBottomLayout = root.findViewById(R.id.outfit_suggestion_bottom_layout)
+        emptyStateLinearLayout = root.findViewById(R.id.outfit_suggestion_empty_state)
 
         tempTextView.text = getString(R.string.creating_outfit)
         weatherImageView.visibility = View.GONE
@@ -135,6 +144,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             } else {
                 topFlag = false
             }
+            displayOutfitSuggestion()
         }
 
         outfitSuggestionViewModel.suggestedBottomLiveData.observe(requireActivity()) {
@@ -145,6 +155,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             } else {
                 bottomFlag = false
             }
+            displayOutfitSuggestion()
         }
 
         outfitSuggestionViewModel.suggestedOuterwearLiveData.observe(requireActivity()) {
@@ -155,6 +166,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             } else {
                 outerWearFlag = false
             }
+            displayOutfitSuggestion()
         }
 
         outfitSuggestionViewModel.suggestedShoesLiveData.observe(requireActivity()) {
@@ -165,7 +177,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             } else {
                 shoesFlag = false
             }
-
+            displayOutfitSuggestion()
         }
 
         outfitSuggestionViewModel.season.observe(requireActivity()){
@@ -240,7 +252,6 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
     }
 
-
     private fun initLocationManager() {
         try {
             locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -289,6 +300,32 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
         else{
             weatherImageView.setImageResource(R.drawable.fog_icon)
+        }
+    }
+
+    private fun removeEmptyState() {
+        emptyStateLinearLayout.visibility = View.GONE
+        outfitSuggestionTopLayout.visibility = View.VISIBLE
+        outfitSuggestionBottomLayout.visibility = View.VISIBLE
+        logSuggestedOutfitButton.visibility = View.VISIBLE
+    }
+
+    private fun displayEmptyState() {
+        outfitSuggestionTopLayout.visibility = View.GONE
+        outfitSuggestionBottomLayout.visibility = View.GONE
+        logSuggestedOutfitButton.visibility = View.GONE
+        emptyStateLinearLayout.visibility = View.VISIBLE
+    }
+
+    private fun displayOutfitSuggestion() {
+        if (topFlag && bottomFlag && outerWearFlag && shoesFlag
+                && ::suggestedTop.isInitialized
+                && ::suggestedBottom.isInitialized
+                && ::suggestedShoes.isInitialized
+                && ::suggestedOuterwear.isInitialized) {
+            removeEmptyState()
+        } else {
+            displayEmptyState()
         }
     }
 
