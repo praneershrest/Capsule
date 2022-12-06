@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:text="@string/outfit_history_recent"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textColor="@color/fifth"
+        android:textSize="20sp"
         android:layout_marginBottom="20dp"/>
 
     <ListView

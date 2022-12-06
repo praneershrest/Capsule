@@ -58,16 +58,16 @@ class OutfitHistoryListAdapter(private val context: Context, private var list: L
             }
 
             if(uriStringList.size > 0 && uriStringList[0].isNotEmpty()) {
-                imageView1.setImageBitmap(Util.getBitmap(context, uriStringList[0].toUri()))
+                imageView1.setImageURI(uriStringList[0].toUri())
             }
             if(uriStringList.size > 1 && uriStringList[1].isNotEmpty()) {
-                imageView2.setImageBitmap(Util.getBitmap(context, uriStringList[1].toUri()))
+                imageView2.setImageURI(uriStringList[1].toUri())
             }
             if(uriStringList.size > 2 && uriStringList[2].isNotEmpty()) {
-                imageView3.setImageBitmap(Util.getBitmap(context, uriStringList[2].toUri()))
+                imageView3.setImageURI(uriStringList[2].toUri())
             }
             if(uriStringList.size > 3 && uriStringList[3].isNotEmpty()) {
-                imageView4.setImageBitmap(Util.getBitmap(context, uriStringList[3].toUri()))
+                imageView4.setImageURI(uriStringList[3].toUri())
             }
             if(!list[position].is_suggested) {
                 view.findViewById<TextView>(R.id.suggested_outfit_pin).visibility = View.GONE

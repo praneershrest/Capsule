@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/outfit_suggestion_title"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textColor="@color/fifth"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginBottom="14dp"/>
 
@@ -36,7 +36,8 @@
             android:id="@+id/temperature_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:textColor="@color/fourth" />
 
     </LinearLayout>
@@ -53,8 +54,9 @@
 
             <ImageView
                 android:id="@+id/suggested_top_iv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:contentDescription="@string/suggested_top"/>
 
             <Space
@@ -63,8 +65,9 @@
 
             <ImageView
                 android:id="@+id/suggested_bottom_iv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:contentDescription="@string/suggested_bottom"/>
 
         </LinearLayout>
@@ -76,8 +79,9 @@
 
             <ImageView
                 android:id="@+id/suggested_outerwear_iv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:contentDescription="@string/suggested_outerwear"/>
 
             <Space
@@ -86,8 +90,9 @@
 
             <ImageView
                 android:id="@+id/suggested_shoes_iv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:contentDescription="@string/suggested_shoes"/>
 
         </LinearLayout>

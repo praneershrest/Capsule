@@ -70,6 +70,7 @@
 
     <string name="capsule_logo">Capsule Logo</string>
     <string name="first_time_user">first_time_user</string>
+    <string name="has_inserted_for_day_key">HAS_INSERTED_FOR_DAY_KEY</string>
     <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
     <string name="button_welcome_page">Upload your closet</string>
 
@@ -78,9 +79,15 @@
     <string name="cancel_btn_msg">Cancel</string>
     <string name="remove_item_prompt">Remove item?</string>
 
+    <string name="manual_outfit_header">Log today\'s outfit</string>
     <string name="log_your_own_outfit">Log your own outfit</string>
     <string name="toast_msg_saved">Clothing item saved!</string>
     <string name="toast_msg_removed">Clothing item removed!</string>
     <string name="toast_msg_fill_all_fields">"Please fill in all fields."</string>
+    <string name="outfit_logged">Outfit logged!</string>
+    <string name="empty_outfit_log">Can\'t log an outfit with no clothing!</string>
+
+    <string name="invalid_manual_outfit_log">Please select at least 1 item of clothing</string>
+    <string name="log_outfit">Log Outfit</string>
 
 </resources>
