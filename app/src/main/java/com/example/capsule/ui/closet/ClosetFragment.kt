@@ -6,7 +6,6 @@ import android.content.ContentResolver
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -28,6 +27,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
+import com.example.capsule.camera.CameraActivity
 import com.example.capsule.database.ClothingDatabase
 import com.example.capsule.database.ClothingDatabaseDao
 import com.example.capsule.database.ClothingHistoryDatabaseDao
@@ -88,7 +88,7 @@ class ClosetFragment : Fragment() {
     ): View {
         _binding = FragmentClosetBinding.inflate(inflater, container, false)
         root = binding.root
-        Util.checkPermissions(requireActivity())
+//        Util.checkPermissions(requireActivity())
 
         sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
         database = ClothingDatabase.getInstance(requireActivity())
@@ -253,6 +253,9 @@ class ClosetFragment : Fragment() {
         cameraResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         { result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK){
+                val data = result.data!!
+                imgUri = data.getParcelableExtra("uri")!!
+                imgFile = data.getSerializableExtra("file") as File
                 startNextFragment()
             }
         }
@@ -295,7 +298,7 @@ class ClosetFragment : Fragment() {
     }
 
     private fun deleteItem(closetViewModelLocal : ClosetViewModel) {
-        var imgToDeleteUri = Uri.parse(allFrequencies[currScrollPos].img_uri)
+        val imgToDeleteUri = Uri.parse(allFrequencies[currScrollPos].img_uri)
         val contentResolver: ContentResolver = requireActivity().contentResolver
         closetViewModelLocal.remove(allFrequencies[currScrollPos].id)
         contentResolver.delete(imgToDeleteUri, null, null)
@@ -304,9 +307,9 @@ class ClosetFragment : Fragment() {
     private fun createDialog(closetViewModelLocal : ClosetViewModel){
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
-        var textView: TextView = customLayout.findViewById(R.id.dialogText)
-        var submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
-        var cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
+        val textView: TextView = customLayout.findViewById(R.id.dialogText)
+        val submitBtn: Button = customLayout.findViewById(R.id.dialog_submit_btn)
+        val cancelBtn: Button = customLayout.findViewById(R.id.dialog_cancel_btn)
         submitBtn.text = getString(R.string.yes_btn_msg)
         cancelBtn.text = getString(R.string.cancel_btn_msg)
         textView.text = getString(R.string.remove_item_prompt)
@@ -402,11 +405,13 @@ class ClosetFragment : Fragment() {
     }
 
     private fun onTakePhoto() {
-        imgFile = Util.createImageFile(requireActivity())
-        imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
+//        imgFile = Util.createImageFile(requireActivity())
+//        imgUri = FileProvider.getUriForFile(requireActivity(), "com.example.capsule", imgFile)
 
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri)
+//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri)
+
+        val intent = Intent(requireActivity(), CameraActivity::class.java)
         cameraResult.launch(intent)
     }
 
