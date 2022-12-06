@@ -96,6 +96,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         progressBar = root.findViewById(R.id.progress_bar)
 
         tempTextView.text = getString(R.string.creating_outfit)
+        weatherImageView.visibility = View.GONE
 
         weatherApi = WeatherApi()
         initLocationManager()
@@ -255,7 +256,6 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        progressBar.visibility = View.VISIBLE
         outfitSuggestionViewModel.updateSeason(location, weatherApi)
     }
 
@@ -268,6 +268,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     private fun getWeatherIcon(string: String) {
+        weatherImageView.visibility = View.VISIBLE
         if (string == Weather.THUNDER){
                 weatherImageView.setImageResource(R.drawable.thunder_icon)
             }
