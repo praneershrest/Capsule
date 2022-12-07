@@ -274,6 +274,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
     override fun onLocationChanged(location: Location) {
         outfitSuggestionViewModel.updateSeason(location, weatherApi, apiKey)
+        locationManager.removeUpdates(this)
     }
 
     private fun checkPermission(){
