@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.capsule.database.Repository
 import java.lang.IllegalArgumentException
 
+// ViewModel for retrieving statistics from the database
 class StatsViewModel(private val repository: Repository) : ViewModel() {
     val topsFrequencies = repository.topsFrequencies.asLiveData()
     val bottomsFrequencies = repository.bottomsFrequencies.asLiveData()
