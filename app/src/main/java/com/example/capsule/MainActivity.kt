@@ -16,12 +16,18 @@ import com.example.capsule.ui.welcome.Welcome
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem
 import np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView
 
+/**
+ *  Activity where it holds almost everything with bottom navigation view and fragments
+ *  Handles BottomNavigationView and first time user experience
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
 
     companion object {
+        // list of CbnMenuItems that defines the icon and animation that allows for fancy
+        // bottom navigation view
         val menuItems = arrayOf(
             CbnMenuItem(
                 R.drawable.ic_home_black_24dp,
@@ -47,9 +53,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // splash screen when launching app for first time or after closing app
         installSplashScreen().apply {  }
         super.onCreate(savedInstanceState)
 
+        // if the savedInstance not null, set the last tab we were on for bottom navigation
         val activeIndex = savedInstanceState?.getInt("activeIndex") ?: 0
 
         supportActionBar?.hide()
@@ -75,18 +83,22 @@ class MainActivity : AppCompatActivity() {
         navView.setMenuItems(menuItems, activeIndex)
         navView.setupWithNavController(navController)
 
+        // check if the user is launching the app for the very first time, if it is, go to welcome activity
         if(sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
             navView.visibility = View.GONE
             resultLauncher.launch(Intent(this, Welcome::class.java))
         }
     }
 
+    // get result when launching welcome activity
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_FIRST_USER) {
+            // automatically go to closet tab in bottom navigation view and add item since ther ewould be no items in closet
             binding.navView.onMenuItemClick(1)
         }
     }
 
+    // save the last tab we were on with the BottomNavigation view
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("activeIndex", binding.navView.getSelectedIndex())
         super.onSaveInstanceState(outState)

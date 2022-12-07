@@ -11,6 +11,10 @@ import com.bumptech.glide.Glide
 import com.example.capsule.R
 import com.example.capsule.utils.Util
 
+/**
+ * Adapter that allows for most recent outfits to be displayed as each item in ListView
+ * @property list : list of most recent clothing
+ */
 class OutfitHistoryListAdapter(private val context: Context, private var list: List<RecentClothing>) : BaseAdapter() {
     private lateinit var dateTextView: TextView
     private lateinit var imageView1: ImageView
@@ -40,6 +44,11 @@ class OutfitHistoryListAdapter(private val context: Context, private var list: L
         val uriStringList = ArrayList<String>()
         var show = true
 
+        // list of most recent individual clothing to form outfits
+        // check if the piece of clothing is the latest position of the list with same date
+        // if not, then don't show anything, if it is then get all clothing with the same date
+        // and show images
+        // done this way to make it work with any number of selected clothing from 1-4
         if((position-1) >= 0 && list[position-1].date == list[position].date) {
             show = false
         }
@@ -52,6 +61,7 @@ class OutfitHistoryListAdapter(private val context: Context, private var list: L
             imageView4 = view.findViewById(R.id.recent4)
 
             dateTextView.text = Util.millisToStringFormattedDate(list[position].date)
+            // add all the pieces of the clothing with the same date under the above condition
             list.forEach {
                 if(it.date == list[position].date) {
                     uriStringList.add(it.img_uri)
@@ -74,6 +84,7 @@ class OutfitHistoryListAdapter(private val context: Context, private var list: L
                 view.findViewById<TextView>(R.id.suggested_outfit_pin).visibility = View.GONE
             }
         }
+        // otherwise don't show anything
         else {
             view = View.inflate(context, R.layout.empty, null)
         }

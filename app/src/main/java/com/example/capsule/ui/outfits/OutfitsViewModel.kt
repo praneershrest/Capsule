@@ -5,9 +5,9 @@ import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
 
-// TODO add function to add clothing history to database
-//  and also change allClothingLiveData into List<List<Clothing>> where the row will
-//  represent each category of clothing
+/**
+ * View model that checks if any new clothes are inserted into the repository.
+ */
 class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
     private val allClothingTops : LiveData<List<Clothing>> = repository.getAllClothingInCategory("Tops").asLiveData()
@@ -17,6 +17,7 @@ class OutfitsViewModel(private val repository: Repository) : ViewModel() {
 
     val allClothingHistoryCategoryList = listOf(allClothingTops, allClothingPants, allClothingOuterwear, allClothingShoes)
 
+    // Check if each clothingHistory is has a valid clothingId, otherwise don't insert it
     fun insertOutfit(clothingHistory: List<ClothingHistory>) {
         for (ch in clothingHistory) {
             if (ch.clothingId != -1L) {

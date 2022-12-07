@@ -14,6 +14,9 @@ import com.example.capsule.database.ClothingHistoryDatabaseDao
 import com.example.capsule.database.Repository
 import java.util.Calendar
 
+/**
+ * Fragment that displays the most recent outfits worn in the past 7 days
+ */
 class OutfitHistory : Fragment() {
     private lateinit var database: ClothingDatabase
     private lateinit var clothingDatabaseDao: ClothingDatabaseDao
@@ -40,6 +43,7 @@ class OutfitHistory : Fragment() {
         calendar = Calendar.getInstance()
         initDates()
 
+        // initialize repository and viewmodel
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         historyDatabaseDao = database.clothingHistoryDatabaseDao
@@ -50,11 +54,13 @@ class OutfitHistory : Fragment() {
             factory
         )[OutfitHistoryViewModel::class.java]
 
+        // initialize listview with adapter
         listView = view.findViewById(R.id.outfit_history_listView)
         recentClothingList = ArrayList()
         adapter = OutfitHistoryListAdapter(requireActivity(), recentClothingList)
         listView.adapter = adapter
 
+        // add new outfit in UI if new outfit is added in database
         viewModel.clothingList.observe(requireActivity()) {
             recentClothingList = it
             adapter.replace(it)
@@ -64,6 +70,7 @@ class OutfitHistory : Fragment() {
         return view
     }
 
+    // calculate the past week dates
     private fun initDates() {
         endDate = calendar.timeInMillis
         calendar.add(Calendar.DAY_OF_YEAR,-7)

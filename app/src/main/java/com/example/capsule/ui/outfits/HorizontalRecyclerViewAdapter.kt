@@ -15,9 +15,10 @@ import com.example.capsule.model.Clothing
 // https://stackoverflow.com/questions/27194044/how-to-properly-highlight-selected-item-on-recyclerview
 /**
  * Adapter that allows for horizontal scrolling of the images that
+ * @property fragment fragment that this adapter was created in
  * @property clothingCategory the category of clothing such as Shirts or Jackets
  * @property clothing List of clothing entries
- * @property clothingSelectedListener
+ * @property clothingSelectedListener  interface function that gets called whenever a user clicks on a piece of clothing
  */
 class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
                                     private val clothingCategory: String,
@@ -29,7 +30,6 @@ class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
 
     /**
      * Interface to implement when you want to do something after a user selects a piece of clothing
-     *
      */
     interface OnClothingSelectedListener {
         fun onClothingSelected(clothingCategory : String, clothingId: Long)
@@ -50,11 +50,13 @@ class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         // set the first option to be the no clothing selected option
         var clothingId : Long = -1
         if (position == 0) {
             holder.imageView.setImageResource(R.drawable.ic_baseline_not_interested_24)
         }
+        // otherwise set the image view with the corresponding clothing with adjusted position
         else {
             val uri : Uri = Uri.parse(clothing[position-1].img_uri)
             Glide.with(fragment).load(uri).into(holder.imageView)
@@ -64,6 +66,7 @@ class HorizontalRecyclerViewAdapter(private val fragment: Fragment,
 
         holder.itemView.isSelected = selectedPos == position
 
+        // set onClickListener on the image itself and call the defined interface function
         holder.imageView.setOnClickListener {
             notifyItemChanged(selectedPos)
             selectedPos = holder.layoutPosition
