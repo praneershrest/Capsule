@@ -1,5 +1,8 @@
 package com.example.capsule.ui.closet
 
+/**
+ * Closet Object for special query to seperate data based on category
+ */
 data class ClosetItemData(
     val clothing_id: Long,
     val id: Long,

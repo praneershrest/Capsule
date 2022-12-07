@@ -8,6 +8,11 @@ import android.widget.TextView
 import com.example.capsule.R
 import com.example.capsule.ui.stats.ItemWearFrequency
 
+/**
+ * Custom adapter for displaying images titles and descriptions
+ * @param Context: Context stores the activityes context
+ * @param list: List<Pair<String, String>> tuple of the input titles and descriptions
+ */
 class ClothingListAdapter(
     private val context: Context,
     private var list: List<Pair<String, String>>,
@@ -25,6 +30,7 @@ class ClothingListAdapter(
     }
 
     override fun getView(pos: Int, convertView: View?, parent: ViewGroup?): View {
+        // get image view and title and set titles and descriptions
         val view: View = View.inflate(
             context,
             R.layout.clothing_description_item,
@@ -39,7 +45,5 @@ class ClothingListAdapter(
         description.text = stringTuple.second
 
         return view
-
     }
-
 }
