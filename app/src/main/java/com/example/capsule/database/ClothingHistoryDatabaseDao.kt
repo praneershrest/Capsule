@@ -36,7 +36,8 @@ interface ClothingHistoryDatabaseDao {
             "FROM clothing_table as C " +
             "LEFT JOIN clothing_history_table as CH ON C.id = CH.clothing_id " +
             "WHERE C.category=:category " +
-            "GROUP BY C.id")
+            "GROUP BY C.id " +
+            "ORDER BY C.name ASC")
     fun getAllClothingFrequencies(category: String) : Flow<List<ClosetItemData>>
 
     @Query("SELECT CH.clothing_id, CH.date, C.img_uri, CH.is_suggested " +
