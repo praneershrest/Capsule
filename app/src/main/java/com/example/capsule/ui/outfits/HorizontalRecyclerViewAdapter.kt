@@ -15,6 +15,7 @@ import com.example.capsule.model.Clothing
 // https://stackoverflow.com/questions/27194044/how-to-properly-highlight-selected-item-on-recyclerview
 /**
  * Adapter that allows for horizontal scrolling of the images that
+ * @property fragment fragment that this adapter was created in
  * @property clothingCategory the category of clothing such as Shirts or Jackets
  * @property clothing List of clothing entries
  * @property clothingSelectedListener  interface function that gets called whenever a user clicks on a piece of clothing
