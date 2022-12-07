@@ -11,6 +11,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.capsule.R
 import com.example.capsule.ui.stats.ItemWearFrequency
 
+
+/**
+ * Custom adapter for displaying images in the horizontal scrollable carousal
+ * @param sliderItem: List<SliderItem>stores the activityes context
+ * @param viewPager: ViewPager2: List<Pair<String, String>> tuple of the input titles and descriptions
+ */
 class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
     private lateinit var viewPager2: ViewPager2
     private lateinit var sliderItems: List<SliderItem>
@@ -20,7 +26,7 @@ class SliderAdapter(sliderItem: List<SliderItem>, viewPager: ViewPager2): Recycl
         sliderItems = sliderItem
     }
 
-
+    // set imageview with the given uri
     class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var imageView: ImageView
         init {
