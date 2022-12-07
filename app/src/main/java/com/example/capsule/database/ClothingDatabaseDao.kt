@@ -14,7 +14,7 @@ interface ClothingDatabaseDao {
     @Insert
     suspend fun insertClothing(clothing: Clothing)
 
-    @Query("SELECT * FROM clothing_table")
+    @Query("SELECT * FROM clothing_table ORDER BY name ASC")
     fun getAllClothing() : Flow<List<Clothing>>
 
     @Query("SELECT material FROM clothing_table")
@@ -23,7 +23,7 @@ interface ClothingDatabaseDao {
     @Query("SELECT purchase_location FROM clothing_table")
     fun getAllPurchaseLocations() : Flow<List<String>>
 
-    @Query("SELECT * FROM clothing_table WHERE category = :category")
+    @Query("SELECT * FROM clothing_table WHERE category = :category ORDER BY name ASC")
     fun getAllClothingInCategory(category: String) : Flow<List<Clothing>>
 
     @Query("SELECT A.id, A.name, A.category, A.price, A.material, A.season, A.purchase_location, A.img_uri FROM " +
