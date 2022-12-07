@@ -2,6 +2,7 @@ package com.example.capsule.ui.outfitSuggestion
 
 import android.Manifest
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.location.Criteria
 import android.location.Location
@@ -68,6 +69,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     private lateinit var season:String
     private lateinit var weatherImageView: ImageView
     private lateinit var tempTextView: TextView
+    private lateinit var apiKey: String
 
     private var topFlag = false
     private var bottomFlag = false
@@ -110,6 +112,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         weatherApi = WeatherApi()
         initLocationManager()
         initOutfitSuggestion()
+
+        val ai: ApplicationInfo = requireActivity().applicationContext.packageManager
+            .getApplicationInfo(requireActivity().applicationContext.packageName, PackageManager.GET_META_DATA)
+        apiKey = ai.metaData["apiKey"].toString()
         return root
     }
 
@@ -267,7 +273,8 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        outfitSuggestionViewModel.updateSeason(location, weatherApi)
+        outfitSuggestionViewModel.updateSeason(location, weatherApi, apiKey)
+        locationManager.removeUpdates(this)
     }
 
     private fun checkPermission(){

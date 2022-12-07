@@ -18,11 +18,12 @@ class WeatherApi{
     private lateinit var season: String
     private lateinit var weather: String
 
-    suspend fun getWeatherTemp(location: Location) : ArrayList<String>{
+    suspend fun getWeatherTemp(location: Location, apiKey: String) : ArrayList<String>{
         val lat = location.latitude
         val long = location.longitude
         val url =
-            "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=500de63fee376381d50c5e71803fc4d7"
+            "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid="+apiKey
+//        println("DEBUG -> capsule  $url")
         val job = CoroutineScope(Dispatchers.Default).launch{
                 parseJson(url)
                 setSeason()

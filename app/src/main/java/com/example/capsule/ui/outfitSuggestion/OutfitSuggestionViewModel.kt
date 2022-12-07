@@ -48,12 +48,12 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
         repository.insertClothingHistory(clothingHistoryEntry)
     }
 
-    fun updateSeason(location: Location, weatherApi: WeatherApi){
+    fun updateSeason(location: Location, weatherApi: WeatherApi, apiKey:String){
         var chosenSeason: String
         var chosenWeather: String
         var chosenTemp: String
         runBlocking {
-            val list = weatherApi.getWeatherTemp(location)
+            val list = weatherApi.getWeatherTemp(location, apiKey)
             chosenSeason = list[0]
             chosenWeather = list[1]
             chosenTemp = list[2]
