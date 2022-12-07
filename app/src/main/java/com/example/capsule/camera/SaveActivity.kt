@@ -8,6 +8,10 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.capsule.R
 
+/**
+ * Activity to allow users to see a preview of the picture before
+ * they decide to save it or choose to retake
+ */
 class SaveActivity : AppCompatActivity() {
     private lateinit var newPictureURI: Uri
     private lateinit var imageView: ImageView
@@ -29,12 +33,19 @@ class SaveActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Save the picture by sending a flag back to the cameraActivity to save
+     */
     fun save(){
         val intent = Intent()
         intent.putExtra("return_flag", "Save")
         setResult(RESULT_OK, intent)
         finish()
     }
+
+    /**
+     * Cancel saving the picture by sending a flag back to the cameraActivity to cancel
+     */
 
     fun cancel(){
         val intent = Intent()

@@ -36,6 +36,10 @@ import com.example.capsule.model.Clothing
 import com.example.capsule.model.ClothingHistory
 import java.util.*
 
+/**
+ * Fragment which shows an outfit suggestion for the day based on frequency of wear and the current season taken from
+ * the openweather API
+ */
 class OutfitSuggestionFragment: Fragment(), LocationListener {
 
     private lateinit var database: ClothingDatabase
@@ -82,6 +86,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    /**
+     * on create view to check permissions to get a photo form gallery and initialise all of the public values
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -119,6 +126,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         return root
     }
 
+    /**
+     * gets SharedPreferences to get last submission date and compare to today where if it is the same
+     * the user will instead see outfits history
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
@@ -133,6 +144,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
 
     }
+
+    /**
+     * Initialise the database and viewmodel for this activity as well as setting up observers for each of the clothing categories
+     */
 
     private fun initOutfitSuggestion(){
         database = ClothingDatabase.getInstance(requireActivity())
@@ -258,6 +273,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
     }
 
+    /**
+     * initialise location manager and request for location updates with this activity as the listener
+     */
     private fun initLocationManager() {
         try {
             locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -272,10 +290,18 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
     }
 
+    /**
+     * On location changed, trigger the updateSeason method in the view model to get the current season and get
+     * the clothing suggestions. Once the function is done, stop the request for location updates to prevent unnecessary overhead
+     */
     override fun onLocationChanged(location: Location) {
         outfitSuggestionViewModel.updateSeason(location, weatherApi, apiKey)
         locationManager.removeUpdates(this)
     }
+
+    /**
+     * Check and request permission for getting location if permission was not provided by the user
+     */
 
     private fun checkPermission(){
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -285,6 +311,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
     }
 
+    /**
+     * Set the corresponding weather icon in the weatherImageView
+     */
     private fun getWeatherIcon(string: String) {
         weatherImageView.visibility = View.VISIBLE
         if (string == Weather.THUNDER){
@@ -310,6 +339,10 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         }
     }
 
+
+    /**
+     * Hides the empty state layouts when the view is populated and initialised
+     */
     private fun removeEmptyState() {
         emptyStateLinearLayout.visibility = View.GONE
         outfitSuggestionTopLayout.visibility = View.VISIBLE
@@ -317,6 +350,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         logSuggestedOutfitButton.visibility = View.VISIBLE
     }
 
+    /**
+     * Hides the empty state layouts when the view is unpopulated and uninitialised
+     */
     private fun displayEmptyState() {
         outfitSuggestionTopLayout.visibility = View.GONE
         outfitSuggestionBottomLayout.visibility = View.GONE
@@ -324,6 +360,9 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
         emptyStateLinearLayout.visibility = View.VISIBLE
     }
 
+    /**
+     * check to see if outfitsuggestion is initialised and populated to call displayEmptyState or removeEmptyState
+     */
     private fun displayOutfitSuggestion() {
         if (topFlag && bottomFlag && outerWearFlag && shoesFlag
                 && ::suggestedTop.isInitialized
@@ -335,6 +374,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
             displayEmptyState()
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

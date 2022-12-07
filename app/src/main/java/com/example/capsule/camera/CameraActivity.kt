@@ -36,6 +36,11 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
 
     private lateinit var currImageFile: File
 
+
+    /**
+     *function to initiate the camera, setup the capture button and also the result from the
+     * next activity when after the capture button is pressed for the preview
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityCameraBinding.inflate(layoutInflater)
@@ -73,20 +78,27 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         }
     }
 
+    /**
+     * delete's the current image if the user decides to take retake the picture
+     */
     private fun deleteCurrImage(){
         currImageFile.delete()
-//        println("DEBUG capsule -> CAPSULE IN DELETE")
     }
 
+    /**
+     * saves the current image if the user decides to save the picture
+     */
     private fun save(){
         val intent = Intent()
         intent.putExtra("uri", currImageUri)
         intent.putExtra("file", currImageFile)
         setResult(RESULT_OK, intent)
-//        println("DEBUG capsule -> calling finish")
         finish()
     }
 
+    /**
+     * function which actually takes the image and saves it into a new file saved in external files.
+     */
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
@@ -100,9 +112,17 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
             ContextCompat.getMainExecutor(this),this)
     }
 
+    /**
+     * when the attempt to take an image of the camera is interrupted
+     */
+
     override fun onError(exc: ImageCaptureException) {
         Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
     }
+
+    /**
+     * when the image is saved, will start a new intent to the save activity to let the user decide to save or retake a picture
+     */
 
     override fun
             onImageSaved(output: ImageCapture.OutputFileResults){
@@ -115,6 +135,9 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
     }
 
 
+    /**
+     * initialises the camera/viewfinder so the use can see the viewfinder live.
+     */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -146,11 +169,18 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         }, ContextCompat.getMainExecutor(this))
     }
 
+
+    /**
+     * when all permissions are granted
+     */
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * right after popup/ dialog box to request permission is finished this is called
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray) {
@@ -168,13 +198,19 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
         }
     }
 
+    /**
+     * on activity destroy
+     */
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
 
+    /**
+     * values required to be initialised for the activity
+     */
     companion object {
-        private const val TAG = "CameraXApp"
+        private const val TAG = "DEBUG Capsule ->"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (
