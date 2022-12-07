@@ -7,6 +7,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.example.capsule.R
 import com.example.capsule.utils.Util
 
@@ -58,16 +59,16 @@ class OutfitHistoryListAdapter(private val context: Context, private var list: L
             }
 
             if(uriStringList.size > 0 && uriStringList[0].isNotEmpty()) {
-                imageView1.setImageURI(uriStringList[0].toUri())
+                Glide.with(context).load(uriStringList[0].toUri()).into(imageView1)
             }
             if(uriStringList.size > 1 && uriStringList[1].isNotEmpty()) {
-                imageView2.setImageURI(uriStringList[1].toUri())
+                Glide.with(context).load(uriStringList[1].toUri()).into(imageView2)
             }
             if(uriStringList.size > 2 && uriStringList[2].isNotEmpty()) {
-                imageView3.setImageURI(uriStringList[2].toUri())
+                Glide.with(context).load(uriStringList[2].toUri()).into(imageView3)
             }
             if(uriStringList.size > 3 && uriStringList[3].isNotEmpty()) {
-                imageView4.setImageURI(uriStringList[3].toUri())
+                Glide.with(context).load(uriStringList[3].toUri()).into(imageView4)
             }
             if(!list[position].is_suggested) {
                 view.findViewById<TextView>(R.id.suggested_outfit_pin).visibility = View.GONE
