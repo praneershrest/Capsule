@@ -7,6 +7,12 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.example.capsule.R
 
+/**
+ * Adapter that allows expandable listview to show questions and tips. Each row in expandable list view
+ * contains only one item
+ * @property titleList List of questions for conscious closets tips
+ * @property tipList List of answers to the above questions for tips
+ */
 class TipsExpandableListViewAdapter(private val context : Context, private val titleList : List<String>, private val tipList : List<String>) : BaseExpandableListAdapter() {
     override fun getGroupCount(): Int {
         return titleList.size
@@ -36,6 +42,7 @@ class TipsExpandableListViewAdapter(private val context : Context, private val t
         return true
     }
 
+    // Display the question to the tip
     override fun getGroupView(position: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
         val v = View.inflate(context, R.layout.tips_header_item, null)
         val textView : TextView = v.findViewById(R.id.groupItemTextView)
@@ -44,6 +51,7 @@ class TipsExpandableListViewAdapter(private val context : Context, private val t
         return textView
     }
 
+    // Display the answer to the tip in dropdown
     override fun getChildView(p0: Int, p1: Int, p2: Boolean, p3: View?, p4: ViewGroup?): View {
         val v = View.inflate(context, R.layout.tips_child_item, null)
         val textView : TextView = v.findViewById(R.id.childItemTextView)
@@ -51,6 +59,7 @@ class TipsExpandableListViewAdapter(private val context : Context, private val t
         return textView
     }
 
+    // make sure drop down answer is not clickable
     override fun isChildSelectable(p0: Int, p1: Int): Boolean {
         return false
     }
