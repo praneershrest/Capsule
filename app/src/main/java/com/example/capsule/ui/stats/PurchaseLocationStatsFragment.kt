@@ -47,28 +47,34 @@ class PurchaseLocationStatsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_purchase_location_stats, container, false)
+
+        // Set up database for retrieving data
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         historyDatabaseDao = database.clothingHistoryDatabaseDao
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
 
+        // Set up views needed for empty state
         emptyStateIcon = view.findViewById(R.id.purchase_loc_empty_icon)
         emptyStateHeader = view.findViewById(R.id.purchase_loc_empty_state_header)
         emptyStateDescription = view.findViewById(R.id.purchase_loc_empty_state_description)
 
+        // Set up pie chart data and view
         allColours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
         allLocations = resources.getStringArray(R.array.purchase_items).toList() as ArrayList<String>
         entries = ArrayList()
         purchaseLocationFrequencyList = ArrayList()
-
         chart = view.findViewById(R.id.purchase_loc_pie_chart)
+
+        // Set up viewmodel observer for material frequency data
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.purchaseLocationFrequencies.observe(requireActivity()) {
             purchaseLocationFrequencyList = it
             displayPieChart()
         }
 
+        // Initialize pie chart
         initPieChart()
         displayPieChart()
         return view
@@ -85,11 +91,13 @@ class PurchaseLocationStatsFragment: Fragment() {
 
     private fun displayPieChart() {
         if (purchaseLocationFrequencyList.isNotEmpty()) {
+            // Hide empty state
             emptyStateIcon.visibility = View.GONE
             emptyStateHeader.visibility = View.GONE
             emptyStateDescription.visibility = View.GONE
             chart.visibility = View.VISIBLE
 
+            // Create data entries for the pie chart
             colours = ArrayList()
             entries = ArrayList()
             for (location in purchaseLocationFrequencyList) {
@@ -98,6 +106,7 @@ class PurchaseLocationStatsFragment: Fragment() {
                 colours.add(locationColour)
             }
 
+            // Set pie chart data and colors
             pieDataSet = PieDataSet(entries, "Type")
             pieDataSet.valueTextSize = 12f
             pieDataSet.colors = colours
@@ -108,6 +117,7 @@ class PurchaseLocationStatsFragment: Fragment() {
             chart.data = pieData
             chart.invalidate()
         } else {
+            // Display empty state
             chart.visibility = View.GONE
             emptyStateIcon.visibility = View.VISIBLE
             emptyStateHeader.visibility = View.VISIBLE

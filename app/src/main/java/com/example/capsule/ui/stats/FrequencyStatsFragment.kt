@@ -44,16 +44,19 @@ class FrequencyStatsFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_frequency_stats, container, false)
 
+        // Set up database for retrieving data
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         historyDatabaseDao = database.clothingHistoryDatabaseDao
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
 
+        // Set up views needed for empty state
         emptyStateIcon = view.findViewById(R.id.freq_empty_icon)
         emptyStateHeader = view.findViewById(R.id.freq_stats_empty_state)
         emptyStateDescription = view.findViewById(R.id.freq_stats_empty_description)
 
+        // Set up list view to display frequencies
         freqListView = view.findViewById(R.id.freq_listview)
         frequencyList = ArrayList()
         adapter = FrequencyListAdapter(requireActivity(), frequencyList)
@@ -66,6 +69,7 @@ class FrequencyStatsFragment: Fragment() {
             freqTabLayout.addTab(freqTabLayout.newTab().setText(category))
         }
 
+        // Set up ViewModel observers for each category
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.topsFrequencies.observe(requireActivity()) {
             if (categoryList[selectedTab] == "Tops") {

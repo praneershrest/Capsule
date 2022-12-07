@@ -30,7 +30,12 @@ import java.io.File
 private const val IMG_URI_KEY = R.string.img_uri_key.toString()
 private const val IMG_FILENAME_KEY = R.string.img_filename_key.toString()
 
+/**
+ * ItemDetails Fragment for holding the form where users can edit their clothing items
+ */
 class ItemDetailsFragment : Fragment() {
+
+    // initialize the variables
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var imgUriString: String
@@ -61,8 +66,8 @@ class ItemDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE)
+        // get passed in argument from closet fragment and the camera and save argument values
         arguments?.let {
-            // TODO - Need to fix fragment transitions will not have use this eventually
             if (it.getSerializable(IMG_FILENAME_KEY) != null){
                 imgUriString = it.getString(IMG_URI_KEY).toString()
                 imgFile = it.getSerializable(IMG_FILENAME_KEY) as File
@@ -77,6 +82,8 @@ class ItemDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        // initialize database
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         clothingHistoryDatabaseDao = database.clothingHistoryDatabaseDao
@@ -94,11 +101,13 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = root.findNavController()
+        // on back call, if its this page, return to closet if there is no image
         if (!renderPage){
             navController.popBackStack()
             return
         }
 
+        // initialize UI components
         imageView = view.findViewById(R.id.current_pic_view)
         imgUri = Uri.parse(imgUriString)
         imageView.setImageURI(imgUri)
@@ -109,6 +118,8 @@ class ItemDetailsFragment : Fragment() {
         materialSpinner = view.findViewById(R.id.materialSpinner)
         seasonSpinner = view.findViewById(R.id.seasonSpinner)
         purchaseLocationSpinner = view.findViewById(R.id.purchaseSpinner)
+
+        // save button will submit information to database on submit
         val onSaveEntryBtn: Button = view.findViewById(R.id.submitNewItem)
         onSaveEntryBtn.setOnClickListener {
             if (formIsValid()) {
@@ -123,7 +134,10 @@ class ItemDetailsFragment : Fragment() {
 
     }
 
+    // creates a confirmation dialog for if the user wants to save the info or not
     private fun createDialog(){
+
+        // initialize ui components in the dialog
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         val customLayout: View = layoutInflater.inflate(R.layout.fragment_confirmation_dialog, null)
         var textView: TextView = customLayout.findViewById(R.id.dialogText)
@@ -134,12 +148,14 @@ class ItemDetailsFragment : Fragment() {
         textView.text = getString(R.string.confirm_upload_prompt)
         builder.setView(customLayout)
 
+        // if the user clicks submit, it will save info to database
         val dialog: AlertDialog = builder.create()
         submitBtn.setOnClickListener{
             dialog.dismiss()
             Toast.makeText(requireActivity().applicationContext, getString(R.string.toast_msg_saved), Toast.LENGTH_SHORT).show()
             onSaveEntry()
         }
+        // cancel closes dialog
         cancelBtn.setOnClickListener{
             dialog.dismiss()
         }
@@ -153,6 +169,7 @@ class ItemDetailsFragment : Fragment() {
         dialog.show()
     }
 
+    // creates all of adapters for all the drop down ui components
     private fun createAdaptors() {
         val categoryAdapter = ArrayAdapter.createFromResource(
             requireActivity().baseContext,
@@ -197,6 +214,7 @@ class ItemDetailsFragment : Fragment() {
         super.onDestroy()
     }
 
+    // checks if the user input name and price
     private fun formIsValid(): Boolean {
         if (nameEditText.text.isNotEmpty() && priceEditText.text.isNotEmpty()){
             return true
@@ -207,6 +225,7 @@ class ItemDetailsFragment : Fragment() {
     private fun onSaveEntry(){
         saved = true
 
+        // get ui components to get the values stored in input
         val itemName = nameEditText.text.toString()
         val category = categorySpinner.selectedItem.toString()
         val material = materialSpinner.selectedItem.toString()
@@ -217,6 +236,7 @@ class ItemDetailsFragment : Fragment() {
             price = priceInput.subSequence(1,priceInput.length).toString().replace(",","")
         }
         val purchaseLocation = purchaseLocationSpinner.selectedItem.toString()
+        // gets the clothing entry objects based on the ui input values
         val clothingEntry = Clothing(
             name = itemName,
             category = category,
@@ -226,8 +246,10 @@ class ItemDetailsFragment : Fragment() {
             purchase_location = purchaseLocation,
             img_uri = imgUriString
         )
+        // saves entry to database
         itemDetailsViewModel.insert(clothingEntry)
 
+        // if this is the first time user it will reactivate the footer navigation
         if(sharedPreferences.getBoolean(getString(R.string.first_time_user), true)) {
             val navView = requireActivity().findViewById<CurvedBottomNavigationView>(R.id.nav_view)
             navView.visibility = View.VISIBLE

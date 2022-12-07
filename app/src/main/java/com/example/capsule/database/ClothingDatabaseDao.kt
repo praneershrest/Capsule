@@ -26,6 +26,9 @@ interface ClothingDatabaseDao {
     @Query("SELECT * FROM clothing_table WHERE category = :category")
     fun getAllClothingInCategory(category: String) : Flow<List<Clothing>>
 
+    /**
+     * get suggested clothing by the given season and ordered by frequency of wear
+     */
     @Query("SELECT A.id, A.name, A.category, A.price, A.material, A.season, A.purchase_location, A.img_uri FROM " +
             "(SELECT C.*, count(*) as frequency " +
             "FROM clothing_table as C " +
@@ -42,10 +45,18 @@ interface ClothingDatabaseDao {
     @Query("DELETE FROM CLOTHING_TABLE")
     fun deleteAllClothing()
 
+
+    /**
+     * get the material count for data visualisations
+     */
     @Query("SELECT material, count(material) as frequency FROM clothing_table " +
             "GROUP BY material")
     fun getMaterialCount(): Flow<List<MaterialFrequency>>
 
+
+    /**
+     * get purchase location count for data visualisations
+     */
     @Query("SELECT purchase_location, count(purchase_location) as frequency FROM clothing_table " +
             "GROUP BY purchase_location")
     fun getPurchaseLocationCount(): Flow<List<PurchaseLocationFrequency>>

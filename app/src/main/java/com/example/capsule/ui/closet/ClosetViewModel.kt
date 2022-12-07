@@ -5,6 +5,10 @@ import com.example.capsule.database.Repository
 import com.example.capsule.model.Clothing
 import java.lang.IllegalArgumentException
 
+/**
+ * Stores the tops, bottoms, outwear, shoes and has all database commands
+ * @param repository: stores the main apps respository for database access
+ */
 class ClosetViewModel(private val repository: Repository) : ViewModel() {
     private val _allClothingEntriesLiveData = repository.allClothing.asLiveData()
     private val _topsFrequenciesLiveData = repository.topsAllFrequencies.asLiveData()

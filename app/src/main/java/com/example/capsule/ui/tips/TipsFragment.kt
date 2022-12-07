@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.ExpandableListView
 import com.example.capsule.R
 
+/**
+ * Fragment to display the tips for a conscious closet
+ */
 class TipsFragment : Fragment() {
 
     private lateinit var expandableListView: ExpandableListView
@@ -22,8 +25,8 @@ class TipsFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_tips, container, false)
 
+        // Get questions and answers for tips and create views
         headings = activity?.resources?.getStringArray(R.array.tips_headings)?.toList()!!
-        //TODO: Fill in content and convert into a string array in xml file
         childList = (activity?.resources?.getTextArray(R.array.tips_content)?.toList() as List<String>?)!!
         expandableListView = v.findViewById(R.id.expandableListView)
         tipsExpandableListViewAdapter = TipsExpandableListViewAdapter(requireActivity(), headings, childList)

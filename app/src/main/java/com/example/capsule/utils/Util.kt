@@ -2,12 +2,7 @@ package com.example.capsule.utils
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import androidx.core.app.ActivityCompat
@@ -19,6 +14,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Util {
+
+    /**
+     * check access to external storage
+     */
     fun checkPermissions(activity: Activity?) {
         if (Build.VERSION.SDK_INT < 23) return
         if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -26,12 +25,9 @@ object Util {
         }
     }
 
-    fun getBitmap(context: Context, imgUri: Uri): Bitmap {
-        val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
-        val matrix = Matrix()
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-    }
-
+    /**
+     * create an imageFile to save when a user chooses a picture from the gallery
+     */
     @Throws(IOException::class)
     fun createImageFile(currActivity: Activity): File {
         // Create an image file name
@@ -44,6 +40,9 @@ object Util {
         )
     }
 
+    /**
+     * Object for season
+     */
     object Season{
         const val SPRING = "Spring"
         const val SUMMER = "Summer"
@@ -51,6 +50,9 @@ object Util {
         const val WINTER = "Winter"
     }
 
+    /**
+     * Object for weather
+     */
     object Weather{
         const val THUNDER = "Thunderstorm"
         const val DRIZZLE = "Drizzle"
@@ -60,6 +62,9 @@ object Util {
         const val CLOUDY = "Clouds"
     }
 
+    /**
+     * determine a season based on the given temperature
+     */
     fun determineSeason(temp: Int) : String{
         val month = Calendar.getInstance().get(Calendar.MONTH)+1
         if(temp < 5 ){
@@ -82,11 +87,17 @@ object Util {
         }
     }
 
+    /**
+     * function to parse a calendar object to string in the given format
+     */
     fun calendarToString(cal: Calendar) : String {
         val sdf: DateFormat = SimpleDateFormat("EEE, MMM d, yyyy")
         return sdf.format(cal.time)
     }
 
+    /**
+     * function to parse a milisecond time to a formatted date
+     */
     fun millisToStringFormattedDate(millis: Long) : String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = millis

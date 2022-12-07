@@ -46,28 +46,34 @@ class MaterialStatsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_material_stats, container, false)
+
+        // Set up database for retrieving data
         database = ClothingDatabase.getInstance(requireActivity())
         clothingDatabaseDao = database.clothingDatabaseDao
         historyDatabaseDao = database.clothingHistoryDatabaseDao
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
 
+        // Set up views needed for empty state
         emptyStateIcon = view.findViewById(R.id.material_empty_icon)
         emptyStateHeader = view.findViewById(R.id.material_stats_empty_state)
         emptyStateDescription = view.findViewById(R.id.material_stats_empty_description)
 
+        // Set up pie chart data and view
         allColours = resources.getIntArray(R.array.material_graph_colours).toList() as ArrayList<Int>
         allMaterials = resources.getStringArray(R.array.material_items).toList() as ArrayList<String>
         entries = ArrayList()
         materialFrequencyList = ArrayList()
         chart = view.findViewById(R.id.material_pie_chart)
 
+        // Set up viewmodel observer for material frequency data
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.materialFrequencies.observe(requireActivity()) {
             materialFrequencyList = it
             displayPieChart()
         }
 
+        // Initialize pie chart
         initPieChart()
         return view
     }
@@ -96,15 +102,16 @@ class MaterialStatsFragment: Fragment() {
 
     private fun displayPieChart() {
         if (materialFrequencyList.isNotEmpty()) {
+            // Hide empty state
             emptyStateIcon.visibility = View.GONE
             emptyStateHeader.visibility = View.GONE
             emptyStateDescription.visibility = View.GONE
             chart.visibility = View.VISIBLE
 
+            // Set colours and data for pie chart
             colours = ArrayList()
             entries = ArrayList()
             for (material in materialFrequencyList) {
-
                 var materialIndex = allMaterials.indexOf(material.material)
                 var materialColor = allColours[materialIndex]
                 if (materialIndex <= 4) {
@@ -125,6 +132,7 @@ class MaterialStatsFragment: Fragment() {
             chart.data = pieData
             chart.invalidate()
         } else {
+            // Display empty state
             chart.visibility = View.GONE
             emptyStateIcon.visibility = View.VISIBLE
             emptyStateHeader.visibility = View.VISIBLE
