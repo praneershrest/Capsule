@@ -8,17 +8,17 @@
 
     <item
         android:id="@+id/navigation_closet"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_closet_24"
         android:title="@string/title_closet" />
 
     <item
         android:id="@+id/navigation_stats"
-        android:icon="@drawable/graph"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
         android:title="@string/title_stats" />
 
     <item
         android:id="@+id/navigation_tips"
-        android:icon="@drawable/ic_outline_shopping_bag_24"
+        android:icon="@drawable/ic_tips_24px"
         android:title="@string/title_tips"
         />
 

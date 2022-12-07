@@ -18,9 +18,40 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/third"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"/>
     <ListView
+        android:layout_marginBottom="50dp"
         android:id="@+id/freq_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/freq_empty_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wardrobe"
+        android:layout_gravity="center"
+        android:alpha="0.3"
+        android:visibility="gone"
+        android:layout_marginTop="100dp"/>
+    <TextView
+        android:id="@+id/freq_stats_empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/freq_stats_empty_state"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        style="@style/ItemDetailsTextLabel"
+        android:layout_marginTop="50dp"/>
+    <TextView
+        android:id="@+id/freq_stats_empty_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/freq_stats_empty_description"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/fifth"
+        android:visibility="gone"
+        android:padding="10dp"/>
 </LinearLayout>

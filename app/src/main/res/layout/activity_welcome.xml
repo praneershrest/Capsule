@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcome_page_background"
+    android:gravity="fill">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/welcome_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_welcome_page"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="34dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/welcome_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_primary"
+            android:padding="15dp"
+            android:text="@string/button_welcome_page"
+            android:textAllCaps="false"
+            android:textColor="@color/fourth"
+            android:textStyle="bold"
+            android:onClick="onUploadClosetClicked"/>
+
+    </LinearLayout>
+
+</LinearLayout>

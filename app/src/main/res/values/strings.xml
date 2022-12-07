@@ -12,15 +12,15 @@
     <string name="img_filename_key">imgFileNameKey</string>
     <string name="img_uri_key">imgUriKey</string>
 
-    <string name="name_title">Item Name:</string>
-    <string name="name_placeholder">Enter a name for this </string>
-    <string name="category_title">Category:</string>
-    <string name="material_title">Material:</string>
-    <string name="season_title">Season:</string>
-    <string name="price_title">Price:</string>
-    <string name="price_placeholder">$ Your Price</string>
-    <string name="purchase_location_title">Purchase Location:</string>
-    <string name="add_details">Add Details</string>
+    <string name="name_title">Item name</string>
+    <string name="name_placeholder">Enter a name for this item</string>
+    <string name="category_title">Category</string>
+    <string name="material_title">Material</string>
+    <string name="season_title">Season</string>
+    <string name="price_title">Price</string>
+    <string name="price_placeholder">$ Enter price</string>
+    <string name="purchase_location_title">Purchase location</string>
+    <string name="add_details">Add details</string>
     <string name="save_btn_take_photo">Save Item</string>
 
     <string name="item_details_fragment_key">Item Details Fragment Key</string>
@@ -34,7 +34,9 @@
     <string name="outfit_suggestion_title">Outfit suggestion of the day</string>
     <string name="weather_icon">Weather icon</string>
     <string name="outfit_suggestion_wear">Wear this outfit</string>
-    <string name="outfit_suggestion_log">Log your own outfit</string>
+    <string name="outfit_suggestion_log">Log your outfit</string>
+    <string name="outfit_suggestion_empty_header">No suggested outfit available</string>
+    <string name="outfit_suggestion_empty_description">Add more items to your closet to get outfit suggestions.</string>
 
     <string name="shared_preferences">shared_preferences</string>
 
@@ -46,20 +48,51 @@
     <string name="suggested_bottom">Suggested Bottom</string>
     <string name="suggested_outerwear">Suggested Outerwear</string>
     <string name="suggested_shoes">Suggested Shoes</string>
-    
-    <string name="add_items_to_closet_title">Add new items to closet</string>
+
+    <string name="add_items_to_closet_title">Add new item to closet</string>
     <string name="take_photo">Take photo</string>
     <string name="upload_photo">Upload photo</string>
+    <string name="add_item_button_text">Add item</string>
+    <string name="remove_item_button_text">Remove item</string>
 
     <string name="outfit_history_recent">Your recent outfits</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="suggested_outfit">Suggested Outfit</string>
     <string name="tops_category">Tops</string>
     <string name="bottoms_category">Bottoms</string>
     <string name="shoes_category">Shoes</string>
     <string name="outerwear_category">Outerwear</string>
 
+    <string name="stats_empty_state">You don\'t have any items in your closet yet!</string>
+    <string name="stats_empty_description">Add items to view closet stats.</string>
+    <string name="freq_stats_empty_state">You don\'t have any items in this category yet!</string>
+    <string name="freq_stats_empty_description">Add items to view stats for this category.</string>
+    <string name="closet_empty_state">You don\'t have any items in this category yet.</string>
+    <string name="closet_empty_description">Start adding items to build your closet!</string>
+
     <string name="capsule_logo">Capsule Logo</string>
+    <string name="first_time_user">first_time_user</string>
+    <string name="has_inserted_for_day_key">HAS_INSERTED_FOR_DAY_KEY</string>
+    <string name="title_welcome_page">Hello\nWelcome to Capsule</string>
+    <string name="button_welcome_page">Upload your closet</string>
+
+    <string name="confirm_upload_prompt">Add item to closet?</string>
+    <string name="yes_btn_msg">Yes</string>
+    <string name="cancel_btn_msg">Cancel</string>
+    <string name="remove_item_prompt">Remove item from closet?</string>
+
+    <string name="manual_outfit_header">Log today\'s outfit</string>
+    <string name="toast_msg_saved">Item added to closet!</string>
+    <string name="toast_msg_removed">Item removed from closet</string>
+    <string name="toast_msg_fill_all_fields">"Please fill in all fields."</string>
+    <string name="outfit_logged">Outfit logged!</string>
+    <string name="empty_outfit_log">Can\'t log an outfit with no clothing!</string>
+
+    <string name="invalid_manual_outfit_log">Please select at least 1 item of clothing</string>
+    <string name="log_outfit">Log Outfit</string>
+    <string name="creating_outfit">Creating outfit</string>
+
+    <string name="camera_save">Save Photo</string>
+    <string name="camera_retake">Retake Photo</string>
 
 </resources>

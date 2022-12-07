@@ -1,13 +1,33 @@
 package com.example.capsule.ui.closet
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.capsule.database.Repository
+import com.example.capsule.model.Clothing
+import java.lang.IllegalArgumentException
 
-class ClosetViewModel : ViewModel() {
+class ClosetViewModel(private val repository: Repository) : ViewModel() {
+    private val _allClothingEntriesLiveData = repository.allClothing.asLiveData()
+    private val _topsFrequenciesLiveData = repository.topsAllFrequencies.asLiveData()
+    private val _bottomsFrequenciesLiveData = repository.bottomsAllFrequencies.asLiveData()
+    private val _outerwearFrequenciesLiveData = repository.outerwearAllFrequencies.asLiveData()
+    private val _shoesFrequenciesLiveData = repository.shoesAllFrequencies.asLiveData()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    val allClothingEntriesLiveData = _allClothingEntriesLiveData
+    val topsFrequenciesLiveData = _topsFrequenciesLiveData
+    val bottomsFrequenciesLiveData = _bottomsFrequenciesLiveData
+    val outerwearFrequenciesLiveData = _outerwearFrequenciesLiveData
+    val shoesFrequenciesLiveData = _shoesFrequenciesLiveData
+
+
+    fun remove(clothingId: Long) {
+        repository.deleteClothing(clothingId)
     }
-    val text: LiveData<String> = _text
+}
+
+class ClosetViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {
+    override fun<T: ViewModel> create(modelClass: Class<T>) : T{ //create() creates a new instance of the modelClass, which is CommentViewModel in this case.
+        if(modelClass.isAssignableFrom(ClosetViewModel::class.java))
+            return ClosetViewModel(repository) as T
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

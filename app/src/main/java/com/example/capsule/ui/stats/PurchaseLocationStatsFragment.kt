@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.capsule.R
@@ -28,10 +30,16 @@ class PurchaseLocationStatsFragment: Fragment() {
     private lateinit var purchaseLocationFrequencyList: List<PurchaseLocationFrequency>
 
     private lateinit var chart: PieChart
+    private lateinit var allLocations: ArrayList<String>
+    private lateinit var allColours: ArrayList<Int>
     private lateinit var entries: ArrayList<PieEntry>
     private lateinit var colours: ArrayList<Int>
     private lateinit var pieDataSet: PieDataSet
     private lateinit var pieData: PieData
+
+    private lateinit var emptyStateIcon: ImageView
+    private lateinit var emptyStateHeader: TextView
+    private lateinit var emptyStateDescription: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,15 +53,22 @@ class PurchaseLocationStatsFragment: Fragment() {
         repository = Repository(clothingDatabaseDao, historyDatabaseDao)
         factory = StatsViewModelFactory(repository)
 
+        emptyStateIcon = view.findViewById(R.id.purchase_loc_empty_icon)
+        emptyStateHeader = view.findViewById(R.id.purchase_loc_empty_state_header)
+        emptyStateDescription = view.findViewById(R.id.purchase_loc_empty_state_description)
+
+        allColours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
+        allLocations = resources.getStringArray(R.array.purchase_items).toList() as ArrayList<String>
         entries = ArrayList()
         purchaseLocationFrequencyList = ArrayList()
 
+        chart = view.findViewById(R.id.purchase_loc_pie_chart)
         statsViewModel = ViewModelProvider(requireActivity(), factory).get(StatsViewModel::class.java)
         statsViewModel.purchaseLocationFrequencies.observe(requireActivity()) {
             purchaseLocationFrequencyList = it
             displayPieChart()
         }
-        chart = view.findViewById(R.id.purchase_loc_pie_chart)
+
         initPieChart()
         displayPieChart()
         return view
@@ -69,21 +84,35 @@ class PurchaseLocationStatsFragment: Fragment() {
     }
 
     private fun displayPieChart() {
-        colours = resources.getIntArray(R.array.purchase_loc_graph_colours).toList() as ArrayList<Int>
-        entries = ArrayList()
-        for (location in purchaseLocationFrequencyList) {
-            entries.add(PieEntry(location.frequency.toFloat(), location.purchase_location))
+        if (purchaseLocationFrequencyList.isNotEmpty()) {
+            emptyStateIcon.visibility = View.GONE
+            emptyStateHeader.visibility = View.GONE
+            emptyStateDescription.visibility = View.GONE
+            chart.visibility = View.VISIBLE
+
+            colours = ArrayList()
+            entries = ArrayList()
+            for (location in purchaseLocationFrequencyList) {
+                entries.add(PieEntry(location.frequency.toFloat(), location.purchase_location))
+                var locationColour = allColours[allLocations.indexOf(location.purchase_location)]
+                colours.add(locationColour)
+            }
+
+            pieDataSet = PieDataSet(entries, "Type")
+            pieDataSet.valueTextSize = 12f
+            pieDataSet.colors = colours
+            pieData = PieData(pieDataSet)
+            pieData.setDrawValues(true)
+            pieData.setValueFormatter(PercentFormatter(chart))
+
+            chart.data = pieData
+            chart.invalidate()
+        } else {
+            chart.visibility = View.GONE
+            emptyStateIcon.visibility = View.VISIBLE
+            emptyStateHeader.visibility = View.VISIBLE
+            emptyStateDescription.visibility = View.VISIBLE
         }
-
-        pieDataSet = PieDataSet(entries, "Type")
-        pieDataSet.valueTextSize = 12f
-        pieDataSet.colors = colours
-        pieData = PieData(pieDataSet)
-        pieData.setDrawValues(true)
-        pieData.setValueFormatter(PercentFormatter(chart))
-
-        chart.data = pieData
-        chart.invalidate()
-
     }
+
 }

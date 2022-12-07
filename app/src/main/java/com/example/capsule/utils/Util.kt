@@ -1,4 +1,4 @@
-package com.example.capsule
+package com.example.capsule.utils
 
 import android.Manifest
 import android.app.Activity
@@ -21,17 +21,15 @@ import java.util.*
 object Util {
     fun checkPermissions(activity: Activity?) {
         if (Build.VERSION.SDK_INT < 23) return
-        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), 0)
+        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
         }
     }
 
     fun getBitmap(context: Context, imgUri: Uri): Bitmap {
-        var bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
+        val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(imgUri))
         val matrix = Matrix()
-        var ret = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        return ret
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     @Throws(IOException::class)
@@ -44,6 +42,44 @@ object Util {
             ".jpg", /* suffix */
             storageDir /* directory */
         )
+    }
+
+    object Season{
+        const val SPRING = "Spring"
+        const val SUMMER = "Summer"
+        const val FALL = "Fall"
+        const val WINTER = "Winter"
+    }
+
+    object Weather{
+        const val THUNDER = "Thunderstorm"
+        const val DRIZZLE = "Drizzle"
+        const val RAIN = "Rain"
+        const val SNOW = "Snow"
+        const val SUNNY = "Clear"
+        const val CLOUDY = "Clouds"
+    }
+
+    fun determineSeason(temp: Int) : String{
+        val month = Calendar.getInstance().get(Calendar.MONTH)+1
+        if(temp < 5 ){
+            return Season.WINTER
+        }
+        else if (temp > 5 && temp < 20 && month > 3 && month < 7){
+            return Season.SPRING
+        }
+        else if(temp > 20){
+            return Season.SUMMER
+        }
+        else if (temp > 5 && temp < 20 && month > 8 && month < 12){
+            return Season.FALL
+        }
+        else if (temp > 5 && temp < 20){
+            return Season.FALL
+        }
+        else{
+            return Season.SPRING
+        }
     }
 
     fun calendarToString(cal: Calendar) : String {
