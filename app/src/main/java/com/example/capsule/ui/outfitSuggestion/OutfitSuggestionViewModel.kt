@@ -44,10 +44,19 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
     private val _suggestedShoesLiveData =  MutableLiveData<Clothing>()
     val suggestedShoesLiveData = _suggestedShoesLiveData
 
+    /**
+     * insert a new ClothingHistoryEntry if the user decides to log the suggested clothing
+     */
     fun insert(clothingHistoryEntry: ClothingHistory) {
         repository.insertClothingHistory(clothingHistoryEntry)
     }
 
+    /**
+     * updateSeason function which is called from onLocationChanged and have location, weatherApi and apikey passed in
+     * to then run a blocking call to get the chosen season, weather and temperature from the WeatherApi class.
+     * it will then run the repository query for each of the clothing categories and update the mutableLiveData to be the updated
+     * Clothing
+     */
     fun updateSeason(location: Location, weatherApi: WeatherApi, apiKey:String){
         var chosenSeason: String
         var chosenWeather: String
@@ -76,7 +85,9 @@ class OutfitSuggestionViewModel(private val repository: Repository) : ViewModel(
     }
 }
 
-
+/**
+ * ViewModelFactory for the outfitSuggestionFragment
+ */
 class OutfitSuggestionViewModelFactory (private val repository: Repository) : ViewModelProvider.Factory {
     override fun<T: ViewModel> create(modelClass: Class<T>) : T{ // create() creates a new instance of the modelClass
         if(modelClass.isAssignableFrom(OutfitSuggestionViewModel::class.java))
