@@ -35,7 +35,10 @@ Link to our final presentation: [https://youtu.be/pOZftCtWHPk](https://youtu.be/
 
 ### App APK
 #### Note: The APK must be run on a physical phone for the camera feature to work. This is due a limitation of the CameraX library, which is not compatible with the Android Studio emulator.
-![alt_text](https://github.com/praneershrest/Capsule/raw/main/Capsule.apk)
+![App APK here](https://github.com/praneershrest/Capsule/raw/main/Capsule.apk)
+
+### Final project code ZIP
+![Final project code](https://github.com/praneershrest/Capsule/raw/main/Capsule.zip)
 
 ### Division of tasks
 ![alt text](https://github.com/praneershrest/Capsule/blob/main/tasks.png)
