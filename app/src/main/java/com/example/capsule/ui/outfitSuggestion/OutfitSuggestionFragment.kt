@@ -127,7 +127,7 @@ class OutfitSuggestionFragment: Fragment(), LocationListener {
 
         lastSubmissionDay.timeInMillis = sharedPreferences.getLong(getString(R.string.has_inserted_for_day_key), 0L)
 
-        if (currentDay.get(Calendar.DAY_OF_YEAR) == lastSubmissionDay.get(Calendar.DAY_OF_YEAR) ||
+        if (currentDay.get(Calendar.DAY_OF_YEAR) == lastSubmissionDay.get(Calendar.DAY_OF_YEAR) &&
             currentDay.get(Calendar.YEAR) == lastSubmissionDay.get(Calendar.YEAR)) {
             findNavController().navigate(R.id.action_navigation_outfits_suggestion_to_navigation_outfits_history)
         }
