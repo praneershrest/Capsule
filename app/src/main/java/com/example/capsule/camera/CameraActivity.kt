@@ -137,6 +137,7 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedCallback {
 
     /**
      * initialises the camera/viewfinder so the use can see the viewfinder live.
+     * adapted code from: https://developer.android.com/codelabs/camerax-getting-started#4
      */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
