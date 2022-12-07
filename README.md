@@ -22,7 +22,7 @@ Link to our show and tell 1: [https://youtu.be/xPgDwgtINC8](https://youtu.be/xPg
 ![alt text](https://github.com/praneershrest/Capsule/blob/main/app/src/main/res/drawable/imagesReadMe/MVVM.png "Logo Title Text 1")
 
 ### UI mockup
-Link to our UI mockup [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1)
+Link to our Figma UI mockup [here](https://www.figma.com/proto/IYwoqCm95zWGv2GQpLccmY/Capsule?node-id=198%3A1350&scaling=scale-down&page-id=0%3A1&starting-point-node-id=8%3A1245&show-proto-sidebar=1)
 
 ## Show And Tell 2
 Link to our Show and Tell 2: [https://youtu.be/WahaBuGSOcw](https://youtu.be/WahaBuGSOcw)
@@ -35,10 +35,10 @@ Link to our final presentation: [https://youtu.be/pOZftCtWHPk](https://youtu.be/
 
 ### App APK
 #### Note: The APK must be run on a physical phone for the camera feature to work. This is due a limitation of the CameraX library, which is not compatible with the Android Studio emulator.
-![App APK here](https://github.com/praneershrest/Capsule/raw/main/Capsule.apk "Logo Title Text 1")
+[App APK here](https://github.com/praneershrest/Capsule/raw/main/Capsule.apk)
 
 ### Final project code ZIP
-![Final project code](https://github.com/praneershrest/Capsule/raw/main/Capsule.zip "Logo Title Text 1")
+[Final project code](https://github.com/praneershrest/Capsule/raw/main/Capsule.zip)
 
 ### Division of tasks
 ![alt text](https://github.com/praneershrest/Capsule/blob/main/tasks.png)
